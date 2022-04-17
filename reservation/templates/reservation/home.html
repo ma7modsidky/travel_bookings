@@ -1,0 +1,46 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %} Soly travel - Home {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container  ">
+    Home page
+
+</div>
+{% comment %} <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container.swiper-home', {
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        effect: 'fade',
+        autoplay: {
+            delay: 5000,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+    var swiper = new Swiper('#swiper-developer', {
+    pagination: {
+    el: '.swiper-pagination',
+    },
+    navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+    },
+    effect: 'slide',
+    slidesPerView: 'auto',
+    spaceBetween: 20,
+    autoplay: {
+    delay: 3000,
+    },
+    });
+    console.log('done');
+</script> {% endcomment %}
+{% endblock %}

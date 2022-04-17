@@ -1,0 +1,6 @@
+**/venv
+**/New folder
+**/1.txt
+**/media
+.vscode
+db.sqlite

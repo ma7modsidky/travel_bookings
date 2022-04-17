@@ -1,0 +1,61 @@
+{% extends "reservation/base.html" %}
+{% load thumbnail %}
+{% block title %}{{ user.get_full_name }}{% endblock %}
+{% block content %}
+    <div class="section">
+    <h1>{{ user.get_full_name }}</h1>
+    <div class="profile-info">
+        <img src="{% thumbnail user.profile.photo 180x180 %}" class="userdetail">
+    </div>
+
+    {% with total_followers=user.followers.count %}
+
+    <span class="count">
+        <span class="total">{{ total_followers }}</span> follower{{ total_followers|pluralize }}
+    </span>
+    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+        {% if request.user not in user.followers.all %}
+            Follow
+        {% else %}
+            Unfollow
+        {% endif %}
+    </a>
+    
+    <div id="image-list" class="image-container">
+    {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+    </div>
+    {% endwith %}
+    </div>
+{% endblock %}
+
+{% block domready %}
+    const followBtn = document.querySelector('a.follow')
+    followBtn.addEventListener('click', e => {
+        e.preventDefault();
+        fetch('{% url "user_follow" %}', {
+        method : 'POST',
+        headers: {'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                        'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({
+                id: followBtn.dataset.id,
+                action: followBtn.dataset.action
+            })             
+        }).then(response => response.json()).then(response =>{
+            if (response['status'] == 'ok') {
+                console.log('okkkkkkkk')
+                let previous_action = followBtn.dataset.action;
+                // toggle data-action
+                followBtn.dataset.action = (previous_action == 'follow' ? 'unfollow' : 'follow')
+                // toggle link text
+                followBtn.textContent = (previous_action == 'follow' ? 'unfollow' : 'follow')
+                // update total followers
+                const total = document.querySelector('span.count .total')
+                let previous_followers = parseInt(total.textContent);
+                total.textContent = (previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    })
+{% endblock %}
