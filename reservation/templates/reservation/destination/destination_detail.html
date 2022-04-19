@@ -6,7 +6,7 @@
 {% endblock %}
 {% load i18n %}
 {% block content %}
-<div class="container bg-white rounded-md p-4">
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
     <!-- breadcrumb -->
     <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Breadcrumb">
@@ -31,18 +31,49 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="#"
+                    <a href="{% url 'reservation:destination_detail' destination.slug%}"
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{object.name|title}}</a>
                 </div>
             </li>
         </ol>
     </nav>
-    <div class="py-4 flex gap-4 font-weight-10">
-        <div class="p-4 rounded-md bg-gray-50">Hotels [<span class="font-bold">{{object.hotels.count}}</span>]</div>
-        <div class="p-4 rounded-md bg-gray-50">Upcoming Trips [<span class="font-bold">{{object.hotels.count}}</span>]
+    <hr class="my-2"/>
+    <div class="flex flex-wrap my-4 gap-2">
+        <div
+            class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <a href="{% url "reservation:hotel_list" object.slug %}" class="inline-flex items-center">Hotels
+            [<span class="font-bold">{{object.hotels.count}}</span>]
+            </a>
+            
+        </div>
+        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <a href="{% url "reservation:trip_list" object.slug 'ongoing' %}" class="inline-flex items-center">Ongoing
+                Trips</a>
+        </div>
+        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <a href="{% url "reservation:trip_list" object.slug 'upcoming' %}" class="inline-flex items-center">Upcoming
+                Trips</a>
+        </div>
+        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <a href="{% url "reservation:trip_list" object.slug 'previous' %}" class="inline-flex items-center">Previous
+                Trips</a>
+        </div>
+        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+            <a href="{% url "reservation:trip_list" object.slug 'all' %}" class="inline-flex items-center">All
+                Trips</a>
         </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    <!-- <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
 
         {% for hotel in object.hotels.all %}
         <div
@@ -119,6 +150,6 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 </div>
 {% endblock %}

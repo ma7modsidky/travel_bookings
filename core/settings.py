@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'crispy_forms',
     "crispy_tailwind",
+    'ckeditor',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
@@ -142,6 +143,8 @@ BOOKING_TIME_INTERVAL= 'nights'
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+WHITENOISE_USE_FINDERS = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
@@ -154,4 +157,10 @@ LOGOUT_URL = 'account:logout'
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'basic',
+    },
 }

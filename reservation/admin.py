@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination,Hotel, Booking, AccommodationType, HotelPackage
+from .models import Destination,Hotel, Booking, AccommodationType, HotelPackage, Trip
 # Register your models here.
 
 
@@ -52,3 +52,14 @@ class HotelPackageAdmin(admin.ModelAdmin):
     class Meta:
         model = HotelPackage
 
+
+@admin.register(Trip)
+class TripAdmin(admin.ModelAdmin):
+    list_display = ('destination', 'accommodation', 'date_from', 'date_until',
+                    'bus_count',)
+    list_filter = ('date_from', 'accommodation')
+    readonly_fields = ('get_price_per_person',)
+    search_fields = ['accommodation__name']
+
+    class Meta:
+        model = Booking

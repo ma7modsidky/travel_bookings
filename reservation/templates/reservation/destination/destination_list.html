@@ -6,7 +6,7 @@
 {% endblock %}
 {% load i18n %}
 {% block content %}
-    <div class="container bg-white rounded-md p-4">
+    <div class="container bg-white dark:bg-gray-600 rounded-md p-4">
         <!-- <h1 class="text-xl text-primary font-bold mb-4">Destination's list</h1> -->
         <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 mb-4"
             aria-label="Breadcrumb">
@@ -29,7 +29,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {% for d in object_list %}
             <a href="{% url "reservation:destination_detail" d.slug %}" class="">
-                <div class="relative bg-gray-400 text-gray-800 text-xl border border-primary  rounded-md h-[5rem] px-4 bg-blend-hard-light"
+                <div class="relative bg-gray-400 text-gray-800 text-xl border border-gray-200 dark:border-gray-700 rounded-md h-[5rem] px-4 bg-blend-hard-light"
                     {% if d.image %} style="background-image: url({{d.image.url}});background-size: cover;background-repeat: no-repeat;" {% else %}
                 " {% endif %}>
                     <div class="text-white">

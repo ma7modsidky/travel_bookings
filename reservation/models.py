@@ -3,12 +3,19 @@ from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
+from django.contrib.auth import get_user_model
 # Create your models here.
+
+
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='deleted')[0]
+
 
 class Destination(models.Model):
     name = models.CharField(max_length=25, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
-    intro = models.TextField(null=True,blank=True)
+    intro = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='images/destination', blank=True)
     # def get_absolute_url(self):
     #     return reverse('app:developer_detail', kwargs={'slug': self.slug})
@@ -16,17 +23,20 @@ class Destination(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class AccommodationType(models.Model):
     name = models.CharField(max_length=25, db_index=True)
 
     def __str__(self) -> str:
         return self.name
 
+
 class Hotel(models.Model):
     name = models.CharField(max_length=25, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
-    destination = models.ForeignKey(Destination, related_name='hotels', on_delete=models.DO_NOTHING)
-    intro = models.TextField()
+    destination = models.ForeignKey(
+        Destination, related_name='hotels', on_delete=models.DO_NOTHING)
+    intro = RichTextField()
     level = models.PositiveBigIntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5)])
@@ -35,18 +45,21 @@ class Hotel(models.Model):
     # price_per_night = models.DecimalField(
     #     max_digits=10, decimal_places=0, default=500000)
 
-
     # def get_absolute_url(self):
     #     return reverse('app:developer_detail', kwargs={'slug': self.slug})
 
     def get_packages(self):
         return self.packages
+
     def __str__(self) -> str:
         return self.name
 
+
 class HotelPackage(models.Model):
-    hotel = models.ForeignKey(Hotel, related_name='packages', on_delete=models.RESTRICT)
-    accommodation_type = models.ForeignKey(AccommodationType, on_delete=models.RESTRICT)
+    hotel = models.ForeignKey(
+        Hotel, related_name='packages', on_delete=models.RESTRICT)
+    accommodation_type = models.ForeignKey(
+        AccommodationType, on_delete=models.RESTRICT)
     label = models.CharField(max_length=25)
     price_per_person_night_single = models.DecimalField(
         max_digits=10, decimal_places=0, default=1000)
@@ -56,7 +69,8 @@ class HotelPackage(models.Model):
     date_to = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.label + " -- " + self.accommodation_type.name 
+        return self.label + " -- " + self.accommodation_type.name
+
 
 class Booking(models.Model):
     # Personal info about client
@@ -108,7 +122,8 @@ class Booking(models.Model):
     # Accommodation and transport
     accommodation = models.ForeignKey(
         Hotel, related_name='reservations', on_delete=models.RESTRICT)
-    package = models.ForeignKey(HotelPackage, on_delete=models.RESTRICT,null=True,blank=True)
+    package = models.ForeignKey(
+        HotelPackage, on_delete=models.RESTRICT, null=True, blank=True)
     adults = models.PositiveIntegerField(
         verbose_name=_('Number of Adults'),
         blank=True, null=True,
@@ -159,12 +174,13 @@ class Booking(models.Model):
     def __str__(self):
         return '#{} ({})'.format(self.booking_id or self.pk,
                                  self.creation_date)
-    
+
     def calculate_remaining_amount(self):
         if self.total_price:
             return self.total_price - self.paid_amount
         else:
-            return None    
+            return None
+
 
 class BookingError(models.Model):
     booking = models.ForeignKey(
@@ -191,3 +207,69 @@ class BookingError(models.Model):
     def __str__(self):
         return u'[{0}] {1} - {2}'.format(self.date, self.booking.booking_id,
                                          self.message)
+
+
+class Trip(models.Model):
+    destination = models.ForeignKey(
+        Destination, related_name='trips', on_delete=models.RESTRICT)
+    accommodation = models.ForeignKey(
+        Hotel, related_name='trip_reservations', on_delete=models.RESTRICT)
+    creation_date = models.DateTimeField(
+        verbose_name=_('Creation date'),
+        auto_now_add=True,
+    )
+    creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                      related_name='created_trips',
+                                      on_delete=models.SET(get_sentinel_user),
+                                      blank=True)
+
+    date_from = models.DateField(
+        verbose_name=_('From'),
+        blank=True, null=True,
+    )
+    date_until = models.DateField(
+        verbose_name=_('Until'),
+        blank=True, null=True,
+    )
+    bus_count = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+                                               blank=True, null=True,)
+    transport_price_person = models.DecimalField(
+        max_digits=36,
+        decimal_places=2,
+        verbose_name=_('Transport price per person'),
+        blank=True, null=True,
+    )
+    location = models.CharField(verbose_name=_('Trip starting location'),
+                                max_length=256,
+                                blank=True,)
+
+    single_room_price = models.DecimalField(
+        max_digits=36,
+        decimal_places=2,
+        verbose_name=_('Single Room price'),
+        blank=True, null=True,
+    )
+    double_room_price = models.DecimalField(
+        max_digits=36,
+        decimal_places=2,
+        verbose_name=_('Double Room price'),
+        blank=True, null=True,
+    )
+    triple_room_price = models.DecimalField(
+        max_digits=36,
+        decimal_places=2,
+        verbose_name=_('Triple Room price'),
+        blank=True, null=True,
+    )
+
+    @property
+    def get_price_per_person(self):
+        if self.double_room_price:
+            return self.double_room_price / 2
+        else:
+            return    
+
+
+    def __str__(self):
+        return '#{} ({})'.format(self.accommodation.name,
+                                 self.date_from)
