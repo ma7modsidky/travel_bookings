@@ -73,6 +73,35 @@ class trip_list(LoginRequiredMixin, ListView):
         return context
 
 
+class trip_list_by_hotel(LoginRequiredMixin, ListView):
+    model = Trip
+    # template_name = 'reservation/hotel/hotel_list.html'
+    template_name = 'reservation/trip/trip_list_by_hotel.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        hotel = Hotel.objects.get(slug=self.kwargs.get("slug"))
+        context['hotel'] = hotel
+        context['destination'] = hotel.destination
+        context['time'] = self.kwargs.get("time")
+        print(self.kwargs.get("time"))
+        if self.kwargs.get("time") == 'upcoming':
+            print('upcoming')
+            context['object_list'] = Trip.objects.filter(
+                accommodation=hotel, date_from__gte=timezone.now())
+        elif self.kwargs.get("time") == 'previous':
+            context['object_list'] = Trip.objects.filter(
+                accommodation=hotel, date_until__lt=timezone.now())
+        elif self.kwargs.get("time") == 'ongoing':
+            print('ongoing')
+            context['object_list'] = Trip.objects.filter(
+                accommodation=hotel, date_from__lte=timezone.now(), date_until__gte=timezone.now())
+        else:
+            context['object_list'] = Trip.objects.filter(
+                accommodation=hotel)
+        return context
 class trip_detail(LoginRequiredMixin, DetailView):
     model = Trip
     template_name = 'reservation/hotel/hotel_detail.html'

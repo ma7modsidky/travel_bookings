@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_tailwind",
     'ckeditor',
+    'django_filters',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
@@ -156,7 +157,8 @@ LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'
 
 ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username]),
+    'reservation.hotel': lambda u: reverse_lazy('reservation:hotel_detail', args=[u.slug]),
 }
 
 CKEDITOR_CONFIGS = {

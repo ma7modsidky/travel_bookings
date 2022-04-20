@@ -2,12 +2,11 @@
 {% block title %}Logged out{% endblock %}
 {% block content %}
     <div class="section">
-        <h3>Logged out</h3>
-        <p>
-        You have been successfully logged out.
-        You can 
-        <a href='{% url 'account:login' %}' type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">log-in again</a>
-        </p>
+        <h3 class="text-2xl font-bold mb-4">You have been successfully logged out.</h3>
+        <h2 class="text-xl ">You can <a href='{% url 'account:login' %}' type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">log-in
+                again</a> </h2>
+        
 
     </div>
 {% endblock %}
