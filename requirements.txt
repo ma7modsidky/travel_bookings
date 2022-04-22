@@ -6,7 +6,10 @@ django-ckeditor==6.4.0
 django-crispy-forms==1.14.0
 django-filter==21.1
 django-js-asset==2.0.0
+django-phonenumber-field==6.1.0
 gunicorn==20.1.0
+phonenumbers==8.12.47
+phonenumberslite==8.12.46
 Pillow==9.1.0
 pycodestyle==2.8.0
 sqlparse==0.4.2
