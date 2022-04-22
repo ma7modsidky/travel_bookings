@@ -26,15 +26,16 @@
             </ol>
         </nav>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {% for d in object_list %}
             <a href="{% url "reservation:destination_detail" d.slug %}" class="">
-                <div class="relative bg-gray-400 text-gray-800 text-xl border border-gray-200 dark:border-gray-700 rounded-md h-[5rem] px-4 bg-blend-hard-light"
+                    <div class="text-gray-900 dark:text-white font-bold text-xl ">
+                        {{d.name | title}} <span class="text-gray-800">[{{d.hotels.count}}]</span>
+                    </div>
+                <div class="relative bg-gray-400 text-gray-800 text-xl border border-gray-200 dark:border-gray-700 rounded-md h-[10rem] px-4 hover:bg-blend-darken"
                     {% if d.image %} style="background-image: url({{d.image.url}});background-size: cover;background-repeat: no-repeat;" {% else %}
                 " {% endif %}>
-                    <div class="text-white">
-                        {{d.name | title}}
-                    </div>
+                    
                 </div>
             </a>
             {% endfor %}

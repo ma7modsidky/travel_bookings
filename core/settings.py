@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     'ckeditor',
     'django_filters',
+    'phonenumber_field',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
+PHONENUMBER_DB_FORMAT = "E164"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',

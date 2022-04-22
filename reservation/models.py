@@ -60,13 +60,59 @@ class HotelPackage(models.Model):
         Hotel, related_name='packages', on_delete=models.RESTRICT)
     accommodation_type = models.ForeignKey(
         AccommodationType, on_delete=models.RESTRICT)
-    label = models.CharField(max_length=25)
-    price_per_person_night_single = models.DecimalField(
-        max_digits=10, decimal_places=0, default=1000)
-    price_per_person_night_double = models.DecimalField(
-        max_digits=10, decimal_places=0, default=1000)
+    label = models.CharField(max_length=50)
     date_from = models.DateField(null=True, blank=True)
     date_to = models.DateField(null=True, blank=True)
+    single_room_half = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Single Room price, Half board'),
+        blank=True, null=True,
+    )
+    single_room_full = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Single Room price, Full board'),
+        blank=True, null=True,
+    )
+    double_room_half = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Double Room price, Half board'),
+        blank=True, null=True,
+    )
+    double_room_full = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Double Room price, Full board'),
+        blank=True, null=True,
+    )
+    triple_room_half = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Triple Room price, Half board'),
+        blank=True, null=True,
+    )
+    triple_room_full = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Triple Room price, Full board'),
+        blank=True, null=True,
+    )
+    
+    @property
+    def get_price_per_person_half(self):
+        if self.double_room_half:
+            return self.double_room_half / 2
+        else:
+            return 'Error , price not available'
+
+    @property
+    def get_price_per_person_full(self):
+        if self.double_room_full:
+            return self.double_room_full / 2
+        else:
+            return 'Error , price not available'
 
     def __str__(self) -> str:
         return self.label + " -- " + self.accommodation_type.name
@@ -231,17 +277,23 @@ class Trip(models.Model):
         verbose_name=_('Until'),
         blank=True, null=True,
     )
-    bus_count = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+    rooms_total = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
                                                blank=True, null=True,)
+    rooms_booked = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+                                                  blank=True, null=True,)
+
+    bus_total = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+                                               blank=True, null=True,)
+    meeting_location = models.CharField(verbose_name=_('Trip starting location'),
+                                        max_length=256,
+                                        blank=True,)
     transport_price_person = models.DecimalField(
         max_digits=36,
         decimal_places=2,
         verbose_name=_('Transport price per person'),
         blank=True, null=True,
     )
-    location = models.CharField(verbose_name=_('Trip starting location'),
-                                max_length=256,
-                                blank=True,)
+
 
     single_room_price = models.DecimalField(
         max_digits=36,
@@ -267,7 +319,14 @@ class Trip(models.Model):
         if self.double_room_price:
             return self.double_room_price / 2
         else:
-            return    
+            return 'Error , price not available'
+
+    @property
+    def get_available_rooms(self):
+        if self.rooms_total and self.rooms_booked:
+            return(self.rooms_total - self.rooms_booked)
+        else:
+            return 'Error , price not available'
 
 
     def __str__(self):

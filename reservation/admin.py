@@ -56,7 +56,7 @@ class HotelPackageAdmin(admin.ModelAdmin):
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
     list_display = ('destination', 'accommodation', 'date_from', 'date_until',
-                    'bus_count',)
+                    'bus_total',)
     list_filter = ('date_from', 'accommodation')
     readonly_fields = ('get_price_per_person',)
     search_fields = ['accommodation__name']
