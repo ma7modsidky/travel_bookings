@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
+
+from django.http import Http404
 from .models import Destination , Hotel, Trip
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
+from datetime import datetime, timedelta, date
 # Create your views here.
 def home(request):
     return render(request, 'reservation/home.html', {})
@@ -43,10 +48,10 @@ class hotel_detail(LoginRequiredMixin, DetailView):
     template_name = 'reservation/hotel/hotel_detail.html'
 
 
-class trip_list(LoginRequiredMixin, ListView):
+class trip_list_by_destination(LoginRequiredMixin, ListView):
     model = Trip
     # template_name = 'reservation/hotel/hotel_list.html'
-    template_name = 'reservation/trip/trip_list.html'
+    template_name = 'reservation/trip/trip_list_by_destination.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -72,7 +77,28 @@ class trip_list(LoginRequiredMixin, ListView):
                 destination=destination)
         return context
 
+class trip_list(LoginRequiredMixin, ListView):
+    model = Trip
+    # template_name = 'reservation/hotel/hotel_list.html'
+    template_name = 'reservation/trip/trip_list.html'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['time'] = self.kwargs.get("time")
+        if self.kwargs.get("time") == 'upcoming':
+            context['object_list'] = Trip.objects.filter(
+                date_from__gte=date.today())
+        elif self.kwargs.get("time") == 'previous':
+            context['object_list'] = Trip.objects.filter(
+                date_until__lt=date.today())
+        elif self.kwargs.get("time") == 'ongoing':
+            context['object_list'] = Trip.objects.filter(
+                date_from__lte=date.today(), date_until__gte=date.today())
+        else:
+            context['object_list'] = Trip.objects.all()
+        return context
 class trip_list_by_hotel(LoginRequiredMixin, ListView):
     model = Trip
     # template_name = 'reservation/hotel/hotel_list.html'
@@ -104,4 +130,26 @@ class trip_list_by_hotel(LoginRequiredMixin, ListView):
         return context
 class trip_detail(LoginRequiredMixin, DetailView):
     model = Trip
-    template_name = 'reservation/hotel/hotel_detail.html'
+    template_name = 'reservation/trip/trip_detail.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['hotel'] = self.get_object().accommodation
+        
+        return context
+
+
+class trip_delete(DeleteView):
+    model = Trip
+    template_name = "reservation/confirm_delete.html"
+    success_url = reverse_lazy('reservation:trip_list')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(trip_delete, self).get_object()
+        if not obj.creation_user == self.request.user:
+            raise Http404
+        return obj
+    

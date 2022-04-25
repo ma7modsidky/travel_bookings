@@ -1,0 +1,250 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+
+    {% block title %} Destinations {% endblock %}
+
+
+{% load i18n %}
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href="{% url "reservation:trip_list" 'all' %}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    Trips
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{hotel.name | title}}
+                        Trip [{{object.date_from}}] [{{object.id}}]</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <div class="flex flex-wrap my-4 gap-2">
+        <a type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">New
+            reservations</a>
+        <a type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">Reservation list</a>
+        <a href="{% url 'reservation:trip_delete' object.id%}"
+            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+            cursor-pointer">Delete
+            trip</a>
+    </div>
+    <section class="hotel_detail flex flex-col md:flex-row h-auto w-[100%] my-4">
+        <div class="w-[100%] md:w-[48%] p-0 mb-2 md:mb-0 drop-shadow-md md:order-2 ">
+            <img src="{{hotel.image.url}}" alt="hotel image" class="w-[100%] object-contain">
+            <div class="font-sm text-gray-900 dark:text-white px-2.5 py-2.5 border border-gray-200 rounded-md my-2">Created at <span
+                    class="">{{object.creation_date}}</span> by
+                <span class=""> {{object.creation_user}} </span></div>
+        </div>
+
+        <div>
+
+        </div>
+        <div class="w-[100%] md:w-[48%] p-0 md:p-3 md:pt-0 md:order-1 ">
+            <h1 class="text-2xl mb-2  font-bold dark:text-gray-900">{{hotel.name | title}} Trip [{{object.date_from}}]
+                [{{object.id}}]
+            </h1>
+            <ul class="flex mb-4">
+                {% for star in '12345'|make_list %}
+                <li>
+                    <svg aria-hidden="true" focusable="false" {% if  star <= hotel.level %} data-prefix="fas" {% else %}
+                        data-prefix="far" {% endif %} data-icon="star" class="w-4 text-yellow-500 mr-1" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path fill="currentColor"
+                            d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
+                        </path>
+                    </svg>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4 border border-gray-200">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Trip ID
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.id}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                destination
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.destination}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                accommodation
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.accommodation.name}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                from
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.date_from}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                to
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.date_until}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Status
+                            </th>
+                            <td class="px-3 py-2">
+                                
+                                {% if object.get_status == 'previous' %}
+                                    <span
+                                        class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Previous</span>
+                                {% elif object.get_status == 'ongoing' %}
+                                <span
+                                    class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Ongoing</span>
+                                {% else %}
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                    dark:bg-blue-200 dark:text-blue-800">{{object.get_status}}</span>
+                                {% endif %}
+                                    
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-gray-200">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                total rooms
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.rooms_total}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                rooms booked
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.rooms_booked}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                total buses
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.bus_total}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                transport price / person
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.transport_price_person}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Single Room
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.single_room_price}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Double Room
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.double_room_price}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Triple Room
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.triple_room_price}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</div>
+
+
+</section>
+</div>
+
+
+
+
+</div>
+{% endblock %}

@@ -44,21 +44,21 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a href="#"
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Hotels</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{time | title}} Trips [{{object_list.count}}]</a>
                 </div>
             </li>
         </ol>
     </nav>
     <div class="flex flex-wrap my-4 gap-2">
-        <div
+        {% comment %} <div
             class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <a href="{% url "reservation:hotel_list" destination.slug %}" class="inline-flex items-center">Hotels
-            [<span class="font-bold">{{object_list.count}}</span>]
+            [<span class="font-bold">{{destination.hotels.count}}</span>]
             </a>
             
-        </div>
+        </div> {% endcomment %}
         <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
@@ -84,12 +84,69 @@
                 Trips</a>
         </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Hotel
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        From
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        To 
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Double Room
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Triple Room
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in object_list.all %}
+                    <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <td class="px-6 py-4">
+                        {{trip.id}}
+                    </td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {{trip.accommodation.name}}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{trip.date_from |date:"d / m / Y"}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{trip.date_until |date:"d / m / Y"}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{trip.double_room_price}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{trip.triple_room_price}}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</a>
+                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Book</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-        {% for hotel in object_list.all %}
+        <!-- {% for hotel in object_list.all %}
         <div
             class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <a href={{hotel.get_absolute_url}}>
+            <a href="#">
                 <div class="w-[100%]">
                     <img class="rounded-t-lg h-[10rem] object-cover w-[100%]"
                         src="{% if hotel.image %}{{hotel.image.url}}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
@@ -97,24 +154,15 @@
                 </div>
                 
             </a>
-            <div class="p-3">
-                <a href={{hotel.get_absolute_url}}>
-                    <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white h-[3.5rem] overflow-clip">
+            <div class="p-5">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {{hotel.name|title}}
                     </h5>
                 </a>
                 <ul class="flex mb-4">
-                    {% for star in '12345'|make_list %}
                     <li>
-                        <svg aria-hidden="true" focusable="false" 
-                        
-                        {% if  star <= hotel.level %}
-                            data-prefix="fas" 
-                            {% else %}
-                            data-prefix="far" 
-                        {% endif %}
-
-                            data-icon="star"
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
                             class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 576 512">
                             <path fill="currentColor"
@@ -122,14 +170,47 @@
                             </path>
                         </svg>
                     </li>
-                {% endfor %}
+                    <li>
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
+                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
+                            </path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
+                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
+                            </path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star"
+                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z">
+                            </path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star"
+                            class="w-4 text-yellow-500" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z">
+                            </path>
+                        </svg>
+                    </li>
                 </ul>
                 {% comment %} <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{hotel.level}}</p> {% endcomment %}
-                <a href={{hotel.get_absolute_url}}
-                    class="inline-flex items-center justify-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700
-                    rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600
-                    dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-[100%] md:w-[48%] mb-1 md:mb-0">
-                    <span class="">Details</span>
+                <a href="#"
+                    class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Read more
                     <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -137,16 +218,10 @@
                             clip-rule="evenodd"></path>
                     </svg>
                 </a>
-                <a href={{hotel.get_absolute_url}}
-                    class="inline-flex items-center justify-center py-2 px-3 text-sm font-medium text-center text-white bg-red-700
-                    rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600
-                    dark:hover:bg-red-700 dark:focus:ring-red-800 w-[100%] md:w-[48%]">
-                    Book
-                    <img src="{% static '/icons/booking.png' %}" alt="" class="ml-2 -mr-1 w-4 h-4">
-                </a>
             </div>
         </div>
-        {% endfor %}
-    </div>
+        {% endfor %} -->
+
+    
 </div>
 {% endblock %}

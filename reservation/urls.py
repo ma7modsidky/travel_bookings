@@ -17,12 +17,16 @@ urlpatterns = [
          name='hotel_detail'),
 
      # Trips URLS
-    path('destinations/<slug:slug>/trips/<str:time>', views.trip_list.as_view(),
-         name='trip_list'),
+    path('destinations/<slug:slug>/trips/<str:time>', views.trip_list_by_destination.as_view(),
+         name='trip_list_by_destination'),
     path('hotels/<slug:slug>/trips/<str:time>', views.trip_list_by_hotel.as_view(),
          name='trip_list_by_hotel'),
-    path('trips/<int:id>', views.trip_detail.as_view(),
+    path('trips/<int:pk>', views.trip_detail.as_view(),
          name='trip_detail'),
+    path('trips/<int:pk>/delete/', views.trip_delete.as_view(),
+         name='trip_delete'),
+    path('trips/<str:time>', views.trip_list.as_view(),
+         name='trip_list'),
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),
 ]

@@ -51,25 +51,25 @@
         <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" object.slug 'ongoing' %}" class="inline-flex items-center">Ongoing
+            <a href="{% url "reservation:trip_list_by_destination" object.slug 'ongoing' %}" class="inline-flex items-center">Ongoing
                 Trips</a>
         </div>
         <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" object.slug 'upcoming' %}" class="inline-flex items-center">Upcoming
+            <a href="{% url "reservation:trip_list_by_destination" object.slug 'upcoming' %}" class="inline-flex items-center">Upcoming
                 Trips</a>
         </div>
         <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" object.slug 'previous' %}" class="inline-flex items-center">Previous
+            <a href="{% url "reservation:trip_list_by_destination" object.slug 'previous' %}" class="inline-flex items-center">Previous
                 Trips</a>
         </div>
         <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" object.slug 'all' %}" class="inline-flex items-center">All
+            <a href="{% url "reservation:trip_list_by_destination" object.slug 'all' %}" class="inline-flex items-center">All
                 Trips</a>
         </div>
     </div>

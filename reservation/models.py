@@ -5,6 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from datetime import datetime, timedelta ,date
 # Create your models here.
 
 
@@ -277,12 +279,12 @@ class Trip(models.Model):
         verbose_name=_('Until'),
         blank=True, null=True,
     )
-    rooms_total = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+    rooms_total = models.PositiveBigIntegerField(verbose_name=_('rooms total'),
                                                blank=True, null=True,)
-    rooms_booked = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+    rooms_booked = models.PositiveBigIntegerField(verbose_name=_('rooms_booked'),
                                                   blank=True, null=True,)
 
-    bus_total = models.PositiveBigIntegerField(verbose_name=_('Number of buses'),
+    bus_total = models.PositiveBigIntegerField(verbose_name=_('bus_total'),
                                                blank=True, null=True,)
     meeting_location = models.CharField(verbose_name=_('Trip starting location'),
                                         max_length=256,
@@ -327,6 +329,15 @@ class Trip(models.Model):
             return(self.rooms_total - self.rooms_booked)
         else:
             return 'Error , price not available'
+
+    @property
+    def get_status(self):
+        if self.date_from > date.today():
+            return 'upcoming'
+        if self.date_until < date.today():
+            return 'previous'
+        if self.date_from <= date.today() and self.date_until >= date.today():
+            return 'ongoin'
 
 
     def __str__(self):
