@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_filters',
     'phonenumber_field',
+    'rosetta',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -115,12 +117,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ar'
 
+DEFAULT_LANGUAGE = 'ar'
 LANGUAGES = (
-    ('en', _('English')),
     ('ar', _('Arabic')),
+    # ('en', _('English')),
 )
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale/'),
@@ -129,6 +131,7 @@ LOCALE_PATHS = (
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+USE_L10N = True
 
 USE_TZ = True
 
@@ -161,6 +164,9 @@ LOGOUT_URL = 'account:logout'
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username]),
     'reservation.hotel': lambda u: reverse_lazy('reservation:hotel_detail', args=[u.slug]),
+    'reservation.trip': lambda u: reverse_lazy('reservation:trip_detail', args=[u.id]),
+    'reservation.tripbooking': lambda u: reverse_lazy('reservation:trip_booking_deatil', args=[u.id]),
+
 }
 
 CKEDITOR_CONFIGS = {

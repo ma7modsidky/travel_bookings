@@ -27,6 +27,16 @@ urlpatterns = [
          name='trip_delete'),
     path('trips/<str:time>', views.trip_list.as_view(),
          name='trip_list'),
+     # Bookings
+     path('trips/<int:trip_id>/bookings/', views.trip_booking_list.as_view(),
+          name='trip_booking_list'),
+     path('trips/booking/new', views.trip_booking_create.as_view(),
+          name='trip_booking_create'),
+     path('trips/<int:trip_id>/booking/new', views.trip_booking_create.as_view(),
+         name='trip_booking_create'),
+     path('bookings/<int:pk>', views.trip_booking_detail.as_view(),
+          name='trip_booking_detail'),
+     
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),
 ]

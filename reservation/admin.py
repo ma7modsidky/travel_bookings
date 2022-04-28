@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination,Hotel, Booking, AccommodationType, HotelPackage, Trip
+from .models import Destination, Hotel, Booking, AccommodationType, HotelPackage, Trip, TripBooking, TripProgram, TripBookingProgram
 # Register your models here.
 
 
@@ -42,7 +42,17 @@ class BookingAdmin(admin.ModelAdmin):
         model = Booking
         
 
+@admin.register(TripBooking)
+class TripBookingAdmin(admin.ModelAdmin):
+    list_display = ('id','__str__')
+    # list_filter = ('date_from', 'accommodation', 'transport')
+    extra_fields = ['']
+    readonly_fields = ('get_total_seats', 'get_person_count',
+                       'get_primary_price', 'get_primary_price_after_discount', 'get_extra_seats_price', 'get_total_price', 'get_remained_price', 'get_programs_price')
+    # search_fields = ['phone']
 
+    class Meta:
+        model = TripBooking
 
 
 @admin.register(HotelPackage)
@@ -55,7 +65,7 @@ class HotelPackageAdmin(admin.ModelAdmin):
 
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
-    list_display = ('destination', 'accommodation', 'date_from', 'date_until',
+    list_display = ('id','destination', 'accommodation', 'date_from', 'date_until',
                     'bus_total',)
     list_filter = ('date_from', 'accommodation')
     readonly_fields = ('get_price_per_person',)
@@ -63,3 +73,16 @@ class TripAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Booking
+
+
+@admin.register(TripProgram)
+class TripProgramAdmin(admin.ModelAdmin):
+    class Meta :
+        model = TripProgram
+
+
+@admin.register(TripBookingProgram)
+class TripProgramAdmin(admin.ModelAdmin):
+    class Meta:
+        model = TripBookingProgram
+

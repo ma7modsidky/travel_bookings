@@ -1,10 +1,11 @@
 {% extends "reservation/base.html" %}
+{% load i18n %}
 {% load static %}
-{% block title %} Destinations {% endblock %}
+{% block title %}{{object.name | title}} {% endblock %}
 {% block head %}
 
 {% endblock %}
-{% load i18n %}
+
 {% block content %}
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4">
     <!-- breadcrumb -->
@@ -14,13 +15,17 @@
             <li class="inline-flex items-center">
                 <a href="{% url "reservation:destination_list" %}"
                     class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                    <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                         </path>
                     </svg>
-                    Destinations
+                    {% trans "Destinations" %}
                 </a>
             </li>
             <li>
@@ -55,7 +60,7 @@
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
-            <a href="" class="inline-flex items-center">Hotel Details
+            <a href="" class="inline-flex items-center">{% trans "Hotel Details" %}
             </a>
             
         </div>
@@ -63,7 +68,7 @@
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
-            <a href="" class="inline-flex items-center">Packages
+            <a href="" class="inline-flex items-center">{% trans "Packages" %}
             </a>
 
         </div>
@@ -71,31 +76,27 @@
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'ongoing' %}" class="inline-flex items-center">Ongoing
-                Trips</a>
+            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'ongoing' %}" class="inline-flex items-center">{% trans "Ongoing Trips" %}</a>
         </div>
         <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url "reservation:trip_list_by_hotel" object.slug 'upcoming' %}"
-                class="inline-flex items-center">Upcoming
-                Trips</a>
+                class="inline-flex items-center">{% trans "Upcoming Trips" %}</a>
         </div>
         <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url "reservation:trip_list_by_hotel" object.slug 'previous' %}"
-                class="inline-flex items-center">Previous
-                Trips</a>
+                class="inline-flex items-center">{% trans "Previous Trips" %}</a>
         </div>
         <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'all' %}" class="inline-flex items-center">All
-                Trips</a>
+            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'all' %}" class="inline-flex items-center">{% trans "All Trips" %}</a>
         </div>
     </div>
     
@@ -127,39 +128,39 @@
                 {% endfor %}
                 
             </ul>
-            <p class="dark:text-gray-200">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta incidunt impedit, quas et possimus libero rerum labore sequi, laborum perspiciatis nisi aliquid enim consequatur cum numquam at ab, ipsam suscipit.</p>
+            <p class="dark:text-gray-200">{{object.intro | safe}}</p>
         </div>
         
         
     </section>
 </div>
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
-    <h1 class="text-2xl text-gray-900 font-bold">{{hotel.name | title}} Packages {{hotel.packages.count}}</h1> 
+    <h1 class="text-2xl text-gray-900 font-bold">{{hotel.name | title}} {% trans "Packages" %} [{{hotel.packages.count}}]</h1> 
     {% if hotel.packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            ID
+                            {% trans "Id" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Label
+                            {% trans "Label" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            From
+                            {% trans "From" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            To
+                            {% trans "To" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Single Room
+                            {% trans "Single Room" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Double Room
+                            {% trans "Double Room" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Triple Room
+                            {% trans "Triple Room" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <span class="sr-only"></span>
@@ -170,30 +171,30 @@
                     {% for package in hotel.packages.all %}
                     <tr
                         class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2">
                             {{package.id}}
                         </td>
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{package.label}}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2 whitespace-nowrap">
                             {{package.date_from |date:"d / m / Y"}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2 whitespace-nowrap">
                             {{package.date_to |date:"d / m / Y"}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2 ">
                             {{package.single_room_full}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2">
                             {{package.double_room_full}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-3 py-2">
                             {{package.triple_room_full}}
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-flex m-2">Details</a>
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline m-2">Book</a>
+                        <td class="px-3 py-2 text-right">
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-flex m-2">{% trans "Details" %}</a>
+                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline m-2">{% trans "Book" %}</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -202,7 +203,7 @@
         </div>
 
     {% else %}
-        <p class=" dark:text-gray-200 my-2">No packages or prices available ...</p>
+        <p class=" dark:text-gray-200 my-2">{% trans 'No packages or prices available ...' %}</p>
     {% endif %}
 
 </div>

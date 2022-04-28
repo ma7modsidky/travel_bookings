@@ -1,10 +1,10 @@
 {% extends "reservation/base.html" %}
 {% load static %}
-
-    {% block title %} Destinations {% endblock %}
-
-
 {% load i18n %}
+    {% block title %} {{object}} {% endblock %}
+
+
+
 {% block content %}
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4">
     <!-- breadcrumb -->
@@ -14,13 +14,17 @@
             <li class="inline-flex items-center">
                 <a href="{% url "reservation:trip_list" 'all' %}"
                     class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                    <svg class="mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
                         </path>
                     </svg>
-                    Trips
+                    {% trans "Trips" %}
                 </a>
             </li>
             <li>
@@ -33,38 +37,41 @@
                     </svg>
                     <a href="#"
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{hotel.name | title}}
-                        Trip [{{object.date_from}}] [{{object.id}}]</a>
+                        {% trans "Trip" %} [{{object.date_from}}] [{{object.id}}]</a>
                 </div>
             </li>
         </ol>
     </nav>
     <div class="flex flex-wrap my-4 gap-2">
-        <a type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">New
-            reservations</a>
-        <a type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+        <a href="{% url 'reservation:trip_booking_create' trip.id %}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans "New Reservation" %}
+            </a>
+        <a href="{% url 'reservation:trip_booking_list' trip.id %}" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-gray-700 cursor-pointer">Reservation list</a>
+            dark:hover:bg-gray-700 cursor-pointer">{% trans "Reservations list" %}</a>
         <a href="{% url 'reservation:trip_delete' object.id%}"
             class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
             rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
-            cursor-pointer">Delete
-            trip</a>
+            cursor-pointer">
+            {% trans "Delete trip" %}</a>
+            </a>
     </div>
     <section class="hotel_detail flex flex-col md:flex-row h-auto w-[100%] my-4">
         <div class="w-[100%] md:w-[48%] p-0 mb-2 md:mb-0 drop-shadow-md md:order-2 ">
             <img src="{{hotel.image.url}}" alt="hotel image" class="w-[100%] object-contain">
-            <div class="font-sm text-gray-900 dark:text-white px-2.5 py-2.5 border border-gray-200 rounded-md my-2">Created at <span
-                    class="">{{object.creation_date}}</span> by
-                <span class=""> {{object.creation_user}} </span></div>
+            <div class="font-sm text-gray-900 dark:text-white px-2.5 py-2.5 border border-gray-200 rounded-md my-2">
+            {% trans "Created at"%} <span
+                    class="font-bold">[{{object.creation_date | date:"d / m / Y"}}]</span>{% trans "by"%} 
+                <span class="font-bold"> [{{object.creation_user}}] </span></div>
         </div>
 
         <div>
 
         </div>
         <div class="w-[100%] md:w-[48%] p-0 md:p-3 md:pt-0 md:order-1 ">
-            <h1 class="text-2xl mb-2  font-bold dark:text-gray-900">{{hotel.name | title}} Trip [{{object.date_from}}]
+            <h1 class="text-2xl mb-2  font-bold dark:text-gray-900">{{hotel.name | title}} {% trans "Trip"%} [{{object.date_from}}]
                 [{{object.id}}]
             </h1>
             <ul class="flex mb-4">
@@ -82,15 +89,19 @@
             </ul>
             
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4 border border-gray-200">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %}  text-gray-500 dark:text-gray-400">
                     <tbody>
                         <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                Trip ID
+                                {% trans 'Trip Id' %} 
                             </th>
-                            <td class="px-3 py-2">
+                            <td class="px-3 py-2 font-bold">
                                 {{object.id}}
                             </td>
                         </tr>
@@ -98,7 +109,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                destination
+                                 {% trans 'destination' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.destination}}
@@ -108,7 +119,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                accommodation
+                                {% trans 'accommodation' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.accommodation.name}}
@@ -118,7 +129,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                from
+                                {% trans 'from' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.date_from}}
@@ -128,7 +139,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                to
+                                {% trans 'to' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.date_until}}
@@ -138,16 +149,16 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                Status
+                                {% trans 'Status' %}
                             </th>
                             <td class="px-3 py-2">
                                 
                                 {% if object.get_status == 'previous' %}
                                     <span
-                                        class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Previous</span>
+                                        class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{% trans 'Previous' %}</span>
                                 {% elif object.get_status == 'ongoing' %}
                                 <span
-                                    class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Ongoing</span>
+                                    class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{% trans 'Ongoing' %}</span>
                                 {% else %}
                                 <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
                                     dark:bg-blue-200 dark:text-blue-800">{{object.get_status}}</span>
@@ -160,13 +171,17 @@
                 </table>
             </div>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400 border border-gray-200">
                     <tbody>
                         <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                total rooms
+                                {% trans 'Total rooms' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.rooms_total}}
@@ -176,7 +191,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                rooms booked
+                                {% trans 'Rooms booked' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.rooms_booked}}
@@ -186,7 +201,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                total buses
+                                {% trans 'Total buses' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.bus_total}}
@@ -196,7 +211,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                transport price / person
+                               {% trans 'transport price / person' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.transport_price_person}}
@@ -206,7 +221,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                Single Room
+                                {% trans 'Single Room / Person' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.single_room_price}}
@@ -216,7 +231,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                Double Room
+                                {% trans 'Double Room / Person' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.double_room_price}}
@@ -226,7 +241,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                Triple Room
+                                {% trans 'Triple Room / Person' %}
                             </th>
                             <td class="px-3 py-2">
                                 {{object.triple_room_price}}

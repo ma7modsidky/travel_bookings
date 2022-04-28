@@ -1,5 +1,7 @@
-{% extends "reservation/base.html" %} {% block title %}{{ user.username
-}} profile{% endblock %} {% block content %}
+{% extends "reservation/base.html" %}
+{% load i18n %}
+{% block title %}{{ user.username}}{% trans 'profile' %}{% endblock %} 
+{% block content %}
 <div class="relative">
   <div class="md:flex no-wrap md:-mx-2">
     <!-- Left Side -->
@@ -25,28 +27,50 @@
         </h3>
         {% endif %}
 
-        <p class="text-sm text-gray-200 hover:text-gray-600 leading-6">
+        <p class="text-sm text-gray-600 hover:text-gray-900 leading-6">
           {{user.profile.role | title}}
         </p>
         <ul
           class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm"
         >
           <li class="flex items-center py-3">
-            <span>Status</span>
-            <span class="ml-auto"
+            <span>{% trans 'Status' %} </span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %} "
               ><span class="bg-green-500 py-1 px-2 rounded text-white text-sm"
                 >Active</span
               ></span
             >
           </li>
           <li class="flex items-center py-3">
-            <span>Balance</span>
-            <span class="ml-auto text-sm">{{user.profile.balance}}</span>
+            <span>{% trans 'Balance' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm">{{user.profile.balance}}</span>
           </li>
           <li class="flex items-center py-3 text-sm">
-            <span>Member since</span>
-            <span class="ml-auto text-sm"
+            <span>{% trans 'Member since' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm"
               >{{user.date_joined |date:"d / m / Y"}}</span
+            >
+          </li>
+          <li class="flex items-center py-3 text-sm">
+            <span>{% trans 'Reservations made' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm"
+              >{{user.created_trip_bookings.count}}</span
             >
           </li>
         </ul>
@@ -294,29 +318,29 @@
               />
             </svg>
           </span>
-          <span class="tracking-wide">About</span>
+          <span class="tracking-wide">{% trans 'About' %}</span>
         </div>
         <div class="text-gray-700">
           <div class="grid md:grid-cols-1 text-sm">
             <div class="grid grid-cols-2">
-              <div class="px-4 py-2 font-semibold">First Name</div>
-              <div class="px-4 py-2">{{user.first_name}}</div>
+              <div class="px-4 py-2 font-semibold">{% trans 'Name' %}</div>
+              <div class="px-4 py-2">{{user.first_name}} {{user.last_name}}</div>
             </div>
-            <div class="grid grid-cols-2">
+            {% comment %} <div class="grid grid-cols-2">
               <div class="px-4 py-2 font-semibold">Last Name</div>
               <div class="px-4 py-2">{{user.last_name}}</div>
-            </div>
+            </div> {% endcomment %}
 
             <div class="grid grid-cols-2">
-              <div class="px-4 py-2 font-semibold">Contact No.</div>
+              <div class="px-4 py-2 font-semibold">{% trans 'Phone' %}</div>
               <div class="px-4 py-2">{{user.profile.phone_number}}</div>
             </div>
             <div class="grid grid-cols-2">
-              <div class="px-4 py-2 font-semibold">Current Address</div>
+              <div class="px-4 py-2 font-semibold">{% trans 'Current Address' %}</div>
               <div class="px-4 py-2">{{user.profile.address}}</div>
             </div>
             <div class="grid grid-cols-2">
-              <div class="px-4 py-2 font-semibold">Email.</div>
+              <div class="px-4 py-2 font-semibold">{% trans 'Email' %}</div>
               <div class="px-4 py-2">
                 <a class="text-blue-800" href="mailto:jane@example.com"
                   >{{user.email}}</a
@@ -339,7 +363,7 @@
       <div class="my-4"></div>
 
       <!-- Experience and education -->
-      <div class="bg-white bg-gray-100 p-3 shadow-sm rounded-sm">
+      {% comment %} <div class="bg-white bg-gray-100 p-3 shadow-sm rounded-sm">
         <div class="grid grid-cols-1">
           <div>
             <div
@@ -390,7 +414,7 @@
           
         </div>
         <!-- End of Activity grid -->
-      </div>
+      </div> {% endcomment %}
       <!-- End of profile tab -->
     </div>
   </div>

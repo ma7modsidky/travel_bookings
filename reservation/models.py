@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -21,7 +22,7 @@ class Destination(models.Model):
     image = models.ImageField(upload_to='images/destination', blank=True)
     # def get_absolute_url(self):
     #     return reverse('app:developer_detail', kwargs={'slug': self.slug})
-
+    
     def __str__(self) -> str:
         return self.name
 
@@ -33,22 +34,24 @@ class AccommodationType(models.Model):
         return self.name
 
 
+class FeaturedManager(models.Manager):
+    def get_queryset(self):
+        return super(FeaturedManager,self).get_queryset().filter(featured=True)
+
 class Hotel(models.Model):
     name = models.CharField(max_length=25, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
     destination = models.ForeignKey(
         Destination, related_name='hotels', on_delete=models.DO_NOTHING)
     intro = RichTextField()
-    level = models.PositiveBigIntegerField(validators=[
+    level = models.PositiveIntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5)])
     image = models.ImageField(upload_to='images/hotels', blank=True)
-    available = models.BooleanField(default=False)
-    # price_per_night = models.DecimalField(
-    #     max_digits=10, decimal_places=0, default=500000)
-
-    # def get_absolute_url(self):
-    #     return reverse('app:developer_detail', kwargs={'slug': self.slug})
+    available = models.BooleanField(default=True)
+    featured = models.BooleanField(default=False)
+    objects = models.Manager()
+    featuredHotels = FeaturedManager()
 
     def get_packages(self):
         return self.packages
@@ -136,7 +139,7 @@ class Booking(models.Model):
     )
     notes = models.TextField(
         max_length=1024,
-        verbose_name=('Notes'),
+        verbose_name=_('Notes'),
         blank=True,
     )
     # Booking info , attrs
@@ -291,7 +294,7 @@ class Trip(models.Model):
                                         blank=True,)
     transport_price_person = models.DecimalField(
         max_digits=36,
-        decimal_places=2,
+        decimal_places=0,
         verbose_name=_('Transport price per person'),
         blank=True, null=True,
     )
@@ -299,20 +302,20 @@ class Trip(models.Model):
 
     single_room_price = models.DecimalField(
         max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Single Room price'),
+        decimal_places=0,
+        verbose_name=_('Single Room price / Person'),
         blank=True, null=True,
     )
     double_room_price = models.DecimalField(
         max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Double Room price'),
+        decimal_places=0,
+        verbose_name=_('Double Room price / Person'),
         blank=True, null=True,
     )
     triple_room_price = models.DecimalField(
         max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Triple Room price'),
+        decimal_places=0,
+        verbose_name=_('Triple Room price/ Person'),
         blank=True, null=True,
     )
 
@@ -341,5 +344,174 @@ class Trip(models.Model):
 
 
     def __str__(self):
-        return '#{} ({})'.format(self.accommodation.name,
+        return '#[{}] {} ({})'.format(self.id,self.accommodation.name,
                                  self.date_from)
+
+class TripBooking(models.Model):
+    trip = models.ForeignKey(Trip, related_name='bookings',on_delete=models.CASCADE,verbose_name=_('Trip'))
+    creation_date = models.DateTimeField(
+        verbose_name=_('Creation date'),
+        auto_now_add=True,
+    )
+    creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                      related_name='created_trip_bookings',
+                                      on_delete=models.SET(get_sentinel_user),
+                                      )
+    single_room_count = models.PositiveIntegerField(
+        verbose_name=_('Single Rooms'),
+        default=0,
+    )
+    double_room_count = models.PositiveIntegerField(
+        verbose_name=_('Double Rooms'),
+        default=0,
+    )
+    triple_room_count = models.PositiveIntegerField(
+        verbose_name=_('Triple Rooms'),
+        default=0,
+    )
+    single_room_persons = models.PositiveIntegerField(
+        verbose_name=_('Persons in Single Rooms'),
+        default=0,
+    )
+    double_room_persons = models.PositiveIntegerField(
+        verbose_name=_('Persons in Double Rooms'),
+        default=0,
+    )
+    triple_room_persons = models.PositiveIntegerField(
+        verbose_name=_('Persons in Triple Rooms'),
+        default=0,
+    )
+    adults = models.PositiveIntegerField(
+        verbose_name=_('Adults'),
+        default=0,
+    )
+    children = models.PositiveIntegerField(
+        verbose_name=_('Children'),
+        default=0,
+    )
+    extra_seats = models.PositiveIntegerField(
+        verbose_name=_('Extra Seats'),
+        default=0,
+    )
+
+    transport_price_person = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Transport price per person'),
+        default=400,
+    )
+
+    discount_percentage = models.PositiveIntegerField(validators=[
+        MinValueValidator(0),
+        MaxValueValidator(10)],
+        default=0
+        )
+
+    discount_amount = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('discount amount'),
+        default=0
+    )
+    discount_cause = models.TextField(
+        null=True,blank=True
+    )
+
+    paid_amount = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Paid amount'),
+        default=0
+    )
+    # Personal info about client
+    name = models.CharField(verbose_name=_('Name'),
+                            max_length=20,
+                           )
+    email = models.EmailField(
+        verbose_name=_('Email'),
+        blank=True,
+    )
+    phone = models.CharField(
+        verbose_name=_('Phone number'),
+        max_length=256,
+    )
+    phone2 = models.CharField(
+        verbose_name=_('Additional Phone number'),
+        max_length=256,
+        blank=True,
+    )
+    notes = models.TextField(
+        max_length=1024,
+        verbose_name=_('Notes'),
+        blank=True,
+    )
+
+    def __str__(self) -> str:
+        return f'[{self.get_rooms_count} Rooms] [{self.name}] [{self.phone}]'
+
+
+    @property
+    def get_rooms_count(self):
+        return int(self.single_room_count)+int(self.double_room_count)+int(self.triple_room_count)
+
+    @property
+    def get_person_count(self):
+        return(int(self.adults+self.children))
+
+    @property
+    def get_total_seats(self):
+        return int(self.adults) + int(self.children) + int(self.extra_seats)
+        
+    @property
+    def get_extra_seats_price(self):
+        return self.extra_seats*self.transport_price_person
+
+    @property
+    def get_primary_price(self):
+        return Decimal(self.single_room_persons*self.trip.single_room_price+self.double_room_persons*self.trip.double_room_price+self.triple_room_persons*self.trip.triple_room_price)
+
+    @property
+    def get_discount(self):
+        if self.discount_percentage > 0:
+            return (self.discount_percentage / Decimal(100)) * self.get_primary_price
+        return Decimal(0)
+
+    @property
+    def get_primary_price_after_discount(self):
+        return int(self.get_primary_price - self.get_discount)
+
+    @property
+    def get_programs_price(self):
+        return int(sum(x.get_price for x in self.programs.all()))
+
+    @property
+    def get_total_price(self):
+        return(self.get_primary_price_after_discount+self.get_extra_seats_price+self.get_programs_price-self.discount_amount)
+
+    @property
+    def get_remained_price(self):
+        return(self.get_total_price - self.paid_amount)
+
+    @property
+    def get_status(self):
+        return('Active')
+
+    
+class TripProgram(models.Model):
+    destination = models.ForeignKey(Destination,related_name='trip_programs',on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    price = models.PositiveIntegerField()
+
+    def __str__(self) -> str:
+        return f'{self.name} [{self.price}] {self.destination.name}'
+class TripBookingProgram(models.Model):
+    booking = models.ForeignKey(TripBooking, related_name='programs',on_delete=models.CASCADE)
+    program = models.ForeignKey(TripProgram, related_name='bookings', on_delete=models.SET('Deleted program'))
+    quantity = models.PositiveIntegerField()
+
+    @property
+    def get_price(self):
+        return int(self.quantity*self.program.price)
+
+    def __str__(self) -> str:
+        return f'[{self.booking.id}] [{self.program.name} X {self.quantity}] [{self.get_price}EGP]'
