@@ -21,6 +21,8 @@ urlpatterns = [
          name='trip_list_by_destination'),
     path('hotels/<slug:slug>/trips/<str:time>', views.trip_list_by_hotel.as_view(),
          name='trip_list_by_hotel'),
+    path('trips/new', views.trip_create.as_view(),
+         name='trip_create'),
     path('trips/<int:pk>', views.trip_detail.as_view(),
          name='trip_detail'),
     path('trips/<int:pk>/delete/', views.trip_delete.as_view(),

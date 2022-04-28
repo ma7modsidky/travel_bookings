@@ -3,7 +3,7 @@
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {% load i18n %}
-{% block title %} Booking Details {% endblock %}
+{% block title %} {% trans 'Reservation Details' %}  {% endblock %}
 {% block content %}
 <div class="bg-white dark:bg-gray-600 rounded-md p-4">
     <!-- breadcrumb -->
@@ -83,7 +83,7 @@
     
     <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
         <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-            <h2 class="my-2 font-bold text-xl dark:text-white">Reservation Details</h2>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Reservation Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200 ">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
@@ -174,7 +174,7 @@
             </div>
         </div>
         <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-            <h2 class="my-2 font-bold text-xl dark:text-white">Personl Details</h2>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Personl Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
@@ -255,7 +255,7 @@
         </div>
         
         <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-            <h2 class="my-2 font-bold text-xl dark:text-white">Price Details</h2>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Price Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <tbody>
@@ -397,7 +397,7 @@
             </div>
         </div>
         <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-            <h2 class="my-2 font-bold text-xl dark:text-white">Payment Details</h2>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Payment Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200 p-2 dark:bg-gray-400 dark:text-white">
                 {{payForm | crispy}}
             </div>

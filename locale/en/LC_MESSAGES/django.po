@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-28 12:16+0200\n"
+"POT-Creation-Date: 2022-04-28 22:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\account\models.py:23 .\account\templates\account\user\detail.html:50
+#: .\account\models.py:12 .\reservation\models.py:128
+msgid "name"
+msgstr ""
+
+#: .\account\models.py:19
+msgid "role"
+msgstr ""
+
+#: .\account\models.py:21
+msgid "address"
+msgstr ""
+
+#: .\account\models.py:22
+msgid "phone"
+msgstr ""
+
+#: .\account\models.py:24
+msgid "phone2"
+msgstr ""
+
+#: .\account\models.py:28 .\account\templates\account\user\detail.html:50
 msgid "Balance"
 msgstr ""
 
-#: .\account\models.py:28
+#: .\account\models.py:33
 msgid "Total bookings made by user"
 msgstr ""
 
@@ -31,6 +51,7 @@ msgid "profile"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:38
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:100
 #: .\reservation\templates\reservation\trip\trip_detail.html:152
 msgid "Status"
 msgstr ""
@@ -43,23 +64,53 @@ msgstr ""
 msgid "Reservations made"
 msgstr ""
 
-#: .\account\templates\account\user\detail.html:323
+#: .\account\templates\account\user\detail.html:92
+msgid "Create trip"
+msgstr ""
+
+#: .\account\templates\account\user\detail.html:101
+#: .\reservation\templates\reservation\destination\destination_detail.html:79
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:99
+#: .\reservation\templates\reservation\trip\trip_list.html:48
+#: .\reservation\templates\reservation\trip\trip_list.html:81
+#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:60
+#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:107
+#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:72
+#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:134
+msgid "All Trips"
+msgstr ""
+
+#: .\account\templates\account\user\detail.html:110
+msgid "Create package"
+msgstr ""
+
+#: .\account\templates\account\user\detail.html:119
+msgid "Create user"
+msgstr ""
+
+#: .\account\templates\account\user\detail.html:129
+msgid "Users list"
+msgstr ""
+
+#: .\account\templates\account\user\detail.html:223
 msgid "About"
 msgstr ""
 
-#: .\account\templates\account\user\detail.html:328 .\reservation\models.py:427
+#: .\account\templates\account\user\detail.html:228 .\reservation\models.py:427
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:88
 msgid "Name"
 msgstr ""
 
-#: .\account\templates\account\user\detail.html:338 .\reservation\models.py:136
+#: .\account\templates\account\user\detail.html:238 .\reservation\models.py:136
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:97
 msgid "Phone"
 msgstr ""
 
-#: .\account\templates\account\user\detail.html:342
+#: .\account\templates\account\user\detail.html:242
 msgid "Current Address"
 msgstr ""
 
-#: .\account\templates\account\user\detail.html:346 .\reservation\models.py:132
+#: .\account\templates\account\user\detail.html:246 .\reservation\models.py:132
 #: .\reservation\models.py:431
 msgid "Email"
 msgstr ""
@@ -132,10 +183,6 @@ msgstr ""
 
 #: .\reservation\models.py:104
 msgid "Triple Room price, Full board"
-msgstr ""
-
-#: .\reservation\models.py:128
-msgid "name"
 msgstr ""
 
 #: .\reservation\models.py:142 .\reservation\models.py:445
@@ -212,6 +259,7 @@ msgid "Message"
 msgstr ""
 
 #: .\reservation\models.py:248
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:144
 #: .\reservation\templates\reservation\destination\destination_detail.html:124
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:196
 #: .\reservation\templates\reservation\hotel\hotel_list.html:142
@@ -223,6 +271,16 @@ msgstr ""
 
 #: .\reservation\models.py:254
 msgid "Date"
+msgstr ""
+
+#: .\reservation\models.py:265
+#: .\reservation\templates\reservation\trip\trip_detail.html:112
+msgid "destination"
+msgstr ""
+
+#: .\reservation\models.py:267
+#: .\reservation\templates\reservation\trip\trip_detail.html:122
+msgid "accommodation"
 msgstr ""
 
 #: .\reservation\models.py:285
@@ -334,6 +392,7 @@ msgstr ""
 
 #: .\reservation\templates\reservation\base.html:62
 #: .\reservation\templates\reservation\base.html:119
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:28
 #: .\reservation\templates\reservation\trip\trip_detail.html:27
 #: .\reservation\templates\reservation\trip\trip_list.html:4
 #: .\reservation\templates\reservation\trip\trip_list.html:28
@@ -385,24 +444,82 @@ msgid "Terms &amp; Conditions"
 msgstr ""
 
 #: .\reservation\templates\reservation\booking\trip_booking_create.html:23
-#: .\reservation\templates\reservation\confirm_delete.html:24
-#: .\reservation\templates\reservation\confirm_delete.html:31
+#: .\reservation\templates\reservation\confirm_delete.html:25
+#: .\reservation\templates\reservation\confirm_delete.html:32
+#: .\reservation\templates\reservation\trip\trip_create.html:23
 msgid "Back"
 msgstr ""
 
-#: .\reservation\templates\reservation\confirm_delete.html:5
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:6
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:86
+msgid "Reservation Details"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:177
+msgid "Personl Details"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:258
+msgid "Price Details"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:401
+msgid "Payment Details"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:5
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:53
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:66
+msgid "Reservation list"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:41
+msgid "trip"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:61
+msgid "New reservaion"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:70
+msgid "Print"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:85
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:145
+#: .\reservation\templates\reservation\trip\trip_list.html:90
+msgid "Id"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:91
+msgid "Rooms"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:94
+msgid "Persons [adults/children]"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:103
+msgid "Payment Status"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:153
+msgid "Edit"
+msgstr ""
+
+#: .\reservation\templates\reservation\confirm_delete.html:7
 #, python-format
 msgid ""
 "\n"
 "        Confirm Delete %(object)s \n"
 msgstr ""
 
-#: .\reservation\templates\reservation\confirm_delete.html:15
+#: .\reservation\templates\reservation\confirm_delete.html:16
 #, python-format
 msgid "Are you sure you want to delete \"%(object)s\"?"
 msgstr ""
 
-#: .\reservation\templates\reservation\confirm_delete.html:27
+#: .\reservation\templates\reservation\confirm_delete.html:28
 msgid "You are not authorized"
 msgstr ""
 
@@ -448,17 +565,6 @@ msgstr ""
 msgid "Previous Trips"
 msgstr ""
 
-#: .\reservation\templates\reservation\destination\destination_detail.html:79
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:99
-#: .\reservation\templates\reservation\trip\trip_list.html:48
-#: .\reservation\templates\reservation\trip\trip_list.html:81
-#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:60
-#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:107
-#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:72
-#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:134
-msgid "All Trips"
-msgstr ""
-
 #: .\reservation\templates\reservation\destination\destination_detail.html:82
 msgid "Favourit Hotels"
 msgstr ""
@@ -488,11 +594,6 @@ msgstr ""
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:138
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:95
 msgid "Packages"
-msgstr ""
-
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:145
-#: .\reservation\templates\reservation\trip\trip_list.html:90
-msgid "Id"
 msgstr ""
 
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:148
@@ -531,6 +632,10 @@ msgid ""
 "    Hotels in %(destination)s\n"
 msgstr ""
 
+#: .\reservation\templates\reservation\trip\trip_create.html:6
+msgid "create trip"
+msgstr ""
+
 #: .\reservation\templates\reservation\trip\trip_detail.html:48
 msgid "New Reservation"
 msgstr ""
@@ -555,14 +660,6 @@ msgstr ""
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:116
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:144
 msgid "Trip Id"
-msgstr ""
-
-#: .\reservation\templates\reservation\trip\trip_detail.html:112
-msgid "destination"
-msgstr ""
-
-#: .\reservation\templates\reservation\trip\trip_detail.html:122
-msgid "accommodation"
 msgstr ""
 
 #: .\reservation\templates\reservation\trip\trip_detail.html:132
@@ -625,22 +722,22 @@ msgstr ""
 msgid " Double Room / Person"
 msgstr ""
 
-#: .\reservation\views.py:195
+#: .\reservation\views.py:196
 msgid "Choose trip"
 msgstr ""
 
-#: .\reservation\views.py:197
+#: .\reservation\views.py:198
 msgid "Numbre of Rooms"
 msgstr ""
 
-#: .\reservation\views.py:204
+#: .\reservation\views.py:205
 msgid "Persons"
 msgstr ""
 
-#: .\reservation\views.py:211
+#: .\reservation\views.py:212
 msgid "Personal Detail"
 msgstr ""
 
-#: .\reservation\views.py:219
+#: .\reservation\views.py:220 .\reservation\views.py:254
 msgid "Create"
 msgstr ""

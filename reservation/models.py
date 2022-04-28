@@ -262,9 +262,9 @@ class BookingError(models.Model):
 
 class Trip(models.Model):
     destination = models.ForeignKey(
-        Destination, related_name='trips', on_delete=models.RESTRICT)
+        Destination, related_name='trips', on_delete=models.RESTRICT, verbose_name=_('destination'),)
     accommodation = models.ForeignKey(
-        Hotel, related_name='trip_reservations', on_delete=models.RESTRICT)
+        Hotel, related_name='trip_reservations', on_delete=models.RESTRICT, verbose_name=_('accommodation'),)
     creation_date = models.DateTimeField(
         verbose_name=_('Creation date'),
         auto_now_add=True,

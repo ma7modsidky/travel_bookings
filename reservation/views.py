@@ -240,6 +240,23 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
         return context
 
 
+class trip_create(LoginRequiredMixin, CreateView):
+    model = Trip
+    fields = ['destination', 'accommodation', 'date_from',
+              'date_until', 'rooms_total', 'bus_total', 'meeting_location', 'transport_price_person', 'single_room_price', 'double_room_price', 'triple_room_price']
+    template_name = 'reservation/trip/trip_create.html'
+    exclude = ['creation_user']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.add_input(
+            Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
+        return form
+
+    def form_valid(self, form):
+        form.instance.creation_user = self.request.user
+        return super().form_valid(form)
 class trip_booking_detail(LoginRequiredMixin, DetailView):
     model = TripBooking
     template_name = 'reservation/booking/trip_booking_detail.html'
