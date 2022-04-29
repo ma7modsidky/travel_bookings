@@ -1,3 +1,4 @@
+import jsonfield
 from decimal import Decimal
 from django.conf import settings
 from django.db import models
@@ -347,6 +348,8 @@ class Trip(models.Model):
         return '#[{}] {} ({})'.format(self.id,self.accommodation.name,
                                  self.date_from)
 
+    class Meta:
+        ordering = ['-creation_date']
 class TripBooking(models.Model):
     trip = models.ForeignKey(Trip, related_name='bookings',on_delete=models.CASCADE,verbose_name=_('Trip'))
     creation_date = models.DateTimeField(
@@ -393,6 +396,8 @@ class TripBooking(models.Model):
         verbose_name=_('Extra Seats'),
         default=0,
     )
+
+    seats = jsonfield.JSONField(default=list)
 
     transport_price_person = models.DecimalField(
         max_digits=36,
@@ -446,6 +451,8 @@ class TripBooking(models.Model):
         blank=True,
     )
 
+    class Meta:
+        ordering = ['-creation_date']
     def __str__(self) -> str:
         return f'[{self.get_rooms_count} Rooms] [{self.name}] [{self.phone}]'
 
@@ -515,3 +522,4 @@ class TripBookingProgram(models.Model):
 
     def __str__(self) -> str:
         return f'[{self.booking.id}] [{self.program.name} X {self.quantity}] [{self.get_price}EGP]'
+

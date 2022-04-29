@@ -1,6 +1,6 @@
 
 from pyexpat import model
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
 
 from django import http
-from .models import Destination, Hotel, Trip, TripBooking
+from .models import Destination, Hotel, Trip, TripBooking, TripBookingProgram
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from datetime import datetime, timedelta, date
@@ -18,6 +18,8 @@ from crispy_forms.layout import Submit, Layout, Fieldset, Row, Div, Field
 from crispy_tailwind import layout
 from .forms import PayTripBookingForm
 from django.utils.translation import gettext_lazy as _
+from actions.utils import create_action
+from account.models import Profile
 # Create your views here.
 
 
@@ -93,7 +95,7 @@ class trip_list(LoginRequiredMixin, ListView):
     model = Trip
     # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/trip/trip_list.html'
-
+    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
@@ -167,8 +169,22 @@ class trip_delete(DeleteView):
         obj = super(trip_delete, self).get_object()
         if not obj.creation_user == self.request.user:
             return http.HttpResponseForbidden("Cannot delete other's trips")
+        create_action(self.request.user, 'deleted', obj)
         return obj
 
+
+class trip_booking_delete(DeleteView):
+    model = TripBooking
+    template_name = "reservation/confirm_delete.html"
+    success_url = reverse_lazy('reservation:trip_list', kwargs={'time': 'all'})
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(trip_booking_delete, self).get_object()
+        if not obj.creation_user == self.request.user:
+            return http.HttpResponseForbidden("Cannot delete other's trips")
+        create_action(self.request.user, f'deleted trip booking {obj}', obj)
+        return obj
 
 class trip_booking_list(LoginRequiredMixin, ListView):
     model = TripBooking
@@ -186,7 +202,7 @@ class trip_booking_list(LoginRequiredMixin, ListView):
 class trip_booking_create(LoginRequiredMixin, CreateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
-              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'name', 'email', 'phone', 'phone2', 'notes']
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'name', 'email', 'phone', 'phone2', 'notes', 'paid_amount']
     template_name = 'reservation/booking/trip_booking_create.html'
     exclude = ['creation_user']
 
@@ -215,6 +231,7 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
                      Row('phone', 'phone2', css_class='flex flex-row gap-2 w-full')
                      ),
             'notes',
+            'paid_amount',
         )
         form.helper.add_input(
             Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
@@ -229,6 +246,11 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.creation_user = self.request.user
+        create_action(self.request.user,
+                      f'made trip booking {form.instance.trip}', self.object)
+        profile = Profile.objects.get(user=self.request.user)
+        profile.balance += form.instance.paid_amount
+        profile.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -238,7 +260,6 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
                 Trip, id=self.kwargs.get('trip_id'))
             return context
         return context
-
 
 class trip_create(LoginRequiredMixin, CreateView):
     model = Trip
@@ -266,3 +287,41 @@ class trip_booking_detail(LoginRequiredMixin, DetailView):
         booking = self.get_object()
         context['payForm'] = PayTripBookingForm()
         return context
+
+def trip_booking_pay(request , pk):
+    booking = get_object_or_404(TripBooking, id=pk)
+    if request.method == 'POST':
+        form = PayTripBookingForm(data=request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            booking.paid_amount += form.cleaned_data['amount']
+            booking.save()
+            create_action(request.user,
+                          f'recieved amount {amount}', booking)
+            profile = Profile.objects.get(user = request.user)
+            profile.balance += form.amount
+            profile.save()
+            return redirect(booking)
+    else:
+        # build form with data provided by the bookmarklet via GET
+        form = PayTripBookingForm(data=request.GET)
+    return render(request, 'reservation/booking/trip_booking_pay.html', {'object':booking,
+                                                        'form': form})
+
+
+class trip_booking_program_add(LoginRequiredMixin, CreateView):
+    model = TripBookingProgram 
+    fields = ['booking', 'program', 'quantity']
+    template_name = 'reservation/booking/trip_booking_program_add.html'
+    # success_url = reverse_lazy('reservation:trip_booking_detail', args=[1])
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['object'] = get_object_or_404(
+            TripBooking, id=self.kwargs.get('pk'))
+        return context
+
+    def get_initial(self):
+        booking = get_object_or_404(TripBooking, id=self.kwargs.get('pk'))
+        return {
+            'booking': booking,
+        }

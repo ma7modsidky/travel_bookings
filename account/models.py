@@ -6,6 +6,7 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
+USER_ROLES = (('admin', 'ADMIN'), ('leader', 'LEADER'), ('worker', 'WORKER'))
 
 class Organization(models.Model):
     name = models.CharField(max_length=25, db_index=True,
@@ -13,10 +14,12 @@ class Organization(models.Model):
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
     intro = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.name}'
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    role = models.CharField(max_length=250, blank=True,
-                            verbose_name=_('role'),)
+    role = models.CharField(max_length=20, blank=True,
+                            verbose_name=_('role'), choices=USER_ROLES)
     address = models.CharField(
         max_length=250, blank=True, verbose_name=_('address'),)
     phone_number = PhoneNumberField(verbose_name=_('phone'),)

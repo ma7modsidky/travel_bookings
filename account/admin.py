@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, Organization
 
 # Register your models here.
 
@@ -9,3 +9,11 @@ class ProfileAdmin(admin.ModelAdmin):
 
     class Meta:
        model = Profile
+
+
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ['name', ]
+
+    class Meta:
+       model = Organization

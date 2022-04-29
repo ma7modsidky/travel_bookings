@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 #ajax views follow/unfollow
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-
+from django.utils.translation import gettext_lazy as _
 import json
 
 
@@ -56,9 +56,9 @@ def register(request):
             # Save the User object
             new_user.save()
             # Create the User profile
-            Profile.objects.create(user=new_user)
-            
-            return render(request, 'account/register_done.html', {'new_user': new_user})
+            Profile.objects.create(
+                user=new_user, role=user_form.cleaned_data['role'], address=user_form.cleaned_data['role'], phone_number=user_form.cleaned_data['phone_number'], phone_number_2=user_form.cleaned_data['phone_number_2'], org=user_form.cleaned_data['org'], percentage=user_form.cleaned_data['percentage'],)
+            return redirect('/account/users/')
     else :
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
@@ -85,8 +85,13 @@ def edit(request):
 
 @login_required
 def user_list(request):
-    users = User.objects.filter(is_active=True)
-    return render(request, 'account/user/list.html', {'section': 'people',
+    if request.GET.get('type') == 'active':
+        users = User.objects.filter(is_active=True)
+    elif request.GET.get('type') == 'inactive':
+        users = User.objects.filter(is_active=False)
+    else:
+        users = User.objects.all()
+        return render(request, 'account/user/list.html', {'section': 'people',
                                                       'users': users})
     
 @login_required
@@ -94,7 +99,6 @@ def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     return render(request, 'account/user/detail.html', {'section': 'people', 
                                                         'user': user})
-
 
 
 

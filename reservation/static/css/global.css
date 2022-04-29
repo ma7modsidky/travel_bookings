@@ -3,3 +3,7 @@
 html {
     font-family: 'Tajawal', sans-serif !important;
 }
+
+label {
+    color: black !important;
+}

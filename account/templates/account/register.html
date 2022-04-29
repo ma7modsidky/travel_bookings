@@ -1,7 +1,11 @@
 {% extends "reservation/base.html" %}
-{% block title %}Create an account{% endblock %}
+{% load i18n %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% block title %}{% trans 'New user' %}{% endblock %}
+
 {% block content %}
-    <div class="section">
+    {% comment %} <div class="section">
         <h3>Create an account</h3>
         <p>Please, sign up using the following form:</p>
         <form method="post">
@@ -9,5 +13,41 @@
             {% csrf_token %}
             <p><input type="submit" value="Create my account" class='btn btn-primary'></p>
         </form>
-    </div>
+    </div> {% endcomment %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans "New user" %}
+                </a>
+            </li>
+            
+        </ol>
+    </nav>
+    <hr class="my-2 border rounded-md dark:border-gray-800"/>
+    <h3 class='text-xl '>{% trans 'Create an account' %}</h3>
+    <form method="post">
+            {% csrf_token %}
+            {%crispy user_form%}
+            {% comment %} {{ crispy user_form  }} {% endcomment %}
+            
+            <p class='my-2'><a href="{{ request.META.HTTP_REFERER }}"
+                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer w-20">
+                 {% trans 'Back' %}
+                 </a></p>
+        </form>
+</div>
 {% endblock %}

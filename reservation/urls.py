@@ -38,6 +38,12 @@ urlpatterns = [
          name='trip_booking_create'),
      path('bookings/<int:pk>', views.trip_booking_detail.as_view(),
           name='trip_booking_detail'),
+     path('bookings/<int:pk>/delete', views.trip_booking_delete.as_view(),
+          name='trip_booking_delete'),
+     path('bookings/<int:pk>/pay', views.trip_booking_pay,
+          name='trip_booking_pay'),
+     path('bookings/<int:pk>/addprogram', views.trip_booking_program_add.as_view(),
+          name='trip_booking_program_add'),
      
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),

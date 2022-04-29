@@ -1,8 +1,9 @@
 from pyexpat import model
+from tabnanny import verbose
 from django import forms
-from .models import Trip , TripBooking
-
-
+from .models import Trip, TripBooking, TripBookingProgram
+from django.utils.translation import gettext_lazy as _
+from django.shortcuts import get_object_or_404
 class TripBookingForm(forms.ModelForm):
     class Meta:
         model = TripBooking
@@ -13,6 +14,16 @@ class TripBookingForm(forms.ModelForm):
         return super().form_valid(form)
 
 class PayTripBookingForm(forms.Form):
-    price = forms.DecimalField(decimal_places=0, disabled=True)
-    amount = forms.DecimalField(decimal_places=0)
     
+    amount = forms.DecimalField(label=_('amount'), decimal_places=0)
+
+
+class TripBookingProgramForm(forms.ModelForm):
+    class Meta:
+        model = TripBookingProgram
+        fields = '__all__'
+    # def get_initial(self):
+    #     booking = get_object_or_404(TripBooking, id=self.kwargs.get('pk'))
+    #     return {
+    #         'price': booking.get_total_price(),
+    #     }
