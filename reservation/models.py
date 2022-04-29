@@ -1,4 +1,4 @@
-import jsonfield
+# import jsonfield
 from decimal import Decimal
 from django.conf import settings
 from django.db import models
@@ -397,7 +397,7 @@ class TripBooking(models.Model):
         default=0,
     )
 
-    seats = jsonfield.JSONField(default=list)
+    seats = models.TextField(null=True, blank=True)
 
     transport_price_person = models.DecimalField(
         max_digits=36,
