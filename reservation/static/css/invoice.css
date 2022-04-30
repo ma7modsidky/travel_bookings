@@ -1,7 +1,11 @@
 *{
     padding: 0;
     margin: 0;
-    font-size: 24px;
+    font-size: 16px;
+}
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&display=swap');
+html {
+    font-family: 'Tajawal', sans-serif !important;
 }
 div,h2,li{
     margin: 12px 0;
@@ -18,6 +22,9 @@ div,h2,li{
 
 .first_c,.second_c{
     flex:1
+}
+.first_c .bold{
+    font-size: 24px;
 }
 .branch {
     font-size: 26px;
