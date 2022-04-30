@@ -32,6 +32,8 @@ urlpatterns = [
      # Bookings
      path('trips/<int:trip_id>/bookings/', views.trip_booking_list.as_view(),
           name='trip_booking_list'),
+     path('trips/<int:pk>/bookings/pdf', views.trip_bookings_list_pdf,
+          name='trip_bookings_list_pdf'),
      path('trips/booking/new', views.trip_booking_create.as_view(),
           name='trip_booking_create'),
      path('trips/<int:trip_id>/booking/new', views.trip_booking_create.as_view(),
@@ -42,6 +44,10 @@ urlpatterns = [
           name='trip_booking_delete'),
      path('bookings/<int:pk>/pay', views.trip_booking_pay,
           name='trip_booking_pay'),
+     path('bookings/<int:pk>/invoice', views.invoice_pdf,
+          name='trip_booking_invoice'),
+    path('bookings/<int:pk>/update', views.trip_booking_update.as_view(),
+         name='trip_booking_update'),
      path('bookings/<int:pk>/addprogram', views.trip_booking_program_add.as_view(),
           name='trip_booking_program_add'),
      

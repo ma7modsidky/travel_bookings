@@ -1,0 +1,43 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
+}
+div,h2,li{
+    margin: 12px 0;
+}
+.bold{
+    font-weight: bold;
+}
+.flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.first_c,.second_c{
+    flex:1
+}
+.branch {
+    font-size: 26px;
+    color: black;
+    margin: 8px 0;
+}
+
+.st{
+    font-size: 16px;
+    color: black;
+    margin: 8px 0;
+}
+
+.logo img {
+    height: 72px;
+    width: auto;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 2;
+    /* grid-template-rows: 9; */
+}

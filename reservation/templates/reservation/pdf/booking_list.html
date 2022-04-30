@@ -1,0 +1,30 @@
+<html dir="rtl" lang="ar">
+    <head>
+        <!-- <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" /> -->
+        <link rel="stylesheet" href="/static/css/invoice.css" />
+    </head>
+<body>
+    <div class="flex">
+        <div>
+            <h2 class=""> الرحلة : {{object.accommodation.name}} [{{object.id}}]</h2>
+            <h2 class=""> تاريخ الرحلة :  {{object.date_from}}</h2>
+            
+        </div>
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="brand">
+        </div>
+    </div>
+    <hr>
+    <div>
+        <ol>
+        {% for b in object.bookings.all %}
+            <li>
+                {{b.name}} - [{{b.get_total_seats}} مقعد] - [{{b.phone}}]
+            </li>
+        {% endfor %}
+        </ol>      
+    </div>
+</body>
+
+</html>

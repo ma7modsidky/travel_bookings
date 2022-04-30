@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
-
+from django.conf import settings
 from django import http
 from .models import Destination, Hotel, Trip, TripBooking, TripBookingProgram
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +20,9 @@ from .forms import PayTripBookingForm
 from django.utils.translation import gettext_lazy as _
 from actions.utils import create_action
 from account.models import Profile
+from django.template.loader import render_to_string
+import weasyprint
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -202,7 +205,7 @@ class trip_booking_list(LoginRequiredMixin, ListView):
 class trip_booking_create(LoginRequiredMixin, CreateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
-              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'name', 'email', 'phone', 'phone2', 'notes', 'paid_amount']
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons','seats' ,'name', 'email', 'phone', 'phone2','notes', 'paid_amount']
     template_name = 'reservation/booking/trip_booking_create.html'
     exclude = ['creation_user']
 
@@ -231,6 +234,7 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
                      Row('phone', 'phone2', css_class='flex flex-row gap-2 w-full')
                      ),
             'notes',
+            'seats',
             'paid_amount',
         )
         form.helper.add_input(
@@ -260,6 +264,54 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
                 Trip, id=self.kwargs.get('trip_id'))
             return context
         return context
+
+
+class trip_booking_update(LoginRequiredMixin, UpdateView):
+    model = TripBooking
+    fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'seats', 'name', 'email', 'phone', 'phone2', 'notes', 'paid_amount']
+    template_name = 'reservation/booking/trip_booking_create.html'
+    exclude = ['creation_user']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.layout = Layout(_('Choose trip'),
+                                    Field('trip', css_class='text-center'),
+                                    Fieldset(_('Numbre of Rooms'),
+                                             Row('single_room_count', 'double_room_count',
+                                                 'triple_room_count', css_class='flex flex-row gap-2'),
+
+                                             ),
+
+
+                                    Fieldset(_('Persons'),
+                                             Row('adults', 'children',
+                                                 'extra_seats', css_class='flex flex-row gap-2'),
+                                             Row('single_room_persons', 'double_room_persons',
+                                                 'triple_room_persons', css_class='flex flex-row gap-2')
+                                             ),
+
+                                    Fieldset(_('Personal Detail'),
+                                             'name',
+                                             'email',
+                                             Row('phone', 'phone2',
+                                                 css_class='flex flex-row gap-2 w-full')
+                                             ),
+                                    'notes',
+                                    'seats',
+                                    'paid_amount',
+                                    )
+        form.helper.add_input(
+            Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
+        return form
+
+    
+
+    def form_valid(self, form):
+        create_action(self.request.user,
+                      f'updated trip booking {form.instance.trip}', self.object)
+        return super().form_valid(form)
 
 class trip_create(LoginRequiredMixin, CreateView):
     model = Trip
@@ -325,3 +377,24 @@ class trip_booking_program_add(LoginRequiredMixin, CreateView):
         return {
             'booking': booking,
         }
+
+def invoice_pdf(request,pk):
+    booking = get_object_or_404(TripBooking, id=pk)
+    html = render_to_string('reservation/pdf/invoice.html',
+                            {'object': booking})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=booking_{booking.id}.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
+                                           )
+    return response
+
+
+def trip_bookings_list_pdf(request, pk):
+    trip = get_object_or_404(Trip, id=pk)
+    html = render_to_string('reservation/pdf/booking_list.html',
+                            {'object': trip})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=trip_booking_list_{trip.id}.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
+                                                                                  )
+    return response
