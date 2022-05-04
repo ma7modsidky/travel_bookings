@@ -4,7 +4,7 @@
 **/New folder
 **/1.txt
 .vscode
-db.sqlite
+
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
@@ -14,8 +14,7 @@ db.sqlite
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
+
 media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
