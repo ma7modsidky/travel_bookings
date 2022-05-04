@@ -14,20 +14,27 @@ from django.urls import reverse_lazy
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+# reading .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
+SECRET_KEY = env("SECRET_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h&5)o*1qwd8)z(grg1ywfa6no&@f%1ftlnt9nqpo33q6ghbhvh'
+# SECRET_KEY = 'django-insecure-h&5)o*1qwd8)z(grg1ywfa6no&@f%1ftlnt9nqpo33q6ghbhvh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -93,6 +100,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default':env.db()
 }
 
 

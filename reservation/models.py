@@ -471,7 +471,7 @@ class TripBooking(models.Model):
         
     @property
     def get_extra_seats_price(self):
-        return self.extra_seats*self.transport_price_person
+        return self.extra_seats*self.trip.transport_price_person
 
     @property
     def get_primary_price(self):
@@ -485,7 +485,7 @@ class TripBooking(models.Model):
 
     @property
     def get_primary_price_after_discount(self):
-        return int(self.get_primary_price - self.get_discount)
+        return int(self.get_primary_price - self.get_discount - self.discount_amount)
 
     @property
     def get_programs_price(self):
@@ -493,7 +493,7 @@ class TripBooking(models.Model):
 
     @property
     def get_total_price(self):
-        return(self.get_primary_price_after_discount+self.get_extra_seats_price+self.get_programs_price-self.discount_amount)
+        return(self.get_primary_price_after_discount+self.get_extra_seats_price+self.get_programs_price)
 
     @property
     def get_remained_price(self):

@@ -205,7 +205,7 @@ class trip_booking_list(LoginRequiredMixin, ListView):
 class trip_booking_create(LoginRequiredMixin, CreateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
-              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons','seats' ,'name', 'email', 'phone', 'phone2','notes', 'paid_amount']
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'seats', 'name', 'email', 'phone', 'phone2', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
     template_name = 'reservation/booking/trip_booking_create.html'
     exclude = ['creation_user']
 
@@ -235,6 +235,7 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
                      ),
             'notes',
             'seats',
+            'discount_percentage', 'discount_amount',
             'paid_amount',
         )
         form.helper.add_input(
@@ -351,7 +352,7 @@ def trip_booking_pay(request , pk):
             create_action(request.user,
                           f'recieved amount {amount}', booking)
             profile = Profile.objects.get(user = request.user)
-            profile.balance += form.amount
+            profile.balance += form.cleaned_data['amount']
             profile.save()
             return redirect(booking)
     else:
