@@ -111,7 +111,7 @@
                 
         </div>
         <div class="w-[100%] md:w-[48%] p-0 md:p-3 md:pt-0 md:order-1 ">
-            <h1 class="text-2xl mb-2  font-bold dark:text-gray-900">{{hotel.name | title }} {{hotel.level}}</h1>
+            <h1 class="text-2xl mb-2  font-bold dark:text-gray-900">{{hotel.name | title }}</h1>
             <ul class="flex mb-4">
                 {% for star in '12345' %}
                     {% if  star|add:"0" <= hotel.level %}
