@@ -324,6 +324,25 @@ class trip_create(LoginRequiredMixin, CreateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.helper = FormHelper()
+        form.helper.layout = Layout(
+                                    Field('destination',
+                                          css_class='text-center'), 'accommodation',
+            Field('date_from', datepicker=True, readonly='readonly', id="date_start",
+                                          template='reservation/datepicker.html', ),
+            Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly', id="date_until",
+                                          template='reservation/datepicker.html', ),
+                                    Fieldset(_('Trip Information'),
+                                             Row('rooms_total', 'bus_total',
+                                                 css_class='flex flex-row gap-2'),
+                                             'meeting_location',
+                                             ),
+                                    Fieldset(_('Price'),
+                                             'transport_price_person',
+                                             Row('single_room_price', 'double_room_price',
+                                                 'triple_room_price', css_class='flex flex-row gap-2')
+                                             ),
+                                    )
+        # form.helper.Field('date_from',readonly='readonly', id="date_start", template='reservation/datepicker.html')
         form.helper.add_input(
             Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
         return form

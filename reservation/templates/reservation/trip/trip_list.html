@@ -53,28 +53,33 @@
         </ol>
     </nav>
     <div class="flex flex-wrap my-4 gap-2">
-
-        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+        <div class="inline-flex py-2 px-3  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
+            <a href="{% url "reservation:trip_create" %}" class="inline-flex items-center">
+                {% trans "Create trip" %}</a>
+        </div>
+        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <a href="{% url "reservation:trip_list" 'ongoing' %}" class="inline-flex items-center">
                 {% trans "Ongoing Trips" %}</a>
         </div>
-        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <a href="{% url "reservation:trip_list" 'upcoming' %}" class="inline-flex items-center">
             {% trans "Upcoming Trips" %}
             </a>
         </div>
-        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <a href="{% url "reservation:trip_list" 'previous' %}" class="inline-flex items-center">
             {% trans "Previous Trips" %}
             </a>
         </div>
-        <div class="inline-flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <a href="{% url "reservation:trip_list" 'all' %}" class="inline-flex items-center">
