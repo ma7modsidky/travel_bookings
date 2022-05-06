@@ -273,21 +273,19 @@ class Trip(models.Model):
     creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                       related_name='created_trips',
                                       on_delete=models.SET(get_sentinel_user),
-                                      blank=True)
+                                      )
 
     date_from = models.DateField(
         verbose_name=_('From'),
-        blank=True, null=True,
     )
     date_until = models.DateField(
         verbose_name=_('Until'),
-        blank=True, null=True,
+        
     )
     rooms_total = models.PositiveBigIntegerField(verbose_name=_('rooms total'),
                                                blank=True, null=True,)
     rooms_booked = models.PositiveBigIntegerField(verbose_name=_('rooms_booked'),
-                                                  blank=True, null=True,)
-
+                                                  default=0)
     bus_total = models.PositiveBigIntegerField(verbose_name=_('bus_total'),
                                                blank=True, null=True,)
     meeting_location = models.CharField(verbose_name=_('Trip starting location'),
@@ -297,7 +295,7 @@ class Trip(models.Model):
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Transport price per person'),
-        blank=True, null=True,
+        default=0
     )
 
 

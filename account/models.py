@@ -18,7 +18,7 @@ class Organization(models.Model):
         return f'{self.name}'
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, blank=True,
+    role = models.CharField(max_length=20,
                             verbose_name=_('role'), choices=USER_ROLES)
     address = models.CharField(
         max_length=250, blank=True, verbose_name=_('address'),)

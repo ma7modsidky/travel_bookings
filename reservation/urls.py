@@ -53,4 +53,5 @@ urlpatterns = [
      
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),
+    path('ajax/load-hotels/', views.load_hotels, name='ajax_load_hotels'),
 ]

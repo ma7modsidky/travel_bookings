@@ -1,4 +1,5 @@
 
+from django.http import JsonResponse
 from pyexpat import model
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
@@ -266,7 +267,6 @@ class trip_booking_create(LoginRequiredMixin, CreateView):
             return context
         return context
 
-
 class trip_booking_update(LoginRequiredMixin, UpdateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
@@ -326,7 +326,7 @@ class trip_create(LoginRequiredMixin, CreateView):
         form.helper = FormHelper()
         form.helper.layout = Layout(
                                     Field('destination',
-                                          css_class='text-center'), 'accommodation',
+                                          css_class='text-center destination'), 'accommodation',
             Field('date_from', datepicker=True, readonly='readonly', id="date_start",
                                           template='reservation/datepicker.html', ),
             Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly', id="date_until",
@@ -418,3 +418,14 @@ def trip_bookings_list_pdf(request, pk):
     weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
                                                                                   )
     return response
+
+
+#AJAX
+def load_hotels(request): 
+    destination = Destination.objects.get(id=request.GET.get(
+        'destination_id'))
+    hotels = Hotel.objects.filter(
+        destination=destination)
+    print(list(hotels.values('id', 'name')))
+    # return render(request, 'persons/city_dropdown_list_options.html', {'cities': cities})
+    return JsonResponse(list(hotels.values('id', 'name')), safe=False)
