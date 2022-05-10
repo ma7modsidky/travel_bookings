@@ -6,7 +6,7 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
-USER_ROLES = (('admin', 'ADMIN'), ('leader', 'LEADER'), ('worker', 'WORKER'))
+USER_ROLES = (('gold', 'GOLD'), ('silver', 'SILVER'), ('bronze', 'BRONZE'))
 
 class Organization(models.Model):
     name = models.CharField(max_length=25, db_index=True,

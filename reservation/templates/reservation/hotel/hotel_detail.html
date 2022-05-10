@@ -144,15 +144,22 @@
     </section>
 </div>
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
-    <h1 class="text-2xl text-gray-900 font-bold">{{hotel.name | title}} {% trans "Packages" %} [{{hotel.packages.count}}]</h1> 
+    <h1 class="text-2xl text-gray-900 font-bold">{{hotel.name | title}} {% trans "Packages" %} [{{hotel.packages.count}}]</h1>
+    <div class="inline-flex py-2 px-3  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
+            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
+            </a>
+
+    </div>
     {% if hotel.packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        {% comment %} <th scope="col" class="px-6 py-3">
                             {% trans "Id" %}
-                        </th>
+                        </th> {% endcomment %}
                         <th scope="col" class="px-6 py-3">
                             {% trans "Label" %}
                         </th>
@@ -180,9 +187,9 @@
                     {% for package in hotel.packages.all %}
                     <tr
                         class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                        <td class="px-3 py-2">
+                        {% comment %} <td class="px-3 py-2">
                             {{package.id}}
-                        </td>
+                        </td> {% endcomment %}
                         <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {{package.label}}
                         </th>
@@ -190,7 +197,7 @@
                             {{package.date_from |date:"d / m / Y"}}
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap">
-                            {{package.date_to |date:"d / m / Y"}}
+                            {{package.date_until |date:"d / m / Y"}}
                         </td>
                         <td class="px-3 py-2 ">
                             {{package.single_room_full}}
@@ -202,8 +209,25 @@
                             {{package.triple_room_full}}
                         </td>
                         <td class="px-3 py-2 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline inline-flex m-2">{% trans "Details" %}</a>
-                            <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline m-2">{% trans "Book" %}</a>
+                            <div class="inline-flex rounded-md shadow-sm">
+                                <a href="{% url 'reservation:package_detail' package.id %}" aria-current="page"
+                                    class="py-2 px-4 text-sm font-medium text-blue-700 bg-white {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-r-md
+                                {% else %}
+                                rounded-l-lg
+                            {% endif %} border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-blue-400 dark:hover:text-blue-400 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-blue-400">
+                                    {% trans 'Details' %}
+                                </a>
+
+                                <a href="{% url 'reservation:booking_create' hotel.id package.id %}"
+                                    class="py-2 px-4 text-sm font-medium text-red-900 bg-white{% if LANGUAGE_CODE == 'ar' %}
+                                rounded-l-lg
+                                {% else %}
+                                rounded-r-md
+                            {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
+                                    {% trans 'Edit' %}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

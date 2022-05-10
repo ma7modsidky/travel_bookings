@@ -20,16 +20,31 @@
         <h1 class="dark:text-white font-bold text-xl leading-8 my-1">
           {{user.username | title}}
         </h1>
-
+        
+        {% if user.profile.role == 'gold' %}
+        <div>
+          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% elif user.profile.role == 'silver' %}
+        <div>
+          <span class="text-sm text-white bg-slate-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% else %}
+        <div>
+          <span class="text-sm text-white bg-amber-700 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% endif %}
         {% if user.profile.org %}
-        <h3 class="dark:text-gray-100 font-lg text-semibold leading-6">
+        <h3 class="dark:text-gray-100 font-lg text-semibold leading-6 my-2">
           {{user.profile.org | title}}
         </h3>
         {% endif %}
-
-        <p class="text-sm text-gray-600 hover:text-gray-900 leading-6">
-          {{user.profile.role | title}}
-        </p>
         <ul
           class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm"
         >

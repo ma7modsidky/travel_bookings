@@ -11,14 +11,14 @@ class DestinationAdmin(admin.ModelAdmin):
         model = Destination
 
 
-class HotelPackageStackAdmin(admin.StackedInline):
-    model = HotelPackage
+# class HotelPackageStackAdmin(admin.StackedInline):
+#     model = HotelPackage
 
 @admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'destination')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [HotelPackageStackAdmin]
+    # inlines = [HotelPackageStackAdmin]
     readonly_fields = ('get_packages',)
     class Meta:
         model = Hotel
@@ -26,6 +26,7 @@ class HotelAdmin(admin.ModelAdmin):
 
 @admin.register(AccommodationType)
 class AccommodationTypeAdmin(admin.ModelAdmin):
+    list_display= ('id','name')
     class Meta:
         model = AccommodationType
 
@@ -36,7 +37,7 @@ class BookingAdmin(admin.ModelAdmin):
                     'date_from', 'time_period', 'transport')
     list_filter = ('date_from', 'accommodation', 'transport')
     extra_fields = ['get_packages']
-    readonly_fields = ('calculate_remaining_amount',)
+    readonly_fields = ('get_remained_price',)
     search_fields = ['phone']
     class Meta:
         model = Booking
@@ -57,8 +58,8 @@ class TripBookingAdmin(admin.ModelAdmin):
 
 @admin.register(HotelPackage)
 class HotelPackageAdmin(admin.ModelAdmin):
-    list_display = ('hotel', 'accommodation_type',
-                    'label', 'date_from', 'date_to')
+    list_display = ('hotel',
+                    'label', 'date_from', 'date_until')
     class Meta:
         model = HotelPackage
 

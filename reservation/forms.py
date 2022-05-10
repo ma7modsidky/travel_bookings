@@ -1,12 +1,22 @@
 from pyexpat import model
 from tabnanny import verbose
 from django import forms
-from .models import Trip, TripBooking, TripBookingProgram
+from .models import Trip, TripBooking, TripBookingProgram ,Booking
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404
 class TripBookingForm(forms.ModelForm):
     class Meta:
         model = TripBooking
+        fields = '__all__'
+
+    def form_valid(self, form):
+        form.instance.creation_user = self.request.user
+        return super().form_valid(form)
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
         fields = '__all__'
 
     def form_valid(self, form):

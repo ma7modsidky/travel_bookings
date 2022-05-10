@@ -1,0 +1,78 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %} {% trans 'Reservation Page' %}  {% endblock %}
+{% block content %}
+<div class="bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href=""
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Bookings' %}
+                </a>
+            </li>
+        </ol>
+    </nav>
+    <hr class="my-2 border dark:border-gray-800"/>
+    <div class="flex flex-wrap my-2 gap-2">
+        <a href=""
+            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a>
+        <a href=""
+            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>    
+    </div>
+    <hr class="my-2 border dark:border-gray-800"/>
+    <div>
+        <h3 class='text-xl font-bold'>{% trans 'Trip reservations' %}</h3>
+        <form action="{% url 'reservation:search_booking'%}" method="get">
+            <label for="trip_booking_id" class="px-2 italic">{% trans 'Booking Id' %}</label>
+            <input type="number" name="trip_booking_id" id="trip_booking_id" class="w-32 rounded-md">
+            <input type="submit" value="Search" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer my-4'>   
+        </form>
+        {% if no_result %}
+        <p class='dark:text-white italic text-md text-red-500'>{% trans "no result found for id" %}  [{{q}}]</p>
+        {% endif %}
+    </div>
+    <hr class="my-2 border dark:border-gray-800" />
+    <div>
+        <h3 class='text-xl font-bold'>{% trans 'Indivdual reservations' %}</h3>
+        <form action="{% url 'reservation:search_ibooking'%}" method="get">
+            <label for="booking_id" class="px-2 italic">{% trans 'Booking Id' %}</label>
+            <input type="number" name="booking_id" id="booking_id" class="w-32 rounded-md">
+            <input type="submit" value="Search" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer my-4'>
+        </form>
+        {% if no_result_i %}
+        <p class='dark:text-white italic text-md text-red-500'>{% trans "no result found for id" %}  [{{q}}]</p>
+        {% endif %}
+    </div>
+    <hr class="my-2 border dark:border-gray-800" />
+    
+        
+</div>
+
+
+{% endblock %}

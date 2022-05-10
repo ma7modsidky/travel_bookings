@@ -5,6 +5,9 @@ app_name = 'reservation'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('reservations', views.reservations_page, name='reservations_page'),
+    path('search_trip_booking', views.search_booking, name='search_booking'),
+    path('search_booking', views.search_ibooking, name='search_ibooking'),
      # Destinations URLS
     path('destinations',views.destination_list.as_view(), name='destination_list'),
     path('destinations/<slug:slug>', views.destination_detail.as_view(),
@@ -46,11 +49,22 @@ urlpatterns = [
           name='trip_booking_pay'),
      path('bookings/<int:pk>/invoice', views.invoice_pdf,
           name='trip_booking_invoice'),
-    path('bookings/<int:pk>/update', views.trip_booking_update.as_view(),
+     path('bookings/<int:pk>/update', views.trip_booking_update.as_view(),
          name='trip_booking_update'),
      path('bookings/<int:pk>/addprogram', views.trip_booking_program_add.as_view(),
           name='trip_booking_program_add'),
-     
+     # Hotel Packages
+     path('packages/<int:hotel_id>/new', views.package_create.as_view(),
+          name='package_create'),
+     path('packages/<int:pk>', views.package_detail.as_view(),
+          name='package_detail'),
+     # individual bookings
+     path('ibooking/<int:hotel_id>/<int:package_id>/new', views.booking_create.as_view(),
+          name='booking_create'),
+     path('ibooking/<int:pk>/detail', views.booking_detail.as_view(),
+          name='booking_detail'),
+     path('ibooking/<int:package_id>/list', views.booking_list_package.as_view(),
+          name='booking_list_package'),
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),
     path('ajax/load-hotels/', views.load_hotels, name='ajax_load_hotels'),

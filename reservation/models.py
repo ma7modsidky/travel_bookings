@@ -44,7 +44,7 @@ class Hotel(models.Model):
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
     destination = models.ForeignKey(
         Destination, related_name='hotels', on_delete=models.DO_NOTHING)
-    intro = RichTextField()
+    intro = RichTextField(blank=True)
     level = models.PositiveIntegerField(validators=[
         MinValueValidator(1),
         MaxValueValidator(5)])
@@ -64,46 +64,43 @@ class Hotel(models.Model):
 class HotelPackage(models.Model):
     hotel = models.ForeignKey(
         Hotel, related_name='packages', on_delete=models.RESTRICT)
-    accommodation_type = models.ForeignKey(
-        AccommodationType, on_delete=models.RESTRICT)
     label = models.CharField(max_length=50)
     date_from = models.DateField(null=True, blank=True)
-    date_to = models.DateField(null=True, blank=True)
+    date_until = models.DateField(null=True, blank=True)
+    creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                      related_name='created_packages',
+                                      on_delete=models.SET(get_sentinel_user),
+                                      blank=True
+                                      )
     single_room_half = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Single Room price, Half board'),
-        blank=True, null=True,
     )
     single_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Single Room price, Full board'),
-        blank=True, null=True,
     )
     double_room_half = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Double Room price, Half board'),
-        blank=True, null=True,
     )
     double_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Double Room price, Full board'),
-        blank=True, null=True,
     )
     triple_room_half = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Triple Room price, Half board'),
-        blank=True, null=True,
     )
     triple_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Triple Room price, Full board'),
-        blank=True, null=True,
     )
     
     @property
@@ -121,14 +118,14 @@ class HotelPackage(models.Model):
             return 'Error , price not available'
 
     def __str__(self) -> str:
-        return self.label + " -- " + self.accommodation_type.name
+        return self.label
 
 
 class Booking(models.Model):
     # Personal info about client
     name = models.CharField(verbose_name=_('name'),
                             max_length=20,
-                            blank=True,)
+                            )
     email = models.EmailField(
         verbose_name=_('Email'),
         blank=True,
@@ -136,7 +133,6 @@ class Booking(models.Model):
     phone = models.CharField(
         verbose_name=_('Phone'),
         max_length=256,
-        blank=True,
     )
     notes = models.TextField(
         max_length=1024,
@@ -146,11 +142,9 @@ class Booking(models.Model):
     # Booking info , attrs
     date_from = models.DateTimeField(
         verbose_name=_('From'),
-        blank=True, null=True,
     )
     date_until = models.DateTimeField(
         verbose_name=_('Until'),
-        blank=True, null=True,
     )
     time_period = models.PositiveIntegerField(
         verbose_name=_('Time period'),
@@ -160,79 +154,135 @@ class Booking(models.Model):
         verbose_name=_('Time unit'),
         default=getattr(settings, 'BOOKING_TIME_INTERVAL', ''),
         max_length=64,
-        blank=True,
+        blank=True, null=True,
     )
     creation_date = models.DateTimeField(
         verbose_name=_('Creation date'),
         auto_now_add=True,
     )
-    booking_id = models.CharField(
-        max_length=100,
-        verbose_name=_('Booking ID'),
-        blank=True,
-    )
+    creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                      related_name='created_bookings',
+                                      on_delete=models.SET(get_sentinel_user),
+                                      )
+    
     # Accommodation and transport
     accommodation = models.ForeignKey(
         Hotel, related_name='reservations', on_delete=models.RESTRICT)
+    accommodation_type = models.ForeignKey(
+        AccommodationType, on_delete=models.RESTRICT, default=1)
     package = models.ForeignKey(
-        HotelPackage, on_delete=models.RESTRICT, null=True, blank=True)
+        HotelPackage, on_delete=models.RESTRICT)
+    single_room_count = models.PositiveIntegerField(
+        verbose_name=_('Single Rooms'),
+        default=0,
+    )
+    double_room_count = models.PositiveIntegerField(
+        verbose_name=_('Double Rooms'),
+        default=0,
+    )
+    triple_room_count = models.PositiveIntegerField(
+        verbose_name=_('Triple Rooms'),
+        default=0,
+    )
     adults = models.PositiveIntegerField(
         verbose_name=_('Number of Adults'),
-        blank=True, null=True,
+        default=0,
     )
     children = models.PositiveIntegerField(
         verbose_name=_('Number of Children'),
-        blank=True, null=True,
+        default=0,
     )
     transport = models.BooleanField(default=False)
+    transport_price_person = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Transport price per person'),
+        default=400,
+    )
     extra_seats = models.PositiveIntegerField(
         verbose_name=_('Number of extra seats'),
-        blank=True, null=True,
-    )
-    total_seats = models.PositiveIntegerField(
-        verbose_name=_('Number of total seats'),
-        blank=True, null=True,
+        default=0,
     )
     # payment
-    booking_price = models.DecimalField(
-        max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Booking price'),
-        blank=True, null=True,
-    )
-    transport_price = models.DecimalField(
-        max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Transport price'),
-        blank=True, null=True,
-    )
-    total_price = models.DecimalField(
-        max_digits=36,
-        decimal_places=2,
-        verbose_name=_('Total price'),
-        blank=True, null=True,
+    discount_percentage = models.PositiveIntegerField(validators=[
+        MinValueValidator(0),
+        MaxValueValidator(10)],
+        default=0,
+        verbose_name=_('discount percentage'),
     )
 
+    discount_amount = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('discount amount'),
+        default=0
+    )
     paid_amount = models.DecimalField(
         max_digits=36,
-        decimal_places=2,
+        decimal_places=0,
         verbose_name=_('paid amount'),
-        blank=True, null=True,
+        default=0
     )
 
     class Meta:
         ordering = ['-creation_date']
 
     def __str__(self):
-        return '#{} ({})'.format(self.booking_id or self.pk,
+        return '#{} ({})'.format(self.id,
                                  self.creation_date)
 
-    def calculate_remaining_amount(self):
-        if self.total_price:
-            return self.total_price - self.paid_amount
-        else:
-            return None
+    @property
+    def get_nights_count(self):
+        delta = (self.date_until - self.date_from)
+        return int(delta.days)
 
+    @property
+    def get_rooms_count(self):
+        return int(self.single_room_count)+int(self.double_room_count)+int(self.triple_room_count)
+
+    @property
+    def get_person_count(self):
+        return(int(self.adults+self.children))
+
+    @property
+    def get_total_seats(self):
+        return int(self.adults) + int(self.children) + int(self.extra_seats)
+
+    @property
+    def get_extra_seats_price(self):
+        return self.extra_seats*self.transport_price_person
+
+    @property
+    def get_halfboard_price(self):
+        return Decimal(self.single_room_count*self.package.single_room_half+self.double_room_count*self.package.double_room_half+self.triple_room_count*self.package.triple_room_half)
+
+    @property
+    def get_fullboard_price(self):
+        return Decimal(self.single_room_count*self.package.single_room_full+self.double_room_count*self.package.double_room_full+self.triple_room_count*self.package.triple_room_full)
+
+    @property
+    def get_primary_price(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.get_halfboard_price*self.get_nights_count
+        elif self.accommodation_type.name == 'Full Board':
+            return self.get_fullboard_price*self.get_nights_count
+    @property
+    def get_discount(self):
+        if self.discount_percentage > 0:
+            return (self.discount_percentage / Decimal(100)) * self.get_primary_price
+        return int(0)
+
+    @property
+    def get_primary_price_after_discount(self):
+        return int(self.get_primary_price - self.get_discount - self.discount_amount)
+
+    @property
+    def get_total_price(self):
+        return self.get_primary_price_after_discount
+
+    @property
+    def get_remained_price(self):
+        return(self.get_total_price - self.paid_amount)
 
 class BookingError(models.Model):
     booking = models.ForeignKey(
@@ -397,17 +447,11 @@ class TripBooking(models.Model):
 
     seats = models.TextField(null=True, blank=True)
 
-    transport_price_person = models.DecimalField(
-        max_digits=36,
-        decimal_places=0,
-        verbose_name=_('Transport price per person'),
-        default=400,
-    )
-
     discount_percentage = models.PositiveIntegerField(validators=[
         MinValueValidator(0),
         MaxValueValidator(10)],
-        default=0
+        default=0,
+        verbose_name=_('discount percentage'),
         )
 
     discount_amount = models.DecimalField(
