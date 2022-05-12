@@ -63,6 +63,11 @@
             rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
             cursor-pointer">{% trans 'Delete booking' %}
             </a>
+        <a href={% url 'reports:ibooking_report' object.id %} 
+            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-white focus:outline-none bg-yellow-500 rounded-lg border
+            border-gray-200 hover:bg-yellow-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-yellow-500 dark:text-white dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-yellow-700 cursor-pointer">{% trans 'Report' %}</a>    
     </div>
     
     <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">

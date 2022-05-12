@@ -29,6 +29,7 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
     path('account/', include('account.urls', namespace='account')),
+    path('reports/', include('reports.urls', namespace='reports')),
     path('', include('reservation.urls', namespace='reservation')),
     path('rosetta/', include('rosetta.urls')),
 )

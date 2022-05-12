@@ -155,7 +155,7 @@ class trip_list_by_hotel(LoginRequiredMixin, ListView):
 class trip_create(LoginRequiredMixin, CreateView):
     model = Trip
     fields = ['destination', 'accommodation', 'date_from',
-              'date_until', 'rooms_total', 'bus_total', 'meeting_location', 'transport_price_person', 'single_room_price', 'double_room_price', 'triple_room_price']
+              'date_until', 'rooms_total', 'bus_total', 'meeting_location', 'transport_price_person', 'single_room_price', 'double_room_price', 'triple_room_price', 'single_room_cost', 'double_room_cost', 'triple_room_cost']
     template_name = 'reservation/trip/trip_create.html'
     exclude = ['creation_user']
 
@@ -174,8 +174,12 @@ class trip_create(LoginRequiredMixin, CreateView):
                          css_class='flex flex-row gap-2'),
                      'meeting_location',
                      ),
+            Fieldset(_('Cost'),
+                     Row('single_room_cost', 'double_room_cost',
+                         'triple_room_cost', css_class='flex flex-row gap-2')
+                     ),
             Fieldset(_('Price'),
-                     'transport_price_person',
+                     Row('transport_price_person'),
                      Row('single_room_price', 'double_room_price',
                          'triple_room_price', css_class='flex flex-row gap-2')
                      ),
@@ -502,7 +506,8 @@ class booking_create(LoginRequiredMixin, CreateView):
 
 class package_create(LoginRequiredMixin, CreateView):
     model = HotelPackage
-    fields = '__all__'
+    fields = ['hotel', 'label', 'date_from', 'date_until',
+              'single_room_half', 'single_room_half_cost', 'single_room_full', 'single_room_full_cost', 'double_room_half', 'double_room_half_cost', 'double_room_full', 'double_room_full_cost', 'triple_room_half', 'triple_room_half_cost', 'triple_room_full', 'triple_room_full_cost']
     template_name = 'reservation/package/create.html'
     exclude = ['creation_user']
     # permission_required = ('')
@@ -511,7 +516,7 @@ class package_create(LoginRequiredMixin, CreateView):
         form = super().get_form(form_class)
         form.helper = FormHelper()
         form.helper.layout = Layout(
-            Field('hotel', readonly='readonly'
+            Field('hotel',
                    ),
             'label',
             Field('date_from', datepicker=True, readonly='readonly', id="date_start",
@@ -519,10 +524,16 @@ class package_create(LoginRequiredMixin, CreateView):
             Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly',   id="date_until",
                   template='reservation/datepicker.html',),
             Fieldset(_('Prices per night'),
+                     Row('single_room_half_cost', 'single_room_full_cost',
+                         css_class='flex flex-row gap-3'),
                      Row('single_room_half', 'single_room_full',
                         css_class='flex flex-row gap-3'),
+                     Row('double_room_half_cost', 'double_room_full_cost',
+                         css_class='flex flex-row gap-3'),
                      Row('double_room_half', 'double_room_full',
                         css_class='flex flex-row gap-3'),
+                     Row('triple_room_half_cost', 'triple_room_full_cost',
+                         css_class='flex flex-row gap-3'),
                      Row('triple_room_half', 'triple_room_full',
                          css_class='flex flex-row gap-3'),
                      ),
@@ -534,15 +545,23 @@ class package_create(LoginRequiredMixin, CreateView):
     def get_initial(self):
         hotel = get_object_or_404(
             Hotel, id=self.kwargs.get('hotel_id'))
+        creation_user = self.request.user
         return {
-            'hotel': hotel,
+            'hotel': hotel.id,
+            'creation_user': creation_user,
         }
 
     def form_valid(self, form):
+        print('valid')
         form.instance.creation_user = self.request.user
+        form.save()
         create_action(self.request.user,
                       f'created package {form.instance}', self.object)
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

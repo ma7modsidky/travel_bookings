@@ -70,7 +70,7 @@ class HotelPackage(models.Model):
     creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                       related_name='created_packages',
                                       on_delete=models.SET(get_sentinel_user),
-                                      blank=True
+                                      null=True
                                       )
     single_room_half = models.DecimalField(
         max_digits=36,
@@ -133,20 +133,21 @@ class HotelPackage(models.Model):
         verbose_name=_('Triple Room cost, Full board'),
     )
     
-    @property
-    def get_price_per_person_half(self):
-        if self.double_room_half:
-            return self.double_room_half / 2
-        else:
-            return 'Error , price not available'
+    # @property
+    # def get_price_per_person_half(self):
+    #     if self.double_room_half:
+    #         return self.double_room_half / 2
+    #     else:
+    #         return 'Error , price not available'
 
-    @property
-    def get_price_per_person_full(self):
-        if self.double_room_full:
-            return self.double_room_full / 2
-        else:
-            return 'Error , price not available'
+    # @property
+    # def get_price_per_person_full(self):
+    #     if self.double_room_full:
+    #         return self.double_room_full / 2
+    #     else:
+    #         return 'Error , price not available'
 
+    
     def __str__(self) -> str:
         return self.label
 
@@ -287,8 +288,17 @@ class Booking(models.Model):
         return Decimal(self.single_room_count*self.package.single_room_half+self.double_room_count*self.package.double_room_half+self.triple_room_count*self.package.triple_room_half)
 
     @property
+    def get_halfboard_cost(self):
+        return Decimal(self.single_room_count*self.package.single_room_half_cost+self.double_room_count*self.package.double_room_half_cost+self.triple_room_count*self.package.triple_room_half_cost)
+
+    @property
     def get_fullboard_price(self):
         return Decimal(self.single_room_count*self.package.single_room_full+self.double_room_count*self.package.double_room_full+self.triple_room_count*self.package.triple_room_full)
+
+    @property
+    def get_fullboard_cost(self):
+        return Decimal(self.single_room_count*self.package.single_room_full_cost+self.double_room_count*self.package.double_room_full_cost+self.triple_room_count*self.package.triple_room_full_cost)
+
 
     @property
     def get_primary_price(self):
@@ -296,6 +306,15 @@ class Booking(models.Model):
             return self.get_halfboard_price*self.get_nights_count
         elif self.accommodation_type.name == 'Full Board':
             return self.get_fullboard_price*self.get_nights_count
+
+    @property
+    def get_primary_cost(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.get_halfboard_cost*self.get_nights_count
+        elif self.accommodation_type.name == 'Full Board':
+            return self.get_fullboard_cost*self.get_nights_count
+
+
     @property
     def get_discount(self):
         if self.discount_percentage > 0:
@@ -305,6 +324,10 @@ class Booking(models.Model):
     @property
     def get_primary_price_after_discount(self):
         return int(self.get_primary_price - self.get_discount - self.discount_amount)
+
+    @property
+    def get_profit(self):
+        return self.get_primary_price_after_discount-self.get_primary_cost
 
     @property
     def get_total_price(self):
@@ -339,7 +362,6 @@ class BookingError(models.Model):
     def __str__(self):
         return u'[{0}] {1} - {2}'.format(self.date, self.booking.booking_id,
                                          self.message)
-
 
 class Trip(models.Model):
     destination = models.ForeignKey(
@@ -542,6 +564,32 @@ class TripBooking(models.Model):
     def __str__(self) -> str:
         return f'[{self.get_rooms_count} Rooms] [{self.name}] [{self.phone}]'
 
+    @property
+    def get_nights_count(self):
+        delta = (self.trip.date_until - self.trip.date_from)
+        return int(delta.days)
+    
+    @property
+    def get_description(self):
+        description = ''
+        if self.single_room_count > 0:
+            description += f'[{self.single_room_count}] Single room \n'
+        if self.double_room_count > 0:
+            description += f'[{self.double_room_count}] Double room \n'
+        if self.triple_room_count > 0:
+            description += f'[{self.triple_room_count}] Triple room \n'
+        return description
+
+    @property
+    def get_cost(self):
+        cost = (self.single_room_count*self.trip.single_room_cost) + \
+            (self.double_room_count*self.trip.double_room_cost) + \
+            (self.triple_room_count*self.trip.triple_room_cost)
+        return int(cost)
+
+    @property
+    def get_profit(self):
+        return self.get_total_price-self.get_cost
 
     @property
     def get_rooms_count(self):
