@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(
         template_name='registration/logout.html'), name='logout'),
     path('', views.dashboard, name='dashboard'),
+    path('profile', views.profile, name='profile'),
     # change password urls
     path('password_change/', auth_views.PasswordChangeView.as_view(),name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(),name='password_change_done'),
@@ -30,6 +31,7 @@ urlpatterns = [
     ####################################
     path('register/', views.register, name='register'),
     path('edit/', views.edit, name='edit'),
+    path('<int:user_id>/edit/', views.edit, name='edit_user'),
     #########user list and detail 
     path('users/', views.user_list, name='user_list'),
     path('users/<username>/', views.user_detail, name='user_detail'),

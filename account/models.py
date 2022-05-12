@@ -22,9 +22,9 @@ class Profile(models.Model):
                             verbose_name=_('role'), choices=USER_ROLES)
     address = models.CharField(
         max_length=250, blank=True, verbose_name=_('address'),)
-    phone_number = PhoneNumberField(verbose_name=_('phone'),)
-    phone_number_2 = PhoneNumberField(
-        blank=True, null=True, verbose_name=_('phone2'),)
+    phone_number = models.CharField(verbose_name=_('phone'), max_length=20,)
+    phone_number_2 = models.CharField(
+        blank=True, null=True, verbose_name=_('phone2'), max_length=20,)
     balance = models.DecimalField(
         max_digits=36,
         decimal_places=0,

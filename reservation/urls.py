@@ -5,9 +5,13 @@ app_name = 'reservation'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    # reservations
     path('reservations', views.reservations_page, name='reservations_page'),
     path('search_trip_booking', views.search_booking, name='search_booking'),
     path('search_booking', views.search_ibooking, name='search_ibooking'),
+    path('reservations/trip_bookings', views.trip_booking_list_all.as_view(), name='trip_booking_list_all'),
+    path('reservations/ibookings',
+         views.booking_list_all.as_view(), name='booking_list_all'),
      # Destinations URLS
     path('destinations',views.destination_list.as_view(), name='destination_list'),
     path('destinations/<slug:slug>', views.destination_detail.as_view(),
@@ -32,6 +36,8 @@ urlpatterns = [
          name='trip_delete'),
     path('trips/<str:time>', views.trip_list.as_view(),
          name='trip_list'),
+     path('trips', views.trip_list.as_view(),
+          name='trip_list'),
      # Bookings
      path('trips/<int:trip_id>/bookings/', views.trip_booking_list.as_view(),
           name='trip_booking_list'),

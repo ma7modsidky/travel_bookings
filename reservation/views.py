@@ -584,3 +584,13 @@ def search_ibooking(request):
         return redirect(Booking.objects.get(id=request.GET.get('booking_id')))
     else:
         return render(request, 'reservation/misc/reservations_page.html', {'no_result_i': True, 'q': request.GET.get('booking_id')})
+
+
+class trip_booking_list_all(LoginRequiredMixin, ListView):
+    model = TripBooking
+    template_name = 'reservation/misc/trip_booking_list_all.html'
+
+
+class booking_list_all(LoginRequiredMixin, ListView):
+    model = Booking
+    template_name = 'reservation/misc/booking_list_all.html'

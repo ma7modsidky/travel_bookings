@@ -1,12 +1,23 @@
 {% extends "reservation/base.html" %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
 {% block title %}Edit your account{% endblock %}
 {% block content %}
     <div class="section">
-    <h1>Edit your account</h1>
-    <p>You can edit your account using the following form:</p>
+    <h1 class='text-xl font-bold'>Edit account [{{u.username}}]</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+            <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <form method="post" enctype="multipart/form-data">
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
+        {{ user_form | crispy}}
+        {{ profile_form| crispy}}
         {% csrf_token %}
         <p><input type="submit" value="Save changes"></p>
     </form>

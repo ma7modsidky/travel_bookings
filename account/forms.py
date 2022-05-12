@@ -5,7 +5,7 @@ from .models import Organization, Profile
 from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, Row, Div, Field
-USER_ROLES = (('admin', 'ADMIN'), ('leader', 'LEADER'), ('worker', 'WORKER'))
+USER_ROLES = (('gold', 'GOLD'), ('silver', 'SILVER'), ('bronze', 'BRONZE'))
 
 
 
@@ -54,9 +54,10 @@ class UserRegistrationForm(forms.ModelForm):
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'password')
+        fields = ('first_name', 'last_name', 'email')
         
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ('role', 'address', 'phone_number',
+                  'phone_number_2', 'org', 'percentage')

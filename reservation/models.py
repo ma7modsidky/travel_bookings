@@ -64,9 +64,9 @@ class Hotel(models.Model):
 class HotelPackage(models.Model):
     hotel = models.ForeignKey(
         Hotel, related_name='packages', on_delete=models.RESTRICT)
-    label = models.CharField(max_length=50)
-    date_from = models.DateField(null=True, blank=True)
-    date_until = models.DateField(null=True, blank=True)
+    label = models.CharField(max_length=50,)
+    date_from = models.DateField()
+    date_until = models.DateField()
     creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                       related_name='created_packages',
                                       on_delete=models.SET(get_sentinel_user),
@@ -77,30 +77,60 @@ class HotelPackage(models.Model):
         decimal_places=0,
         verbose_name=_('Single Room price, Half board'),
     )
+    single_room_half_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Single Room cost, Half board'),
+    )
     single_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Single Room price, Full board'),
+    )
+    single_room_full_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Single Room cost, Full board'),
     )
     double_room_half = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Double Room price, Half board'),
     )
+    double_room_half_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Double Room cost, Half board'),
+    )
     double_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Double Room price, Full board'),
+    )
+    double_room_full_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Double Room cost, Full board'),
     )
     triple_room_half = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Triple Room price, Half board'),
     )
+    triple_room_half_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Triple Room cost, Half board'),
+    )
     triple_room_full = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Triple Room price, Full board'),
+    )
+    triple_room_full_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('Triple Room cost, Full board'),
     )
     
     @property
@@ -330,7 +360,6 @@ class Trip(models.Model):
     )
     date_until = models.DateField(
         verbose_name=_('Until'),
-        
     )
     rooms_total = models.PositiveBigIntegerField(verbose_name=_('rooms total'),
                                                blank=True, null=True,)
@@ -341,31 +370,46 @@ class Trip(models.Model):
     meeting_location = models.CharField(verbose_name=_('Trip starting location'),
                                         max_length=256,
                                         blank=True,)
+    meeting_time = models.CharField(verbose_name=_('Trip starting time'),
+                                        max_length=256,
+                                        blank=True,)
     transport_price_person = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Transport price per person'),
         default=0
     )
-
+    single_room_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('single room cost'),
+    )
+    double_room_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('double room cost'),
+    )
+    triple_room_cost = models.DecimalField(
+        max_digits=36,
+        decimal_places=0,
+        verbose_name=_('triple room cost'),
+    )
 
     single_room_price = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Single Room price / Person'),
-        blank=True, null=True,
     )
+    
     double_room_price = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Double Room price / Person'),
-        blank=True, null=True,
     )
     triple_room_price = models.DecimalField(
         max_digits=36,
         decimal_places=0,
         verbose_name=_('Triple Room price/ Person'),
-        blank=True, null=True,
     )
 
     @property

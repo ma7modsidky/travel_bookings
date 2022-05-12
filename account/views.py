@@ -7,7 +7,7 @@ from .models import Profile
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 #ajax views follow/unfollow
 from django.http import JsonResponse
@@ -45,6 +45,7 @@ def dashboard(request):
                   'account/dashboard.html',
                   {})
 
+@login_required
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -55,6 +56,9 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
+            # add user to group
+            g = Group.objects.get(name=user_form.cleaned_data['role'])
+            g.user_set.add(new_user)
             # Create the User profile
             Profile.objects.create(
                 user=new_user, role=user_form.cleaned_data['role'], address=user_form.cleaned_data['role'], phone_number=user_form.cleaned_data['phone_number'], phone_number_2=user_form.cleaned_data['phone_number_2'], org=user_form.cleaned_data['org'], percentage=user_form.cleaned_data['percentage'],)
@@ -64,13 +68,21 @@ def register(request):
     return render(request, 'account/register.html', {'user_form': user_form})
             
 @login_required
-def edit(request):
+def edit(request, user_id):
     if request.method == 'POST':
-        user_form = UserEditForm(instance=request.user, 
-                                 data=request.POST)
-        profile_form = ProfileEditForm(instance=request.user.profile,
-                                        data=request.POST,
-                                        files=request.FILES)
+        if user_id:
+            user = User.objects.get(id=user_id)
+            user_form = UserEditForm(instance=user,
+                                     data=request.POST)
+            profile_form = ProfileEditForm(instance=user.profile,
+                                           data=request.POST,
+                                           files=request.FILES)
+        else:                                   
+            user_form = UserEditForm(instance=request.user, 
+                                    data=request.POST)
+            profile_form = ProfileEditForm(instance=request.user.profile,
+                                            data=request.POST,
+                                            files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -78,10 +90,19 @@ def edit(request):
         else:
             messages.error(request, 'Error updating your profile')
     else:
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile) 
+        if user_id:
+            user = User.objects.get(id=user_id)
+            user_form = UserEditForm(instance=user,
+                                     )
+            profile_form = ProfileEditForm(instance=user.profile,
+                                           )
+        else:
+            user = request.user
+            user_form = UserEditForm(instance=request.user)
+            profile_form = ProfileEditForm(instance=request.user.profile) 
     return render(request,'account/edit.html', {'user_form': user_form,
-                                                'profile_form': profile_form})
+                                                'profile_form': profile_form,
+                                                'u':user})
 
 @login_required
 def user_list(request):
@@ -98,6 +119,12 @@ def user_list(request):
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     return render(request, 'account/user/detail.html', {'section': 'people', 
+                                                        'user': user})
+
+@login_required
+def profile(request):
+    user = get_object_or_404(User, id=request.user.id)
+    return render(request, 'account/user/profile.html', {'section': 'people', 
                                                         'user': user})
 
 
