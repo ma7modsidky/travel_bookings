@@ -11,7 +11,6 @@ from django.utils import timezone
 from datetime import datetime, timedelta ,date
 from django.template.defaultfilters import slugify
 
-from reservation.views import reservations_page
 # Create your models here.
 BOOKING_STATUS = (('active', 'ACTIVE'), ('cancelled', 'CANCELLED'))
 
