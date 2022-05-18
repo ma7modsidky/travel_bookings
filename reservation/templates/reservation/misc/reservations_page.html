@@ -59,7 +59,7 @@
     <div>
         <h3 class='text-xl font-bold dark:text-white'>{% trans 'Indivdual reservations' %}</h3>
         <form action="{% url 'reservation:search_ibooking'%}" method="get">
-            <label for="booking_id" class="px-2 italic">{% trans 'Booking Id' %}</label>
+            <label for="booking_id" class="px-2 italic dark:text-white">{% trans 'Booking Id' %}</label>
             <input type="number" name="booking_id" id="booking_id" class="w-32 rounded-md">
             <input type="submit" value="Search" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
                 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900

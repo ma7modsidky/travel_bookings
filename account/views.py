@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required , permission_required
 from .models import Profile
 from django.contrib import messages
 
@@ -45,7 +45,10 @@ def dashboard(request):
                   'account/dashboard.html',
                   {})
 
+
 @login_required
+@permission_required({("auth.add_user"), ("account.add_profile")}
+    )
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -66,24 +69,43 @@ def register(request):
     else :
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
-            
+
+
 @login_required
-def edit(request, user_id):
+@permission_required({("auth.add_user"), ("account.add_profile")}
+ )
+def edit(request, user_id=None):
     if request.method == 'POST':
+        # another user
         if user_id:
             user = User.objects.get(id=user_id)
+            role = user.profile.role
             user_form = UserEditForm(instance=user,
                                      data=request.POST)
             profile_form = ProfileEditForm(instance=user.profile,
                                            data=request.POST,
                                            files=request.FILES)
-        else:                                   
+        # our own user    
+        else:
+            user = request.user
+            role = user.profile.role
             user_form = UserEditForm(instance=request.user, 
                                     data=request.POST)
             profile_form = ProfileEditForm(instance=request.user.profile,
                                             data=request.POST,
                                             files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
+            print(role)
+            print(profile_form.cleaned_data['role'])
+            if role != profile_form.cleaned_data['role']:
+                print('role changed')
+                old_group = Group.objects.get(name=role)
+                new_group = Group.objects.get(
+                    name=profile_form.cleaned_data['role'])
+                old_group.user_set.remove(user)
+                new_group.user_set.add(user)
+            else:
+                print('role didnt change')
             user_form.save()
             profile_form.save()
             messages.success(request, 'Profile updated \'successfully')
@@ -104,6 +126,9 @@ def edit(request, user_id):
                                                 'profile_form': profile_form,
                                                 'u':user})
 
+
+@permission_required({("auth.add_user"), ("account.add_profile")}
+                     )
 @login_required
 def user_list(request):
     if request.GET.get('type') == 'active':
@@ -115,10 +140,13 @@ def user_list(request):
         return render(request, 'account/user/list.html', {'section': 'people',
                                                       'users': users})
     
+
+@permission_required({("auth.add_user"), ("account.add_profile")}
+                     )
 @login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
-    return render(request, 'account/user/detail.html', {'section': 'people', 
+    return render(request, 'account/user/detail.html', {
                                                         'user': user})
 
 @login_required

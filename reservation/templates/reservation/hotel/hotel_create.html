@@ -1,0 +1,38 @@
+{% extends "reservation/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% block title %} {% trans 'create hotel' %} {% endblock %}
+{% block head %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" id="tripForm" class='text-sm' data-hotels-url="{% url 'reservation:ajax_load_hotels' %}">{% csrf_token %}
+
+        {% crispy form  %}
+        {% comment %} <input type="submit" value="Confirm" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer my-4'> {% endcomment %}
+    
+        <a href="{{ request.META.HTTP_REFERER }}"
+                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer w-20">
+                 {% trans 'Back' %}
+                 </a>
+    </form>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
+    <script>
+        $(document).ready(function () {
+            console.log('hii')
+            $("[name='destination']").select2();
+        });
+    </script>
+{% endblock %}
+{% block domready %}
+
+{% endblock %}

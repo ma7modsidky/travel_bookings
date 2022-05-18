@@ -9,8 +9,9 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import datetime, timedelta ,date
+from django.template.defaultfilters import slugify
 # Create your models here.
-
+BOOKING_STATUS = (('active', 'ACTIVE'), ('cancelled', 'CANCELLED'))
 
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
@@ -41,7 +42,7 @@ class FeaturedManager(models.Manager):
 
 class Hotel(models.Model):
     name = models.CharField(max_length=25, db_index=True)
-    slug = models.SlugField(max_length=250, unique=True, db_index=True)
+    slug = models.SlugField(max_length=250, unique=True, db_index=True )
     destination = models.ForeignKey(
         Destination, related_name='hotels', on_delete=models.DO_NOTHING)
     intro = RichTextField(blank=True)
@@ -60,13 +61,17 @@ class Hotel(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 class HotelPackage(models.Model):
     hotel = models.ForeignKey(
-        Hotel, related_name='packages', on_delete=models.RESTRICT)
-    label = models.CharField(max_length=50,)
-    date_from = models.DateField()
-    date_until = models.DateField()
+        Hotel, related_name='packages', on_delete=models.RESTRICT, verbose_name=_('Hotel'),)
+    label = models.CharField(max_length=50, verbose_name=_('label'),)
+    date_from = models.DateField(verbose_name=_('From'),)
+    date_until = models.DateField(verbose_name=_('To'),)
     creation_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                       related_name='created_packages',
                                       on_delete=models.SET(get_sentinel_user),
@@ -171,10 +176,10 @@ class Booking(models.Model):
         blank=True,
     )
     # Booking info , attrs
-    date_from = models.DateTimeField(
+    date_from = models.DateField(
         verbose_name=_('From'),
     )
-    date_until = models.DateTimeField(
+    date_until = models.DateField(
         verbose_name=_('Until'),
     )
     time_period = models.PositiveIntegerField(
@@ -255,6 +260,8 @@ class Booking(models.Model):
         default=0
     )
 
+    status = models.CharField(max_length=10, choices=BOOKING_STATUS, default=BOOKING_STATUS[0][0])
+
     class Meta:
         ordering = ['-creation_date']
 
@@ -270,6 +277,20 @@ class Booking(models.Model):
     @property
     def get_rooms_count(self):
         return int(self.single_room_count)+int(self.double_room_count)+int(self.triple_room_count)
+
+    @property
+    def get_description(self):
+        single = _('Single rooms')
+        double = _('Double rooms')
+        triple = _('Triple rooms')
+        description = ''
+        if self.single_room_count > 0:
+            description += f'[{self.single_room_count}] {single} \n'
+        if self.double_room_count > 0:
+            description += f'[{self.double_room_count}] {double} \n'
+        if self.triple_room_count > 0:
+            description += f'[{self.triple_room_count}] {triple} \n'
+        return description
 
     @property
     def get_person_count(self):
@@ -336,6 +357,38 @@ class Booking(models.Model):
     @property
     def get_remained_price(self):
         return(self.get_total_price - self.paid_amount)
+
+    @property
+    def get_status(self):
+        if self.date_from > date.today():
+            return 'upcoming'
+        if self.date_until < date.today():
+            return 'previous'
+        if self.date_from <= date.today() and self.date_until >= date.today():
+            return 'ongoing'
+
+    @property
+    def get_active_status(self):
+        print(self.status)
+        if self.status == BOOKING_STATUS[0][0]:
+            return 'active'
+        elif self.status == BOOKING_STATUS[1][0]:
+            return 'cancelled'
+        else:
+            return None
+
+    @property
+    def get_cancellation_price(self):
+        if self.status == 'cancelled':
+            return self.get_primary_price_after_discount // 2
+        else:
+            return 0
+    @property
+    def get_payment_status(self):
+        if self.get_remained_price > 0 :
+            return 'remaining'
+        else :
+            return 'complete'
 
 class BookingError(models.Model):
     booking = models.ForeignKey(
@@ -457,9 +510,13 @@ class Trip(models.Model):
         if self.date_from <= date.today() and self.date_until >= date.today():
             return 'ongoin'
 
+    @property
+    def get_nights_count(self):
+        delta = (self.date_until - self.date_from)
+        return int(delta.days)
 
     def __str__(self):
-        return '#[{}] {} ({})'.format(self.id,self.accommodation.name,
+        return '[{}] {} ({})'.format(self.id,self.accommodation.name,
                                  self.date_from)
 
     class Meta:
@@ -511,7 +568,8 @@ class TripBooking(models.Model):
         default=0,
     )
 
-    seats = models.TextField(null=True, blank=True)
+    seats = models.TextField(verbose_name=_(
+        'Seats'), null=True, blank=True)
 
     discount_percentage = models.PositiveIntegerField(validators=[
         MinValueValidator(0),
@@ -558,7 +616,8 @@ class TripBooking(models.Model):
         verbose_name=_('Notes'),
         blank=True,
     )
-
+    status = models.CharField(
+        max_length=10, choices=BOOKING_STATUS, default=BOOKING_STATUS[0][0])
     class Meta:
         ordering = ['-creation_date']
     def __str__(self) -> str:
@@ -571,13 +630,16 @@ class TripBooking(models.Model):
     
     @property
     def get_description(self):
+        single = _('Single rooms')
+        double = _('Double rooms')
+        triple = _('Triple rooms')
         description = ''
         if self.single_room_count > 0:
-            description += f'[{self.single_room_count}] Single room \n'
+            description += f'[{self.single_room_count}] {single} \n'
         if self.double_room_count > 0:
-            description += f'[{self.double_room_count}] Double room \n'
+            description += f'[{self.double_room_count}] {double} \n'
         if self.triple_room_count > 0:
-            description += f'[{self.triple_room_count}] Triple room \n'
+            description += f'[{self.triple_room_count}] {triple} \n'
         return description
 
     @property
@@ -635,13 +697,34 @@ class TripBooking(models.Model):
 
     @property
     def get_status(self):
-        return('Active')
+        print(self.status)
+        if self.status == BOOKING_STATUS[0][0]:
+            return 'active'
+        elif self.status == BOOKING_STATUS[1][0]:
+            return 'cancelled'
+        else:
+            return None    
 
+
+    @property
+    def get_cancellation_price(self):
+        if self.status == 'cancelled':
+            return self.get_primary_price_after_discount // 2
+        else:
+            return 0
+
+    @property
+    def get_payment_status(self):
+        if self.get_remained_price > 0:
+            return 'remaining'
+        else:
+            return 'complete'
     
 class TripProgram(models.Model):
     destination = models.ForeignKey(Destination,related_name='trip_programs',on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    price = models.PositiveIntegerField()
+    name = models.CharField(max_length=100 , verbose_name='name')
+    cost = models.PositiveIntegerField(verbose_name='cost')
+    price = models.PositiveIntegerField(verbose_name='price')
 
     def __str__(self) -> str:
         return f'{self.name} [{self.price}] {self.destination.name}'

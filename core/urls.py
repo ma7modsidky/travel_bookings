@@ -30,6 +30,7 @@ urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
     path('account/', include('account.urls', namespace='account')),
     path('reports/', include('reports.urls', namespace='reports')),
+    path('actions/', include('actions.urls', namespace='actions')),
     path('', include('reservation.urls', namespace='reservation')),
     path('rosetta/', include('rosetta.urls')),
 )

@@ -30,7 +30,7 @@
 
                     <a href='{% url 'account:profile' %}' type="button"
                         class="flex items-center text-white bg-blue-400 hover:bg-blue-800 font-medium rounded-md text-sm px-2 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700">
-                        <div>{{user.username}}</div>
+                        <div>{{request.user.username}}</div>
                     </a>
                     <a href='{% url 'account:logout' %}' type="button" class="hidden md:block text-white bg-red-700 hover:bg-red-800 font-medium rounded-md text-sm px-2 py-2 text-center mr-3 md:mr-0 dark:bg-red-600 dark:hover:bg-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -62,7 +62,7 @@
                 </li>
                 {% if request.user.is_authenticated %}
                 <li>
-                    <a href='{% url 'account:user_detail' user.username %}' class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{% trans "Account" %}</a>
+                    <a href='{% url 'account:profile' %}' class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">{% trans "Account" %}</a>
                 </li>
                 <li>
                 {%endif%}

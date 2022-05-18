@@ -4,6 +4,12 @@ html {
     font-family: 'Tajawal', sans-serif !important;
 }
 
-label {
+/* label {
     color: black !important;
-}
+} */
+legend {
+    color: black !important;}
+
+select {
+    padding: 0.5rem 1.5rem !important;
+}    

@@ -20,26 +20,20 @@
         <h1 class="dark:text-white font-bold text-xl leading-8 my-1">
           {{user.username | title}}
         </h1>
+        <div class="flex gap-2">
+          {% if user.is_superuser %}
+          <span class="text-sm text-white bg-red-500 py-1 px-2 rounded-md  px-2">
+            Admin
+          </span>
+          {% endif %}
+          <!-- {% if user.is_staff %}
+          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md">
+            Staff
+          </span>
+          {% endif %} -->
+        </div>
         
-        {% if user.profile.role == 'gold' %}
-        <div>
-          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md leading-6">
-            {{user.profile.role | title}}
-          </span>
-        </div>
-        {% elif user.profile.role == 'silver' %}
-        <div>
-          <span class="text-sm text-white bg-slate-500 py-1 px-2 rounded-md leading-6">
-            {{user.profile.role | title}}
-          </span>
-        </div>
-        {% else %}
-        <div>
-          <span class="text-sm text-white bg-amber-700 py-1 px-2 rounded-md leading-6">
-            {{user.profile.role | title}}
-          </span>
-        </div>
-        {% endif %}
+        
         {% if user.profile.org %}
         <h3 class="dark:text-gray-100 font-lg text-semibold leading-6 my-2">
           {{user.profile.org | title}}
@@ -61,13 +55,43 @@
             >
           </li>
           <li class="flex items-center py-3">
+            <span>{% trans 'Role' %} </span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %} "
+              >
+              {% if user.profile.role == 'gold' %}
+        <div>
+          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% elif user.profile.role == 'silver' %}
+        <div>
+          <span class="text-sm text-white bg-slate-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% else %}
+        <div>
+          <span class="text-sm text-white bg-amber-700 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% endif %}
+              </span
+            >
+          </li>
+          {% comment %} <li class="flex items-center py-3">
             <span>{% trans 'Balance' %}</span>
             <span class="{% if LANGUAGE_CODE == 'ar' %}
                                 mr-auto
                                 {% else %}
                                 ml-auto
                             {% endif %}  text-sm">{{user.profile.balance}}</span>
-          </li>
+          </li> {% endcomment %}
           <li class="flex items-center py-3 text-sm">
             <span>{% trans 'Member since' %}</span>
             <span class="{% if LANGUAGE_CODE == 'ar' %}
@@ -107,7 +131,7 @@
             <ul class="space-y-2">
               <li>
                 <a
-                  href={% url 'reservation:trip_create' %}
+                  href={% url 'actions:user_actions' %}
                   class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   
@@ -116,7 +140,7 @@
               </li>
                <li>
                 <a
-                  href="#"
+                  href={% url 'reservation:trip_booking_list_user' %}
                   class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   
@@ -125,31 +149,13 @@
               </li>
               <li>
                 <a
-                  href="#"
+                  href={% url 'reservation:booking_list_user' %}
                   class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   
                   <span class="ml-3">{% trans 'Indivdual reservations' %}</span>
                 </a>
               </li>
-               <li>
-                <a
-                  href="{% url 'account:register' %}"
-                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  
-                  <span class="ml-3">{% trans 'profile information' %}</span>
-                </a>
-              </li>
-              </li>
-               <li>
-                <a
-                  href="{% url 'account:user_list' %}"
-                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  
-                  <span class="ml-3">{% trans 'Users list' %}</span>
-                </a>
               </li>
             </ul>
           </div>
@@ -163,6 +169,25 @@
 
         <div class="bg-white dark:bg-gray-800 p-3 hover:shadow border-t-4 border-blue-600 mb-4 ">
             <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Account' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href={% url 'actions:user_actions' %}
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Logs' %}</a>
+                <a href={% url 'reservation:trip_booking_list_user' %} class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a>
+            <a href={% url 'reservation:booking_list_user' %} class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>
+            </div>
+            {% if request.user.profile.role == 'gold' or request.user.profile.role == 'silver' %}
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
                 <span>{% trans 'Trips' %}</span>
             </div>
             <div class="flex flex-wrap my-2 gap-2">
@@ -175,11 +200,15 @@
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trips' %}</a>
-                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                {% comment %} <a href="{% url 'reservation:trip_booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a>
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a> {% endcomment %}
             </div>
+            {% else %}
+            
+            {% endif %}
+            {% if request.user.profile.role == 'gold' %}
             <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
                 <span>{% trans 'Packages' %}</span>
             </div>
@@ -193,11 +222,14 @@
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Packages' %}</a>
-                <a href="" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>
             </div>
+            
+            
+              
             <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
                 <span>{% trans 'Users' %}</span>
             </div>
@@ -211,32 +243,41 @@
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Users list' %}</a>
-                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                <a href="{% url 'actions:admin_actions' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-gray-700 cursor-pointer">{% trans 'All logs' %}</a>
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Admin logs' %}</a>
+            <a href="{% url 'reservation:hotel_create' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Add hotel' %}</a>
+            <a href="{% url 'reservation:trip_program_create' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Add Trip program' %}</a>
             </div>
-            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+            {% endif %}
+            {% comment %} <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
                 <span>{% trans 'Reports' %}</span>
             </div>
             <div class="flex flex-wrap my-2 gap-2">
-                <a href="{% url 'reservation:trip_booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                <a class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Daily' %}</a>
-                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Weekly' %}</a>
-                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+                <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Annual' %}</a>
-            <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Custom' %}</a>
-            </div>
+            </div> {% endcomment %}
         </div>
         
 
@@ -306,61 +347,7 @@
       <!-- End of about section -->
 
       
-      <!-- Experience and education -->
-      <!-- <div class="bg-white bg-gray-100 p-3 shadow-sm rounded-sm">
-        <div class="grid grid-cols-1">
-          <div>
-            <div
-              class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3"
-            >
-              <span clas="text-green-500">
-                <svg
-                  class="h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </span>
-              <span class="tracking-wide">Activity Log</span>
-            </div>
-            <ul class="list-inside space-y-2">
-              <li class="border-b-2 border-gray-200">
-                <div class="text-teal-600 text-xs">22/5/2022</div>
-                <div class="text-gray-600 text-sm">Booked 2 rooms at Trip [Concord EL salam] </div>
-              </li>
-              <li class="border-b-2 border-gray-200">
-                <div class="text-teal-600 text-xs">22/5/2022</div>
-                <div class="text-gray-600 text-sm">Booked 2 rooms at Trip [Concord EL salam] </div>
-              </li>
-              <li class="border-b-2 border-gray-200">
-                <div class="text-teal-600 text-xs">22/5/2022</div>
-                <div class="text-gray-600 text-sm">Booked 2 rooms at Trip [Concord EL salam] </div>
-              </li>
-              <li class="border-b-2 border-gray-200">
-                <div class="text-teal-600 text-xs">22/5/2022</div>
-                <div class="text-gray-600 text-sm">Booked 2 rooms at Trip [Concord EL salam] </div>
-              </li>
-              <li class="border-b-2 border-gray-200">
-                <div class="text-teal-600 text-xs">22/5/2022</div>
-                <div class="text-gray-600 text-sm">Booked 2 rooms at Trip [Concord EL salam] </div>
-              </li>
-              
-            </ul>
-          </div>
-          
-        </div>
-        <!-- End of Activity grid -->
-      </div> -->
-      <!-- End of profile tab -->
-    </div>
+      
   </div>
 </div>
 {% endblock %}

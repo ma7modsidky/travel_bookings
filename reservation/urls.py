@@ -12,6 +12,10 @@ urlpatterns = [
     path('reservations/trip_bookings', views.trip_booking_list_all.as_view(), name='trip_booking_list_all'),
     path('reservations/ibookings',
          views.booking_list_all.as_view(), name='booking_list_all'),
+    path('account/trip_bookings',
+         views.trip_booking_list_user.as_view(), name='trip_booking_list_user'),
+    path('account/ibookings',
+         views.booking_list_user.as_view(), name='booking_list_user'),
      # Destinations URLS
     path('destinations',views.destination_list.as_view(), name='destination_list'),
     path('destinations/<slug:slug>', views.destination_detail.as_view(),
@@ -41,6 +45,8 @@ urlpatterns = [
      # Bookings
      path('trips/<int:trip_id>/bookings/', views.trip_booking_list.as_view(),
           name='trip_booking_list'),
+     path('trips/<int:trip_id>/bookings/<str:status>', views.trip_booking_list.as_view(),
+          name='trip_booking_list'),
      path('trips/<int:pk>/bookings/pdf', views.trip_bookings_list_pdf,
           name='trip_bookings_list_pdf'),
      path('trips/booking/new', views.trip_booking_create.as_view(),
@@ -59,6 +65,10 @@ urlpatterns = [
          name='trip_booking_update'),
      path('bookings/<int:pk>/addprogram', views.trip_booking_program_add.as_view(),
           name='trip_booking_program_add'),
+     path('bookings/<str:booking_type>/<int:pk>/cancel', views.trip_booking_cancel,
+          name='trip_booking_cancel'),
+     path('bookings/<str:booking_type>/<int:pk>/active', views.trip_booking_active,
+          name='trip_booking_active'),
      # Hotel Packages
      path('packages/<int:hotel_id>/new', views.package_create.as_view(),
           name='package_create'),
@@ -74,4 +84,9 @@ urlpatterns = [
     # path('about_us/', views.about_us.as_view(),
     #      name='about_us'),
     path('ajax/load-hotels/', views.load_hotels, name='ajax_load_hotels'),
+    path('hotels/add/', views.hotel_create.as_view(), name='hotel_create'),
+    path('trip_programs/add/', views.trip_program_create.as_view(),
+         name='trip_program_create'),
+    path('trip_programs/<slug:destination_slug>', views.trip_program_list.as_view(),
+         name='trip_program_list'),
 ]

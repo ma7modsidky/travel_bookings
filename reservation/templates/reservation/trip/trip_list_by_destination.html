@@ -1,5 +1,6 @@
 {% extends "reservation/base.html" %}
 {% load static %}
+{% load humanize %}
 {% load i18n %}
 {% block title %} {% trans 'Trips' %} | {{destination.name | title}} {% endblock %}
 {% block head %}
@@ -151,10 +152,10 @@
                         {{trip.date_until |date:"d / m / Y"}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.double_room_price}}
+                        {{trip.double_room_price|intcomma:False}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.triple_room_price}}
+                        {{trip.triple_room_price|intcomma:False}}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="inline-flex rounded-md shadow-sm">

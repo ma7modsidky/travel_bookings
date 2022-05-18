@@ -1,6 +1,7 @@
 {% extends "reservation/base.html" %}
 {% load static %}
 {% load i18n %}
+{% load humanize %}
 {% block title %} {% trans 'Trips' %} | {{hotel.name | title}} {% endblock %}
 {% block head %}
 
@@ -84,7 +85,7 @@
             dark:border-gray-700 text-sm font-medium
             text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
-            <a href={{hotel.get_absolute_url}} class="inline-flex items-center">{% trans 'Trips' %}Hotel Details
+            <a href={{hotel.get_absolute_url}} class="inline-flex items-center">{% trans 'Hotel Details' %}
             </a>
             
         </div>
@@ -174,10 +175,10 @@
                         {{trip.date_until |date:"d / m / Y"}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.double_room_price}}
+                        {{trip.double_room_price|intcomma:False}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.triple_room_price}}
+                        {{trip.triple_room_price|intcomma:False}}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="inline-flex rounded-md shadow-sm">

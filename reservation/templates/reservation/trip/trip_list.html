@@ -3,7 +3,7 @@
 {% load static %}
 {% block title %} {% trans "Trips" %} {% endblock %}
 {% block head %}
-
+{% load humanize %}
 {% endblock %}
 
 {% block content %}
@@ -104,10 +104,11 @@
                          {% trans "To" %}
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        {% trans "Double Room" %}
+                        {% trans "Double Room price / Person" %}
+                        {% comment %} {% trans "Double Room" %} {% endcomment %}
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        {% trans "Triple Room" %}
+                        {% trans "Triple Room price/ Person" %}
                     </th>
                     <th scope="col" class="px-6 py-3">
                         <span class="sr-only"></span>
@@ -131,10 +132,10 @@
                         {{trip.date_until |date:"d / m / Y"}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.double_room_price}}
+                        {{trip.double_room_price |intcomma:False}}
                     </td>
                     <td class="px-6 py-4">
-                        {{trip.triple_room_price}}
+                        {{trip.triple_room_price |intcomma:False}}
                     </td>
                     <td class="px-6 py-4 text-right">
                     

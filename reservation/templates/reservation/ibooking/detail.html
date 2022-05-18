@@ -1,5 +1,6 @@
 {% extends "reservation/base.html" %}
 {% load static %}
+{% load humanize %}
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {% load i18n %}
@@ -58,11 +59,19 @@
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Print' %}</a>
-        <a href=''
-            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
-            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
-            cursor-pointer">{% trans 'Delete booking' %}
-            </a>
+            {% if object.get_active_status == 'active' %}
+                <a href='{% url 'reservation:trip_booking_cancel' 'ibooking' object.id%}'
+                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer">{% trans 'Cancel booking' %}
+                </a>
+            {% elif object.get_active_status == 'cancelled' %}
+                <a href='{% url 'reservation:trip_booking_active' 'ibooking' object.id%}'
+                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900
+                cursor-pointer">{% trans 'Activate booking' %}
+                </a>
+            {% endif %}
         <a href={% url 'reports:ibooking_report' object.id %} 
             class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-white focus:outline-none bg-yellow-500 rounded-lg border
             border-gray-200 hover:bg-yellow-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200
@@ -168,6 +177,16 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Description' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_description |linebreaks}}
+                            </td>
+                        </tr>
+                        {% comment %} <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Single Rooms' %}
                             </th>
                             <td class="px-3 py-2">
@@ -193,7 +212,7 @@
                             <td class="px-3 py-2">
                                 {{object.triple_room_count}}
                             </td>
-                        </tr>
+                        </tr> {% endcomment %}
                     </tbody>
                 </table>
             </div>
@@ -328,7 +347,7 @@
                                 {% trans 'Reservation Price | Discount' %}
                             </th>
                             <td class="px-3 py-2">
-                                {{object.get_primary_price}} | - {{object.discount_percentage}}%
+                                {{object.get_primary_price|intcomma:False}} | - {{object.discount_percentage}}%
                             </td>
                         </tr>
                         <tr
@@ -338,7 +357,7 @@
                                 {% trans 'Extra discount' %}
                             </th>
                             <td class="px-3 py-2">
-                                - {{object.discount_amount}}
+                                - {{object.discount_amount|intcomma:False}}
                             </td>
                         </tr>
                         <tr
@@ -348,7 +367,7 @@
                                 {% trans 'Price after discount' %}
                             </th>
                             <td class="px-3 py-2">
-                                {{object.get_primary_price_after_discount}}
+                                {{object.get_primary_price_after_discount|intcomma:False}}
                             </td>
                         </tr>
                         <tr
@@ -358,7 +377,7 @@
                                 {% trans 'Extra Seats price' %}
                             </th>
                             <td class="px-3 py-2">
-                                +{{object.get_extra_seats_price}}
+                                +{{object.get_extra_seats_price|intcomma:False}}
                             </td>
                         </tr>
                         <tr
@@ -368,7 +387,7 @@
                                 {% trans 'Total price' %}
                             </th>
                             <td class="px-3 py-2 font-bold text-xl">
-                                {{object.get_total_price}}
+                                {{object.get_total_price|intcomma:False}}
                             </td>
                         </tr>
                         <tr
@@ -378,8 +397,8 @@
                                {% trans 'Paid | Remaining' %}
                             </th>
                             <td class="px-3 py-2 font-bold text-xl">
-                               <span class="text-green-700">{{object.paid_amount}}</span> | <span
-                                   class="text-red-700">{{object.get_remained_price}}</span>
+                               <span class="text-green-700">{{object.paid_amount|intcomma:False}}</span> | <span
+                                   class="text-red-700">{{object.get_remained_price|intcomma:False}}</span>
                             </td>
                         </tr>
                         
@@ -405,7 +424,7 @@
                                     {% trans 'Single Room' %}
                                 </th>
                                 <td class="px-3 py-2">
-                                    {{ object.package.single_room_full }}
+                                    {{ object.package.single_room_full |intcomma:False}}
                                 </td>
                             </tr>
                             <tr
@@ -415,7 +434,7 @@
                                     {% trans 'Double Room' %}
                                 </th>
                                 <td class="px-3 py-2">
-                                    {{object.package.double_room_full}}
+                                    {{object.package.double_room_full |intcomma:False}}
                                 </td>
                             </tr>
                             <tr
@@ -425,7 +444,7 @@
                                     {% trans 'Triple Room' %}
                                 </th>
                                 <td class="px-3 py-2">
-                                    {{object.package.triple_room_full}}
+                                    {{object.package.triple_room_full |intcomma:False}}
                                 </td>
                             </tr>
                         </tbody>
