@@ -265,7 +265,7 @@ class Booking(models.Model):
         default=0
     )
 
-    status = models.CharField(max_length=10, choices=BOOKING_STATUS, default=BOOKING_STATUS[0][0])
+    status = models.CharField(max_length=20, choices=BOOKING_STATUS, default=BOOKING_STATUS[0][0])
 
     class Meta:
         ordering = ['-creation_date']
