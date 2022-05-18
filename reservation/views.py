@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
 from django.conf import settings
 from django import http
-from .models import BOOKING_STATUS, Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram
+from .models import  Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram
 from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin
 from django.utils import timezone
 from datetime import datetime, timedelta, date
@@ -25,7 +25,7 @@ import weasyprint
 from django.http import HttpResponse
 
 # Create your views here.
-
+BOOKING_STATUS = (('active', 'ACTIVE'), ('cancelled', 'CANCELLED'))
 
 def home(request):
     return render(request, 'reservation/home.html', {})
