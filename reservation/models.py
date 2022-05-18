@@ -10,13 +10,19 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import datetime, timedelta ,date
 from django.template.defaultfilters import slugify
+
+from reservation.views import reservations_page
 # Create your models here.
 BOOKING_STATUS = (('active', 'ACTIVE'), ('cancelled', 'CANCELLED'))
 
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
 
-
+class Client(models.Model):
+    name = models.CharField(max_length=25)
+    phone = models.CharField(max_length=15, db_index=True)
+    reservations = models.PositiveBigIntegerField(default=1)
+    last_reservation = models.CharField(max_length=50, blank=True)
 class Destination(models.Model):
     name = models.CharField(max_length=25, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
@@ -644,9 +650,9 @@ class TripBooking(models.Model):
 
     @property
     def get_cost(self):
-        cost = (self.single_room_count*self.trip.single_room_cost) + \
+        cost = ((self.single_room_count*self.trip.single_room_cost) + \
             (self.double_room_count*self.trip.double_room_cost) + \
-            (self.triple_room_count*self.trip.triple_room_cost)
+            (self.triple_room_count*self.trip.triple_room_cost))*self.get_nights_count
         return int(cost)
 
     @property

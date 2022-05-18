@@ -35,7 +35,7 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a 
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Trip reservations' %}</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Indivdual reservations' %}</a>
                 </div>
             </li>
             <li>
@@ -47,7 +47,7 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a 
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">[{{booking.id}}]</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{booking.id}}]</a>
                 </div>
             </li>
         </ol>
@@ -91,10 +91,20 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {% trans 'trip' %}
+                                {% trans 'Hotel' %}
                             </th>
                             <td class="px-3 py-2">
-                                {{ booking.trip }}
+                                {{ booking.accommodation }}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Nights' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.get_nights_count }}
                             </td>
                         </tr>
                         <tr
