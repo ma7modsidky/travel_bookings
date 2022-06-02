@@ -20,8 +20,7 @@
         <ol>
         {% for b in object.bookings.all %}
             <li>
-                {{b.name}} - [{{b.get_total_seats}} مقعد] - [{{b.phone}}]
-            </li>
+                {{b.name}}
         {% endfor %}
         </ol>      
     </div>

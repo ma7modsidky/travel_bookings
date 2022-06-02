@@ -1,5 +1,4 @@
-from pyexpat import model
-from tabnanny import verbose
+
 from django import forms
 from .models import Trip, TripBooking, TripBookingProgram ,Booking
 from django.utils.translation import gettext_lazy as _

@@ -6,11 +6,11 @@
 {% block title %} {% trans 'create trip' %} {% endblock %}
 {% block head %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://unpkg.com/flowbite@1.4.5/dist/datepicker.js"></script>
+    
 {% endblock %}
 
 {% block content %}
-    <form method="post" id="tripForm" class='text-sm' data-hotels-url="{% url 'reservation:ajax_load_hotels' %}">{% csrf_token %}
+    <form method="post" autocomplete="off" id="tripForm" class='text-sm' data-hotels-url="{% url 'reservation:ajax_load_hotels' %}">{% csrf_token %}
 
         {% crispy form form.helper %}
         {% comment %} <input type="submit" value="Confirm" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
@@ -26,10 +26,15 @@
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script
+    src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+    crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-            console.log('hii')
+            $("[name='date_from']").datepicker({ dateFormat:"yy-mm-dd", });
+            $("[name='date_until']").datepicker({ dateFormat:"yy-mm-dd", });
             $("[name='destination']").select2();
             $("[name='accommodation']").select2();
             $('#id_phase').select2();

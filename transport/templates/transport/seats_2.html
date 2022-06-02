@@ -1,0 +1,409 @@
+{% load i18n %}
+<form class="p-2 max-w-[40rem] min-w-[14rem] w-auto m-auto" dir="ltr" method="post">
+    {% csrf_token %}
+    <div class="plane">
+        {% comment %} <div dir='rtl'>
+            <h3 class="text-md font-bold dark:text-white my-1">{{buss.label}}</h3>
+            <p class="text-sm font-bold dark:text-white my-1">{% trans 'From' %}: {{buss.origin}}</p>
+            <p class="text-sm font-bold dark:text-white my-1">{% trans 'To' %}: {{buss.destination}}</p>
+        </div> {% endcomment %}
+        <div class="fuselage">
+            
+        </div>
+        <ol class="cabin fuselage">
+            <li class="row row--1">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=1>
+                        <input type="checkbox" id="1" name="seat" value="1" class="absolute opacity-0 "/>
+                        <label for="1" class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>1</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=2>
+                        <input type="checkbox" id="2" name="seat" value="2" class="absolute opacity-0 " />
+                        <label for="2" class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>2</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+                        
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=3>
+                        <input type="checkbox" id="3" name="seat" value="3" class="absolute opacity-0 " />
+                        <label for="3" class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>3</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=4>
+                        <input type="checkbox" id="4" name="seat" value="4" class="absolute opacity-0 " />
+                        <label for="4" class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>4</label>
+                    </li>
+                </ol>
+                
+                
+            </li>
+            <li class="row row--2">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=5>
+                        <input type="checkbox" id="5" name="seat" value="5" class="absolute opacity-0 " />
+                        <label for="5"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>5</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=6>
+                        <input type="checkbox" id="6" name="seat" value="6" class="absolute opacity-0 " />
+                        <label for="6"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>6</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=7>
+                        <input type="checkbox" id="7" name="seat" value="7" class="absolute opacity-0 " />
+                        <label for="7"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>7</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=8>
+                        <input type="checkbox" id="8" name="seat" value="8" class="absolute opacity-0 " />
+                        <label for="8"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>8</label>
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--3">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=9>
+                        <input type="checkbox" id="9" name="seat" value="9" class="absolute opacity-0 " />
+                        <label for="9"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md checked:bg-blue-500'>9</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=10>
+                        <input type="checkbox" id="10" name="seat" value="10" class="absolute opacity-0 " />
+                        <label for="10"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>10</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=11>
+                        <input type="checkbox" id="11" name="seat" value="11" class="absolute opacity-0 " />
+                        <label for="11"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>11</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=12>
+                        <input type="checkbox" id="12" name="seat" value="12" class="absolute opacity-0 " />
+                        <label for="12"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>12</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--4">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=13>
+                        <input type="checkbox" id="13" name="seat" value="13" class="absolute opacity-0 " />
+                        <label for="13"
+                            class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>13</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=14>
+                        <input type="checkbox" id="14" name="seat" value="14" class="absolute opacity-0 " />
+                        <label for="14" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>14</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=15>
+                        <input type="checkbox" id="15" name="seat" value="15" class="absolute opacity-0 " />
+                        <label for="15" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>15</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=16>
+                        <input type="checkbox" id="16" name="seat" value="16" class="absolute opacity-0 " />
+                        <label for="16" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>16</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--5">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=17>
+                        <input type="checkbox" id="17" name="seat" value="17" class="absolute opacity-0 " />
+                        <label for="17" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>17</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=18>
+                        <input type="checkbox" id="18" name="seat" value="18" class="absolute opacity-0 " />
+                        <label for="18" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>18</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=19>
+                        <input type="checkbox" id="19" name="seat" value="19" class="absolute opacity-0 " />
+                        <label for="19" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>19</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=20>
+                        <input type="checkbox" id="20" name="seat" value="20" class="absolute opacity-0 " />
+                        <label for="20" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>20</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--6">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=21>
+                        <input type="checkbox" id="21" name="seat" value="21" class="absolute opacity-0 " />
+                        <label for="21" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>21</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=22>
+                        <input type="checkbox" id="22" name="seat" value="22" class="absolute opacity-0 " />
+                        <label for="22" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>22</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+                    
+                </ol>
+            </li>
+            <li class="row row--6">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=23>
+                        <input type="checkbox" id="23" name="seat" value="23" class="absolute opacity-0 " />
+                        <label for="23" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>23</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=24>
+                        <input type="checkbox" id="24" name="seat" value="24" class="absolute opacity-0 " />
+                        <label for="24" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>24</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 p-1">
+
+                    </li>
+
+                </ol>
+            </li>
+            <li class="row row--7">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=25>
+                        <input type="checkbox" id="25" name="seat" value="25" class="absolute opacity-0 " />
+                        <label for="25" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>25</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=26>
+                        <input type="checkbox" id="26" name="seat" value="26" class="absolute opacity-0 " />
+                        <label for="26" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>26</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=27>
+                        <input type="checkbox" id="27" name="seat" value="27" class="absolute opacity-0 " />
+                        <label for="27" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>27</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=28>
+                        <input type="checkbox" id="28" name="seat" value="28" class="absolute opacity-0 " />
+                        <label for="28" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>28</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--8">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=29>
+                        <input type="checkbox" id="29" name="seat" value="29" class="absolute opacity-0 " />
+                        <label for="29" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>29</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=30>
+                        <input type="checkbox" id="30" name="seat" value="30" class="absolute opacity-0 " />
+                        <label for="30" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>30</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=31>
+                        <input type="checkbox" id="31" name="seat" value="31" class="absolute opacity-0 " />
+                        <label for="31" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>31</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=32>
+                        <input type="checkbox" id="32" name="seat" value="32" class="absolute opacity-0 " />
+                        <label for="32" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>32</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--9">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=33>
+                        <input type="checkbox" id="33" name="seat" value="33" class="absolute opacity-0 " />
+                        <label for="33" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>33</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=34>
+                        <input type="checkbox" id="34" name="seat" value="34" class="absolute opacity-0 " />
+                        <label for="34" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>34</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=35>
+                        <input type="checkbox" id="35" name="seat" value="35" class="absolute opacity-0 " />
+                        <label for="35" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>35</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=36>
+                        <input type="checkbox" id="36" name="seat" value="36" class="absolute opacity-0 " />
+                        <label for="36" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>36</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--10">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=37>
+                        <input type="checkbox" id="37" name="seat" value="37" class="absolute opacity-0 " />
+                        <label for="37" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>37</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=38>
+                        <input type="checkbox" id="38" name="seat" value="38" class="absolute opacity-0 " />
+                        <label for="38" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>38</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=39>
+                        <input type="checkbox" id="39" name="seat" value="39" class="absolute opacity-0 " />
+                        <label for="39" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>39</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=40>
+                        <input type="checkbox" id="40" name="seat" value="40" class="absolute opacity-0 " />
+                        <label for="40" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>40</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--11">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=41>
+                        <input type="checkbox" id="41" name="seat" value="41" class="absolute opacity-0 " />
+                        <label for="41" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>41</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=42>
+                        <input type="checkbox" id="42" name="seat" value="42" class="absolute opacity-0 " />
+                        <label for="42" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>42</label>
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=43>
+                        <input type="checkbox" id="43" name="seat" value="43" class="absolute opacity-0 " />
+                        <label for="43" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>43</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=44>
+                        <input type="checkbox" id="44" name="seat" value="44" class="absolute opacity-0 " />
+                        <label for="44" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>44</label>
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--12">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=45>
+                        <input type="checkbox" id="45" name="seat" value="45" class="absolute opacity-0 " />
+                        <label for="45" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>45</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=46>
+                        <input type="checkbox" id="46" name="seat" value="46" class="absolute opacity-0 " />
+                        <label for="46" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>46</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=47>
+                        <input type="checkbox" id="47" name="seat" value="47" class="absolute opacity-0 " />
+                        <label for="47" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>47</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=48>
+                        <input type="checkbox" id="48" name="seat" value="48" class="absolute opacity-0 " />
+                        <label for="48" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>48</label>
+                    </li>
+                    <li class="flex relative flex-1 justify-center m-1 rounded-md st{{bus_id}} " data-num=49>
+                        <input type="checkbox" id="49" name="seat" value="49" class="absolute opacity-0 " />
+                        <label for="49" class='block relative w-full text-center text-lg font-bold p-1 rounded-md
+                            checked:bg-blue-500'>49</label>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+    <div dir="auto">
+        <input type="submit" value="Confirm" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer my-4'>
+        <a href="{{ booking_url }}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer w-20">
+            {% trans 'Back' %}
+        </a>
+    </div>
+    
+</form>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+            let booked_{{bus_id}} = {{seats}}
+            console.log({{limit}})
+            const all_seats_{{bus_id}} = document.querySelectorAll('.st{{bus_id}}')
+            $('input[type=checkbox]').on('change', function (e) {
+            if ($('input[type=checkbox]:checked').length > {{limit}}) {
+            $(this).prop('checked', false);
+            alert("allowed only the limit");
+            }
+            });
+            all_seats_{{bus_id}}.forEach(st =>{
+                if (booked_{{bus_id}}.includes(parseInt(st.dataset.num))){
+                    
+                    st.children[1].classList.remove('bg-green-500')
+                    st.children[1].classList.add('bg-red-500')
+                    st.children[0].disabled = true;
+                }
+                else{
+                    st.children[1].classList.remove('bg-red-500')
+                    st.children[1].classList.add('bg-green-500')
+                }
+            })
+            
+            
+        });
+    
+</script>

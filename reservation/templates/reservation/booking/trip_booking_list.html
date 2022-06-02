@@ -114,9 +114,9 @@
                         <th scope="col" class="px-3 py-2">
                             {% trans 'Phone' %}
                         </th>
-                        <th scope="col" class="px-3 py-2">
+                        {% comment %} <th scope="col" class="px-3 py-2">
                             {% trans 'Status' %}
-                        </th>
+                        </th> {% endcomment %}
                         <th scope="col" class="px-3 py-2 ">
                             {% trans 'Payment Status' %}
                         </th>
@@ -145,9 +145,9 @@
                         <td class="px-3 py-2 whitespace-nowrap">
                             {{b.phone}}
                         </td>
-                        <td class="px-3 py-2 whitespace-nowrap">
+                        {% comment %} <td class="px-3 py-2 whitespace-nowrap">
                             {{b.get_status}}
-                        </td>
+                        </td> {% endcomment %}
                         <td class="px-3 py-2 whitespace-nowrap">
                             {% if b.get_payment_status == 'remaining' %}
                             <span
@@ -156,7 +156,7 @@
                                 {{b.get_remained_price |intcomma:False}}</span>
                             {% elif b.get_payment_status == 'complete' %}
                             <span
-                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{% trans 'complete' %}</span>
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
                             {% else %}
                             {% endif %}
                         </td>
@@ -171,7 +171,7 @@
                                     {% trans 'Details' %}
                                 </a>
 
-                                <a href=""
+                                <a href={% url 'reservation:trip_booking_update' b.id %}
                                     class="py-2 px-4 text-sm font-medium text-red-900 bg-white{% if LANGUAGE_CODE == 'ar' %}
                                 rounded-l-lg
                                 {% else %}

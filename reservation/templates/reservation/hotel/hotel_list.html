@@ -94,6 +94,7 @@
             <a href="{% url "reservation:trip_list_by_destination" destination.slug 'all' %}" class="inline-flex items-center">{% trans "Previous Trips" %}</a>
         </div>
     </div>
+    {% include "reservation/pagination.html"  %}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
 
         {% for hotel in object_list.all %}

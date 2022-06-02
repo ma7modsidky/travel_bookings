@@ -1,0 +1,85 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load bus_tags %}
+{% load i18n %}
+{% block title %} {% trans 'Bus select' %}  {% endblock %}
+{% block content %}
+<div class="bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href="{% url "reservation:trip_list" 'all' %}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Trips' %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url "reservation:trip_detail" booking.trip.id %}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{object.trip.accommodation.name | title}}
+                        {% trans 'Trip' %} [{{booking.trip.date_from}}] [{{booking.trip.id}}]</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url "reservation:trip_booking_detail" booking.id %}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{booking.id}}]</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Select bus' %}</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <h1 class="text-xl font-bold dark:text-white my-1">{% trans 'Select bus' %} ({{booking.trip.date_from}}) --> ({{booking.trip.date_until}})</h1>
+    <h2 class="text-lg font-bold dark:text-white my-1">{% trans 'Seats to book' %} : {{booking.get_total_seats}}</h2>
+    <h2 class="text-lg font-bold dark:text-white my-1">{% trans 'Available buses' %} : {{buses.count}}</h2>
+    <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
+        {% for bus in buses %}
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            <a href="{% url "transport:seats_select" booking.id bus.id %}">
+                {% show_seats bus.id %}
+            </a>
+        </div>
+        {% endfor %}
+    </section>
+</div>
+
+
+{% endblock %}

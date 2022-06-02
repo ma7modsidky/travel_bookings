@@ -11,5 +11,9 @@ legend {
     color: black !important;}
 
 select {
-    padding: 0.5rem 1.5rem !important;
-}    
+    padding: 0.5rem 2.5rem !important;
+}
+
+.pointer-events-none {
+    display: none !important;
+}

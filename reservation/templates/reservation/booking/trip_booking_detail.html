@@ -3,6 +3,7 @@
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {% load humanize %}
+{% load bus_tags %}
 {% load i18n %}
 {% block title %} {% trans 'Reservation Details' %}  {% endblock %}
 {% block content %}
@@ -60,26 +61,50 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="#"
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">[{{object.get_rooms_count}} {% trans 'rooms' %}] [{{object.name}}]</a>
+                    {% comment %} <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">[{{object.get_rooms_count}} {% trans 'rooms' %}] [{{object.name}}]</a> {% endcomment %}
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{object.id}}]</a>    
                 </div>
             </li>
         </ol>
     </nav>
+    {% if object.get_cancellation_price > object.paid_amount %}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        <span class="font-medium">Payment ({{object.paid_amount |intcomma:False}}EGP) is less than half of the
+            price({{object.get_total_price |intcomma:False}}EGP)</span> <a
+            href="{% url 'reservation:trip_booking_pay' object.id %}" class='font-bold'>Pay now</a>
+        </div>
+    {% endif %}
+    {% if not object.seats_booked and object.get_status == 'active'%}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        <span class="font-medium">Bus Seats</span> Hasn't been selected yet <a href="{% url "transport:bus_select" object.id %}" class='font-bold'>Book now</a>
+    </div>
+    {% endif %}
+    
+    {% if object.get_status == 'cancelled' %}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        Booking has been cancelled , Cancellation price is {{object.get_cancellation_price |intcomma:False}}EGP
+        </div>
+    {% endif %}
+    
     <div class="flex flex-wrap my-4 gap-2">
         <a href={% url 'reservation:trip_booking_pay' object.id %}
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
             {% trans 'Pay' %}</a>
         <a href={% url 'reservation:trip_booking_program_add' object.id %}
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
-            {% trans 'Add program' %}</a>    
+            {% trans 'Add program' %}</a>
+        <a href={% url 'reservation:trip_booking_amounts_add' object.id %}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans 'Add Amount' %}</a>      
         <a href={% url 'reservation:trip_booking_update' object.id %} 
         class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Edit' %}</a>
             
-        <a href={% url 'reservation:trip_booking_invoice' object.id %} 
+        <a href={% url 'reservation:trip_booking_invoice' object.id %} target="_blank"
             class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
@@ -112,7 +137,6 @@
             dark:hover:bg-yellow-700 cursor-pointer">{% trans 'Report' %}</a>
             
     </div>
-    
     <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
         <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Reservation Details' %}</h2>
@@ -142,6 +166,16 @@
                             <td class="px-3 py-2">
                                 <a href="{{object.trip.get_absolute_url}}">{{object.trip}}</a>
                                 
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Description' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_description}}
                             </td>
                         </tr>
                         <tr
@@ -209,8 +243,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Personl Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                 <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
@@ -279,6 +311,16 @@
                                 {{object.creation_date}}
                             </td>
                         </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Notes' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.notes |linebreaks}}
+                            </td>
+                        </tr>
                         {% comment %} <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
@@ -289,12 +331,11 @@
                                 {{object.get_total_price}}
                             </td>
                         </tr> {% endcomment %}
-                        
+
                     </tbody>
                 </table>
             </div>
         </div>
-        
         <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Price Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
@@ -367,6 +408,16 @@
                         <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Additional amounts' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                + {{object.get_amounts_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
                                 class="px-3 py-2 font-bold text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Total price' %}
                             </th>
@@ -389,8 +440,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Programs Details' %}</h2>
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                 <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
@@ -399,23 +448,23 @@
                                 text-left
                             {% endif %} text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-3 py-2">
-                            {% trans 'Name' %}
-                        </th>
-                        <th scope="col" class="px-3 py-2">
-                            {% trans 'Quantity' %}
-                        </th>
-                        <th scope="col" class="px-3 py-2">
-                            {% trans 'Price' %}
-                        </th>
-                    </tr>
-                </thead>
+                        <tr>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Name' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Quantity' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Price' %}
+                            </th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        
+
                         {% for p in object.programs.all %}
                         <tr
-                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {{p.program.name}}[{{p.program.price|intcomma:False}}]
@@ -429,13 +478,13 @@
                         </tr>
                         {% endfor %}
                         <tr
-                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Total' %}
                             </th>
                             <td class="px-3 py-2">
-                                
+
                             </td>
                             <td class="px-3 py-2 font-bold">
                                 {{object.get_programs_price}}
@@ -444,14 +493,73 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        {% comment %} <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Payment Details' %}</h2>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200 p-2 dark:bg-gray-400 dark:text-white">
-                {{payForm | crispy}}
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'AdditionalAmount' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Amount' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Reason' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for p in object.additional_amounts.all %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{p.price}}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{p.reason}}
+                            </td>
+                            <td class="px-3 py-2">
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total' %}
+                            </th>
+                            <td class="px-3 py-2">
+
+                            </td>
+                            <td class="px-3 py-2 font-bold">
+                                {{object.get_amounts_price}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div> {% endcomment %}
+        </div>
+        
+        
+        <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            {% if object.seats_booked %}
+            
+                {% booking_seats object.id%}
+            
+            {% endif %}
+        </div>
+        
     </section>
+        
+    
 </div>
 
 

@@ -3,6 +3,8 @@
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load humanize %}
+
 {% block title %} {% trans 'Reservation Page' %}  {% endblock %}
 {% block content %}
 <div class="bg-white dark:bg-gray-600 rounded-md p-4">
@@ -54,6 +56,7 @@
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>    
     </div>
     <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Trip reservations' %}</h2>
+    {% include "reservation/pagination.html"  %}
     <div class="bg-white dark:bg-gray-600 rounded-md my-4">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -66,10 +69,10 @@
                             {% trans 'Name' %}
                         </th>
                         <th scope="col" class="px-3 py-2">
-                            {% trans 'Rooms' %}
+                            {% trans 'Trip' %}
                         </th>
                         <th scope="col" class="px-3 py-2">
-                            {% trans 'Persons [adults/children]' %}
+                            {% trans 'Rooms' %}
                         </th>
                         <th scope="col" class="px-3 py-2">
                             {% trans 'Phone' %}
@@ -80,9 +83,9 @@
                         <th scope="col" class="px-3 py-2">
                             {% trans 'Payment Status' %}
                         </th>
-                        <th scope="col" class="px-3 py-2">
+                        {% comment %} <th scope="col" class="px-3 py-2">
                             <span class="sr-only"></span>
-                        </th>
+                        </th> {% endcomment %}
                     </tr>
                 </thead>
                 <tbody>
@@ -96,22 +99,42 @@
                         <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             <a href="{% url 'reservation:trip_booking_detail' b.id %}">{{b.name}}</a>
                         </th>
-                        <td class="px-3 py-2 ">
-                            {{b.get_rooms_count}}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            <a href="{{b.trip.get_absolute_url}}">{{b.trip}}</a>
+                            
                         </td>
                         <td class="px-3 py-2 whitespace-nowrap">
-                           <span class="font-bold">{{b.get_person_count}}</span> [{{b.adults}}/{{b.children}}]
+                           {{b.get_description |linebreaks}}
                         </td>
-                        <td class="px-3 py-2">
+                        <td class="px-3 py-2 whitespace-nowrap">
                             {{b.phone}}
                         </td>
-                        <td class="px-3 py-2">
-                            {{b.get_status}}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if b.trip.get_status == 'previous' %}
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{% trans 'Previous' %}</span>
+                                {% elif b.trip.get_status == 'ongoing' %}
+                                <span
+                                    class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
+                                {% else %}
+                                <span
+                                    class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">{% trans 'Upcoming' %}</span>
+                                {% endif %}
+                            
                         </td>
-                        <td class="px-3 py-2">
-                            Complete
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if b.get_payment_status == 'remaining' %}
+                            <span
+                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">{% trans 'remaining' %}
+                                {{b.get_remained_price |intcomma:False}}</span>
+                            {% elif b.get_payment_status == 'complete' %}
+                            <span
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
+                            {% else %}
+                            {% endif %}
                         </td>
-                        <td class="px-3 py-2 text-right">
+                        {% comment %} <td class="px-3 py-2 text-right">
                             <div class="inline-flex rounded-md shadow-sm">
                                 <a href="{% url 'reservation:trip_booking_detail' b.id %}" aria-current="page"
                                     class="py-2 px-4 text-sm font-medium text-blue-700 bg-white {% if LANGUAGE_CODE == 'ar' %}
@@ -132,7 +155,7 @@
                                 </a>
                             </div>
                             
-                        </td>
+                        </td> {% endcomment %}
                     </tr>
                     {% endfor %}
                 </tbody>

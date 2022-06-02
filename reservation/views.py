@@ -1,4 +1,5 @@
 
+
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
@@ -9,7 +10,9 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
 from django.conf import settings
 from django import http
-from .models import  Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram
+
+from transport.models import Seat
+from .models import  Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram , AdditionalAmount , Client
 from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin
 from django.utils import timezone
 from datetime import datetime, timedelta, date
@@ -47,18 +50,22 @@ class destination_detail(LoginRequiredMixin, DetailView,):
 
 class hotel_list(LoginRequiredMixin, ListView):
     model = Hotel
-    # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/hotel/hotel_list.html'
-    paginate_by = 9
+    paginate_by = 8
 
+    def get_queryset(self):
+        destination = Destination.objects.get(slug=self.kwargs.get("slug"))
+        qs = Hotel.objects.filter(
+            destination=destination).prefetch_related('destination')
+        return qs    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         destination = Destination.objects.get(slug=self.kwargs.get("slug"))
         context['destination'] = destination
-        context['object_list'] = Hotel.objects.filter(
-            destination=destination).prefetch_related('destination')
+        # context['object_list'] = Hotel.objects.filter(
+        #     destination=destination).prefetch_related('destination')
         return context
 
 
@@ -71,23 +78,29 @@ class trip_list(LoginRequiredMixin, ListView):
     model = Trip
     # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/trip/trip_list.html'
-
+    paginate_by = 7
+    def get_queryset(self):
+        time = self.kwargs.get("time")
+        if time == 'upcoming':
+            qs = Trip.objects.filter(
+                date_from__gte=date.today())
+        elif time == 'previous':
+            qs = Trip.objects.filter(
+                date_until__lt=date.today())
+        elif time == 'ongoing':
+            qs = Trip.objects.filter(
+                date_from__lte=date.today(), date_until__gte=date.today())
+        elif time == 'all':
+            qs = Trip.objects.all()
+        else:
+            qs = qs = Trip.objects.filter(
+                date_from__gte=date.today())
+        return qs
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context['time'] = self.kwargs.get("time")
-        if self.kwargs.get("time") == 'upcoming':
-            context['object_list'] = Trip.objects.filter(
-                date_from__gte=date.today())
-        elif self.kwargs.get("time") == 'previous':
-            context['object_list'] = Trip.objects.filter(
-                date_until__lt=date.today())
-        elif self.kwargs.get("time") == 'ongoing':
-            context['object_list'] = Trip.objects.filter(
-                date_from__lte=date.today(), date_until__gte=date.today())
-        else:
-            context['object_list'] = Trip.objects.all()
         return context
 
 class trip_list_by_destination(LoginRequiredMixin, ListView):
@@ -102,16 +115,13 @@ class trip_list_by_destination(LoginRequiredMixin, ListView):
         destination = Destination.objects.get(slug=self.kwargs.get("slug"))
         context['destination'] = destination
         context['time'] = self.kwargs.get("time")
-        print(self.kwargs.get("time"))
         if self.kwargs.get("time") == 'upcoming':
-            print('upcoming')
             context['object_list'] = Trip.objects.filter(
                 destination=destination, date_from__gte=timezone.now())
         elif self.kwargs.get("time") == 'previous':
             context['object_list'] = Trip.objects.filter(
                 destination=destination, date_until__lt=timezone.now())
         elif self.kwargs.get("time") == 'ongoing':
-            print('ongoing')
             context['object_list'] = Trip.objects.filter(
                 destination=destination, date_from__lte=timezone.now(), date_until__gte=timezone.now())
         else:
@@ -132,16 +142,14 @@ class trip_list_by_hotel(LoginRequiredMixin, ListView):
         context['hotel'] = hotel
         context['destination'] = hotel.destination
         context['time'] = self.kwargs.get("time")
-        print(self.kwargs.get("time"))
+        
         if self.kwargs.get("time") == 'upcoming':
-            print('upcoming')
             context['object_list'] = Trip.objects.filter(
                 accommodation=hotel, date_from__gte=timezone.now())
         elif self.kwargs.get("time") == 'previous':
             context['object_list'] = Trip.objects.filter(
                 accommodation=hotel, date_until__lt=timezone.now())
         elif self.kwargs.get("time") == 'ongoing':
-            print('ongoing')
             context['object_list'] = Trip.objects.filter(
                 accommodation=hotel, date_from__lte=timezone.now(), date_until__gte=timezone.now())
         else:
@@ -163,10 +171,9 @@ class trip_create(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         form.helper.layout = Layout(
             Field('destination',
                   css_class='text-center destination'), 'accommodation',
-            Field('date_from', datepicker=True, readonly='readonly', id="date_start",
-                  template='reservation/datepicker.html', ),
-            Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly', id="date_until",
-                  template='reservation/datepicker.html', ),
+            HTML('<hr class="my-2">'),
+            Field('date_from',),
+            Field('date_until',),
             HTML('<hr class="my-2">'),
             Fieldset(_('Trip Information'),
                      Row('rooms_total', 'bus_total',
@@ -231,7 +238,7 @@ class trip_delete(DeleteView):
 class trip_booking_create(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
-              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'seats', 'name', 'email', 'phone', 'phone2', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'name', 'email', 'phone', 'phone2', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
     template_name = 'reservation/booking/trip_booking_create.html'
     exclude = ['creation_user']
     permission_required = ('reservation.add_tripbooking')
@@ -239,19 +246,17 @@ class trip_booking_create(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.helper = FormHelper()
-        form.helper.layout = Layout(_('Choose trip'),
-                                    Field('trip', css_class='text-center'),
+        form.helper.layout = Layout(
+                                    Field('trip', css_class='text-center hidden'),
+                                    HTML('<hr class="my-2">'),
+                                    Row('adults', 'children','extra_seats', css_class='flex flex-row gap-2'),
                                     HTML('<hr class="my-2">'),
                                     Fieldset(_('Numbre of Rooms'),
                                              Row('single_room_count', 'double_room_count',
                                                  'triple_room_count', css_class='flex flex-row gap-2'),
                                              ),
                                     HTML('<hr class="my-2">'),
-
-
                                     Fieldset(_('Persons'),
-                                             Row('adults', 'children',
-                                                 'extra_seats', css_class='flex flex-row gap-2'),
                                              Row('single_room_persons', 'double_room_persons',
                                                  'triple_room_persons', css_class='flex flex-row gap-2')
                                              ),
@@ -262,9 +267,7 @@ class trip_booking_create(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
                                              Row('phone', 'phone2',
                                                  css_class='flex flex-row gap-2 w-full')
                                              ),
-                                
                                     Field('notes', rows=2),
-                                    Field('seats',rows=2),
                                     'discount_percentage', 'discount_amount',
                                     'paid_amount',
                                     )
@@ -282,13 +285,23 @@ class trip_booking_create(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
 
     def form_valid(self, form):
         form.instance.creation_user = self.request.user
+        try:
+            client = Client.objects.get(phone=form.instance.phone)
+            form.instance.client = Client.objects.get(
+                phone=form.instance.phone)
+        except Client.DoesNotExist:
+            client = Client.objects.create(
+                name=form.instance.name, phone=form.instance.phone, phone2=form.instance.phone2)
+            client.save()
+            form.instance.client = Client.objects.get(
+                phone=form.instance.phone) 
         booking = form.save(commit=True)
         verb = _('made trip booking to')
         create_action(self.request.user,
                       f'{verb} {form.instance.trip}', booking)
-        profile = Profile.objects.get(user=self.request.user)
-        profile.balance += form.instance.paid_amount
-        profile.save()
+        # profile = Profile.objects.get(user=self.request.user)
+        # profile.balance += form.instance.paid_amount
+        # profile.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -344,15 +357,17 @@ class trip_booking_list(LoginRequiredMixin, ListView):
 class trip_booking_update(LoginRequiredMixin, UpdateView):
     model = TripBooking
     fields = ['trip', 'single_room_count', 'double_room_count', 'triple_room_count', 'adults', 'children',
-              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons', 'seats', 'name', 'email', 'phone', 'phone2', 'notes', 'paid_amount']
+              'extra_seats', 'single_room_persons', 'double_room_persons', 'triple_room_persons','name', 'email', 'phone', 'phone2', 'notes', 'paid_amount']
     template_name = 'reservation/booking/trip_booking_create.html'
     exclude = ['creation_user']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.helper = FormHelper()
-        form.helper.layout = Layout(_('Choose trip'),
-                                    Field('trip', css_class='text-center'),
+        form.helper.layout = Layout(
+            Field('trip', css_class='text-center hidden', ),
+            Row('adults', 'children',
+                                        'extra_seats', css_class='flex flex-row gap-2'),
                                     Fieldset(_('Numbre of Rooms'),
                                              Row('single_room_count', 'double_room_count',
                                                  'triple_room_count', css_class='flex flex-row gap-2'),
@@ -361,8 +376,6 @@ class trip_booking_update(LoginRequiredMixin, UpdateView):
 
 
                                     Fieldset(_('Persons'),
-                                             Row('adults', 'children',
-                                                 'extra_seats', css_class='flex flex-row gap-2'),
                                              Row('single_room_persons', 'double_room_persons',
                                                  'triple_room_persons', css_class='flex flex-row gap-2')
                                              ),
@@ -374,9 +387,9 @@ class trip_booking_update(LoginRequiredMixin, UpdateView):
                                                  css_class='flex flex-row gap-2 w-full')
                                              ),
                                     'notes',
-                                    'seats',
                                     'paid_amount',
                                     )
+        form.helper.label_class = 'dark:text-gray-200'
         form.helper.add_input(
             Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
         return form
@@ -397,20 +410,40 @@ def trip_booking_pay(request , pk):
             amount = form.cleaned_data['amount']
             booking.paid_amount += form.cleaned_data['amount']
             booking.save()
-            verb = _('Recieved amount')
+            verb = _('Recieved amount for trip booking')
             create_action(request.user,
                           f'{verb} {amount}', booking)
-            profile = Profile.objects.get(user = request.user)
-            profile.balance += form.cleaned_data['amount']
-            profile.save()
+            # profile = Profile.objects.get(user = request.user)
+            # profile.balance += form.cleaned_data['amount']
+            # profile.save()
             return redirect(booking)
     else:
         # build form with data provided by the bookmarklet via GET
-        form = PayTripBookingForm(data=request.GET)
+        form = PayTripBookingForm()
     return render(request, 'reservation/booking/trip_booking_pay.html', {'object':booking,
                                                         'form': form})
 
 
+def ibooking_pay(request, pk):
+    booking = get_object_or_404(Booking, id=pk)
+    if request.method == 'POST':
+        form = PayTripBookingForm(data=request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            booking.paid_amount += form.cleaned_data['amount']
+            booking.save()
+            verb = _('Recieved amount for individual booking')
+            create_action(request.user,
+                          f'{verb} {amount}', booking)
+            # profile = Profile.objects.get(user=request.user)
+            # profile.balance += form.cleaned_data['amount']
+            # profile.save()
+            return redirect(booking)
+    else:
+        # build form with data provided by the bookmarklet via GET
+        form = PayTripBookingForm()
+    return render(request, 'reservation/ibooking/ibooking_pay.html', {'object': booking,
+                                                                         'form': form})
 class trip_booking_program_add(LoginRequiredMixin, CreateView):
     model = TripBookingProgram 
     fields = ['booking', 'program', 'quantity']
@@ -435,6 +468,32 @@ class trip_booking_program_add(LoginRequiredMixin, CreateView):
                       f'{verb} {form.instance.booking}', booking)
         return super().form_valid(form)
 
+
+class trip_booking_amounts_add(LoginRequiredMixin, CreateView):
+    model = AdditionalAmount
+    fields = ['booking', 'price', 'reason']
+    template_name = 'reservation/booking/trip_booking_amounts_add.html'
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = get_object_or_404(
+            TripBooking, id=self.kwargs.get('pk'))
+        return context
+
+    def get_initial(self):
+        booking = get_object_or_404(TripBooking, id=self.kwargs.get('pk'))
+        return {
+            'booking': booking,
+        }
+
+    def form_valid(self, form):
+        booking = get_object_or_404(TripBooking, id=self.kwargs.get('pk'))
+        verb = _('added trip booking addititonal amount to')
+        create_action(self.request.user,
+                      f'{verb} {form.instance.booking}', booking)
+        return super().form_valid(form)
+
 def invoice_pdf(request,pk):
     booking = get_object_or_404(TripBooking, id=pk)
     html = render_to_string('reservation/pdf/invoice.html',
@@ -443,6 +502,17 @@ def invoice_pdf(request,pk):
     response['Content-Disposition'] = f'filename=booking_{booking.id}.pdf'
     weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
                                            )
+    return response
+
+
+def i_invoice_pdf(request, pk):
+    booking = get_object_or_404(Booking, id=pk)
+    html = render_to_string('reservation/pdf/invoice.html',
+                            {'object': booking})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=booking_{booking.id}.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
+                                                                                  )
     return response
 
 
@@ -463,7 +533,6 @@ def load_hotels(request):
         'destination_id'))
     hotels = Hotel.objects.filter(
         destination=destination)
-    print(list(hotels.values('id', 'name')))
     # return render(request, 'persons/city_dropdown_list_options.html', {'cities': cities})
     return JsonResponse(list(hotels.values('id', 'name')), safe=False)
 
@@ -473,7 +542,7 @@ class booking_create(LoginRequiredMixin, CreateView):
     model = Booking
     fields = ['accommodation', 'package', 'accommodation_type','transport' ,'single_room_count','date_from','date_until' ,'double_room_count',  'triple_room_count', 'adults', 'children',
               'extra_seats', 'name', 'email', 'phone', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
-    template_name = 'reservation/booking/trip_booking_create.html'
+    template_name = 'reservation/ibooking/create.html'
     exclude = ['creation_user']
     # permission_required = ('')
 
@@ -481,15 +550,14 @@ class booking_create(LoginRequiredMixin, CreateView):
         form = super().get_form(form_class)
         form.helper = FormHelper()
         form.helper.layout = Layout(
-            Row(Field('accommodation', readonly='readonly',css_class='min-w-[8rem]'), Field('package', readonly='readonly',css_class='min-w-[8rem]'),
+            Row(Field('accommodation',css_class='min-w-[8rem] hidden'), Field('package', readonly='readonly',css_class='min-w-[8rem] hidden'),
                 css_class='flex flex-row gap-2',),
-            Row('accommodation_type', 'transport',
+            Row('accommodation_type',
                 css_class='flex flex-row gap-2'),
+            'transport',
             HTML('<hr class="my-2 ">'),
-            Field('date_from', datepicker=True, readonly='readonly', id="date_start",
-                  template='reservation/datepicker.html', ),
-            Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly', id="date_until",
-                  template='reservation/datepicker.html', ),
+            Field('date_from'),
+            Field('date_until'),
             HTML('<hr class="my-2 ">'),
             Fieldset(_('Numbre of Rooms'),
                      Row('single_room_count', 'double_room_count',
@@ -531,13 +599,23 @@ class booking_create(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.creation_user = self.request.user
+        try:
+            client = Client.objects.get(phone=form.instance.phone)
+            form.instance.client = Client.objects.get(
+                phone=form.instance.phone)
+        except Client.DoesNotExist:
+            client = Client.objects.create(
+                name=form.instance.name, phone=form.instance.phone, phone2=form.instance.phone2)
+            client.save()
+            form.instance.client = Client.objects.get(
+                phone=form.instance.phone)
         booking = form.save(commit=True)
         verb = _('made individual booking to')
         create_action(self.request.user,
                       f'{verb} {form.instance.accommodation}', booking)
-        profile = Profile.objects.get(user=self.request.user)
-        profile.balance += form.instance.paid_amount
-        profile.save()
+        # profile = Profile.objects.get(user=self.request.user)
+        # profile.balance += form.instance.paid_amount
+        # profile.save()
         return super().form_valid(form)
 
 class package_create(LoginRequiredMixin,PermissionRequiredMixin ,CreateView):
@@ -555,10 +633,8 @@ class package_create(LoginRequiredMixin,PermissionRequiredMixin ,CreateView):
             Field('hotel',
                    ),
             'label',
-            Field('date_from', datepicker=True, readonly='readonly', id="date_start",
-                  template='reservation/datepicker.html', ),
-            Field('date_until', datepicker=True, datepicker_format='mm/dd/yyyy', readonly='readonly',   id="date_until",
-                  template='reservation/datepicker.html',),
+            Field('date_from'),
+            Field('date_until'),
             HTML('<hr class="my-2">') ,     
             Fieldset(_('Prices per night'),
                      Row('single_room_half_cost', 'single_room_full_cost',
@@ -583,13 +659,18 @@ class package_create(LoginRequiredMixin,PermissionRequiredMixin ,CreateView):
         return form
 
     def get_initial(self):
-        hotel = get_object_or_404(
-            Hotel, id=self.kwargs.get('hotel_id'))
         creation_user = self.request.user
-        return {
-            'hotel': hotel.id,
-            'creation_user': creation_user,
-        }
+        if self.kwargs.get('hotel_id'):
+            hotel = get_object_or_404(
+                Hotel, id=self.kwargs.get('hotel_id'))
+            return {
+                'hotel': hotel.id,
+                'creation_user': creation_user,
+            }
+        else :
+            return {
+                'creation_user': creation_user,
+            }
 
     def form_valid(self, form):
         form.instance.creation_user = self.request.user
@@ -648,12 +729,12 @@ def search_ibooking(request):
 class trip_booking_list_all(LoginRequiredMixin, ListView):
     model = TripBooking
     template_name = 'reservation/misc/trip_booking_list_all.html'
-
+    paginate_by = 10
 
 class booking_list_all(LoginRequiredMixin, ListView):
     model = Booking
     template_name = 'reservation/misc/booking_list_all.html'
-
+    paginate_by = 10
 
 class trip_booking_list_user(LoginRequiredMixin, ListView):
     model = TripBooking
@@ -731,6 +812,10 @@ def trip_booking_cancel(request,booking_type,pk):
     elif booking_type == 'ibooking':
         booking = get_object_or_404(Booking, id=pk)
     booking.status = BOOKING_STATUS[1][0]
+    if booking_type == 'trip_booking':
+        booking.seats_booked = False
+        seats = Seat.objects.filter(booking=booking)
+        seats.delete()
     booking.save()
     return redirect(booking)
 
@@ -743,3 +828,9 @@ def trip_booking_active(request, booking_type, pk):
     booking.status = BOOKING_STATUS[0][0]
     booking.save()
     return redirect(booking)
+
+class client_list(LoginRequiredMixin,ListView):
+    model = Client
+    template_name = 'reservation/client/list.html'
+    paginate_by = 20
+    redirect_field_name = 'next'

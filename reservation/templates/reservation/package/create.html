@@ -5,13 +5,15 @@
 {% load crispy_forms_tags %}
 {% block title %} {% trans 'New Hotel Package' %} {% endblock %}
 {% block head %}
-    <script src="https://unpkg.com/flowbite@1.4.5/dist/datepicker.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 {% endblock %}
 
 {% block content %}
-    <form method="post" class='text-sm'>
+    <form method="post" class='text-sm' autocomplete='off'>
         {% csrf_token %}
         {% crispy form form.helper %}
+        {% comment %} {{form | crispy}} {% endcomment %}
         {% comment %} <input type="submit" value="Confirm" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
                 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
                 cursor-pointer my-4'> {% endcomment %}
@@ -21,4 +23,20 @@
                  {% trans 'Back' %}
                  </a>
 </form>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script
+    src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+    crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("[name='date_from']").datepicker({ dateFormat:"yy-mm-dd", });
+            $("[name='date_until']").datepicker({ dateFormat:"yy-mm-dd", });
+            $("[name='hotel']").select2();
+        });
+    </script>
 {% endblock %}

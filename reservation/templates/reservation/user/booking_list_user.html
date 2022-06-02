@@ -121,9 +121,9 @@
                             {% elif b.get_status == 'ongoing' %}
                             <span
                                 class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
-                            {% else %}
-                            <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
-                                    dark:bg-blue-200 dark:text-blue-800">{{b.get_status}}</span>
+                            {% elif b.get_status == 'upcoming' %}
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                    dark:bg-blue-200 dark:text-blue-800">{% trans 'Upcoming' %}</span>
                             {% endif %}
                             
                         </td>

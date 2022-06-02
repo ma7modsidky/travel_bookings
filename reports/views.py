@@ -13,13 +13,13 @@ def trip_report(request, pk):
     cost = 0
     price = 0
     profit = 0
-
+    rooms = 0
     for b in trip.bookings.all():
         cost += b.get_cost
         price += b.get_total_price
         profit += b.get_profit
-    
-    return render(request, 'reports/trip_report.html', {'trip': trip, 'persons': persons, 'cost': cost, 'profit': profit, 'price': price})
+        rooms += b.get_rooms_count
+    return render(request, 'reports/trip_report.html', {'trip': trip, 'persons': persons, 'cost': cost, 'profit': profit, 'price': price , 'rooms_booked':rooms})
 
 def trip_booking_report(request,pk):
     booking = get_object_or_404(TripBooking, id=pk)

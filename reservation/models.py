@@ -19,9 +19,10 @@ def get_sentinel_user():
 
 class Client(models.Model):
     name = models.CharField(max_length=25)
-    phone = models.CharField(max_length=15, db_index=True)
-    reservations = models.PositiveBigIntegerField(default=1)
-    last_reservation = models.CharField(max_length=50, blank=True)
+    phone = models.CharField(max_length=15, db_index=True , unique=True)
+    phone2 = models.CharField(max_length=15,blank=True,null=True)
+    def __str__(self) -> str:
+        return self.name
 class Destination(models.Model):
     name = models.CharField(max_length=25, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
@@ -60,6 +61,8 @@ class Hotel(models.Model):
     objects = models.Manager()
     featuredHotels = FeaturedManager()
 
+    class Meta:
+        ordering = ['-level']
     def get_packages(self):
         return self.packages
 
@@ -164,6 +167,8 @@ class HotelPackage(models.Model):
 
 class Booking(models.Model):
     # Personal info about client
+    client = models.ForeignKey(
+        Client, related_name='ibookings', on_delete=models.SET_NULL, null=True)
     name = models.CharField(verbose_name=_('name'),
                             max_length=20,
                             )
@@ -233,7 +238,8 @@ class Booking(models.Model):
         verbose_name=_('Number of Children'),
         default=0,
     )
-    transport = models.BooleanField(default=False)
+    transport = models.BooleanField(
+        default=False, verbose_name=_('Transport'),)
     transport_price_person = models.DecimalField(
         max_digits=36,
         decimal_places=0,
@@ -374,7 +380,7 @@ class Booking(models.Model):
 
     @property
     def get_active_status(self):
-        print(self.status)
+        
         if self.status == BOOKING_STATUS[0][0]:
             return 'active'
         elif self.status == BOOKING_STATUS[1][0]:
@@ -387,7 +393,7 @@ class Booking(models.Model):
         if self.status == 'cancelled':
             return self.get_primary_price_after_discount // 2
         else:
-            return 0
+            return self.get_primary_price_after_discount // 2
     @property
     def get_payment_status(self):
         if self.get_remained_price > 0 :
@@ -573,8 +579,7 @@ class TripBooking(models.Model):
         default=0,
     )
 
-    seats = models.TextField(verbose_name=_(
-        'Seats'), null=True, blank=True)
+    seats_booked = models.BooleanField(default=False)
 
     discount_percentage = models.PositiveIntegerField(validators=[
         MinValueValidator(0),
@@ -621,6 +626,7 @@ class TripBooking(models.Model):
         verbose_name=_('Notes'),
         blank=True,
     )
+    client = models.ForeignKey(Client, related_name='trip_bookings', on_delete=models.SET_NULL, null=True)
     status = models.CharField(
         max_length=20, choices=BOOKING_STATUS, default=BOOKING_STATUS[0][0])
     class Meta:
@@ -693,8 +699,12 @@ class TripBooking(models.Model):
         return int(sum(x.get_price for x in self.programs.all()))
 
     @property
+    def get_amounts_price(self):
+        return int(sum(x.price for x in self.additional_amounts.all()))
+
+    @property
     def get_total_price(self):
-        return(self.get_primary_price_after_discount+self.get_extra_seats_price+self.get_programs_price)
+        return(self.get_primary_price_after_discount+self.get_extra_seats_price+self.get_programs_price+self.get_amounts_price)
 
     @property
     def get_remained_price(self):
@@ -702,7 +712,7 @@ class TripBooking(models.Model):
 
     @property
     def get_status(self):
-        print(self.status)
+        
         if self.status == BOOKING_STATUS[0][0]:
             return 'active'
         elif self.status == BOOKING_STATUS[1][0]:
@@ -716,7 +726,7 @@ class TripBooking(models.Model):
         if self.status == 'cancelled':
             return self.get_primary_price_after_discount // 2
         else:
-            return 0
+            return self.get_primary_price_after_discount // 2
 
     @property
     def get_payment_status(self):
@@ -745,3 +755,7 @@ class TripBookingProgram(models.Model):
     def __str__(self) -> str:
         return f'[{self.booking.id}] [{self.program.name} X {self.quantity}] [{self.get_price}EGP]'
 
+class AdditionalAmount(models.Model):
+    price = models.PositiveIntegerField(verbose_name='price')
+    reason = models.CharField(max_length=150)
+    booking = models.ForeignKey(TripBooking, related_name='additional_amounts',on_delete=models.CASCADE) 

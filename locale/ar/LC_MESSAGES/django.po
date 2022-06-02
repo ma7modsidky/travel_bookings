@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-18 13:46+0200\n"
-"PO-Revision-Date: 2022-05-18 13:49+0000\n"
+"POT-Creation-Date: 2022-05-31 21:18+0200\n"
+"PO-Revision-Date: 2022-05-31 21:25+0000\n"
 "Last-Translator: mahmoud sidky <mahmoud@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,10 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 "X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: .\account\forms.py:21 .\reservation\views.py:194 .\reservation\views.py:273
-#: .\reservation\views.py:381 .\reservation\views.py:517
-#: .\reservation\views.py:582 .\reservation\views.py:691
-#: .\reservation\views.py:709
+#: .\account\forms.py:21 .\reservation\views.py:201 .\reservation\views.py:276
+#: .\reservation\views.py:394 .\reservation\views.py:585
+#: .\reservation\views.py:658 .\reservation\views.py:772
+#: .\reservation\views.py:790 .\transport\views.py:63
 msgid "Create"
 msgstr "انشاء"
 
@@ -47,9 +47,9 @@ msgstr "العنوان"
 msgid "phone"
 msgstr "الهاتف"
 
-#: .\account\models.py:13 .\reports\templates\reports\ibooking_report.html:104
+#: .\account\models.py:13 .\reports\templates\reports\ibooking_report.html:114
 #: .\reports\templates\reports\trip_booking_report.html:104
-#: .\reservation\models.py:162
+#: .\reservation\models.py:172
 msgid "name"
 msgstr "الاسم"
 
@@ -71,16 +71,20 @@ msgstr "عدد الحجوزات "
 
 #: .\account\templates\account\edit.html:32
 #: .\account\templates\account\register.html:51
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:90
 #: .\reservation\templates\reservation\booking\trip_booking_create.html:23
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:96
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:90
 #: .\reservation\templates\reservation\confirm_delete.html:25
 #: .\reservation\templates\reservation\confirm_delete.html:32
 #: .\reservation\templates\reservation\hotel\hotel_create.html:22
+#: .\reservation\templates\reservation\ibooking\create.html:23
 #: .\reservation\templates\reservation\misc\not_found.html:18
-#: .\reservation\templates\reservation\package\create.html:22
+#: .\reservation\templates\reservation\package\create.html:25
 #: .\reservation\templates\reservation\program\create.html:17
 #: .\reservation\templates\reservation\trip\trip_create.html:23
+#: .\transport\templates\transport\bus\create.html:24
+#: .\transport\templates\transport\seats_2.html:374
 msgid "Back"
 msgstr "رجوع"
 
@@ -103,14 +107,14 @@ msgstr "الملف الشخصي"
 #: .\account\templates\account\user\detail.html:53
 #: .\account\templates\account\user\list.html:78
 #: .\account\templates\account\user\profile.html:47
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:191
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:118
-#: .\reservation\templates\reservation\ibooking\list.html:93
-#: .\reservation\templates\reservation\misc\booking_list_all.html:83
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:78
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:209
+#: .\reservation\templates\reservation\ibooking\list.html:97
+#: .\reservation\templates\reservation\misc\booking_list_all.html:84
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:81
 #: .\reservation\templates\reservation\trip\trip_detail.html:162
 #: .\reservation\templates\reservation\user\booking_list_user.html:84
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:80
+#: .\transport\templates\transport\bus\list.html:88
 msgid "Status"
 msgstr "الحالة"
 
@@ -131,14 +135,14 @@ msgstr "عن "
 
 #: .\account\templates\account\user\detail.html:126
 #: .\account\templates\account\user\profile.html:316
-#: .\reservation\models.py:598
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:226
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:406
+#: .\reservation\models.py:608
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:244
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:444
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:106
 #: .\reservation\templates\reservation\ibooking\detail.html:234
-#: .\reservation\templates\reservation\ibooking\list.html:81
-#: .\reservation\templates\reservation\misc\booking_list_all.html:68
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:66
+#: .\reservation\templates\reservation\ibooking\list.html:82
+#: .\reservation\templates\reservation\misc\booking_list_all.html:69
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:69
 #: .\reservation\templates\reservation\trip_programs\list.html:66
 #: .\reservation\templates\reservation\user\booking_list_user.html:69
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:68
@@ -147,11 +151,11 @@ msgstr "الاسم"
 
 #: .\account\templates\account\user\detail.html:136
 #: .\account\templates\account\user\profile.html:326
-#: .\reservation\models.py:170
+#: .\reservation\models.py:180
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:115
-#: .\reservation\templates\reservation\ibooking\list.html:90
-#: .\reservation\templates\reservation\misc\booking_list_all.html:80
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:75
+#: .\reservation\templates\reservation\ibooking\list.html:94
+#: .\reservation\templates\reservation\misc\booking_list_all.html:81
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:78
 #: .\reservation\templates\reservation\user\booking_list_user.html:81
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:77
 msgid "Phone"
@@ -164,8 +168,8 @@ msgstr "العنوان"
 
 #: .\account\templates\account\user\detail.html:144
 #: .\account\templates\account\user\profile.html:334
-#: .\reservation\models.py:166 .\reservation\models.py:602
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:236
+#: .\reservation\models.py:176 .\reservation\models.py:612
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:254
 #: .\reservation\templates\reservation\ibooking\detail.html:244
 msgid "Email"
 msgstr "الايميل"
@@ -184,15 +188,14 @@ msgstr "الرقم"
 msgid "Username"
 msgstr "الاسم"
 
-#: .\account\templates\account\user\list.html:138 .\reservation\models.py:405
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:171
+#: .\account\templates\account\user\list.html:138 .\reservation\models.py:416
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:173
 #: .\reservation\templates\reservation\destination\destination_detail.html:144
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:224
-#: .\reservation\templates\reservation\hotel\hotel_list.html:145
-#: .\reservation\templates\reservation\ibooking\list.html:138
-#: .\reservation\templates\reservation\misc\booking_list_all.html:151
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:122
-#: .\reservation\templates\reservation\trip\trip_list.html:150
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:227
+#: .\reservation\templates\reservation\hotel\hotel_list.html:146
+#: .\reservation\templates\reservation\ibooking\list.html:163
+#: .\reservation\templates\reservation\misc\booking_list_all.html:154
+#: .\reservation\templates\reservation\trip\trip_list.html:159
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:168
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:190
 #: .\reservation\templates\reservation\user\booking_list_user.html:152
@@ -200,13 +203,12 @@ msgid "Details"
 msgstr "تفاصيل"
 
 #: .\account\templates\account\user\list.html:146
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:80
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:180
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:233
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:99
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:182
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:236
 #: .\reservation\templates\reservation\ibooking\detail.html:55
-#: .\reservation\templates\reservation\ibooking\list.html:147
-#: .\reservation\templates\reservation\misc\booking_list_all.html:160
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:131
+#: .\reservation\templates\reservation\ibooking\list.html:172
+#: .\reservation\templates\reservation\misc\booking_list_all.html:163
 #: .\reservation\templates\reservation\user\booking_list_user.html:161
 msgid "Edit"
 msgstr "تعديل"
@@ -215,12 +217,13 @@ msgstr "تعديل"
 #: .\account\templates\account\user\profile.html:158
 #: .\account\templates\account\user\profile.html:189
 #: .\account\templates\account\user\profile.html:231
+#: .\reports\templates\reports\ibooking_report.html:38
 #: .\reservation\templates\reservation\misc\booking_list_all.html:40
 #: .\reservation\templates\reservation\misc\booking_list_all.html:56
 #: .\reservation\templates\reservation\misc\booking_list_all.html:58
 #: .\reservation\templates\reservation\misc\reservations_page.html:42
 #: .\reservation\templates\reservation\misc\reservations_page.html:60
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:54
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:56
 #: .\reservation\templates\reservation\user\booking_list_user.html:40
 #: .\reservation\templates\reservation\user\booking_list_user.html:56
 #: .\reservation\templates\reservation\user\booking_list_user.html:58
@@ -237,14 +240,13 @@ msgstr "السجلات"
 
 #: .\account\templates\account\user\profile.html:149
 #: .\account\templates\account\user\profile.html:185
-#: .\reports\templates\reports\ibooking_report.html:38
 #: .\reports\templates\reports\trip_booking_report.html:38
 #: .\reservation\templates\reservation\misc\booking_list_all.html:51
 #: .\reservation\templates\reservation\misc\reservations_page.html:37
 #: .\reservation\templates\reservation\misc\reservations_page.html:46
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:38
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:49
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:56
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:40
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:51
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:58
 #: .\reservation\templates\reservation\user\booking_list_user.html:51
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:39
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:50
@@ -253,7 +255,7 @@ msgid "Trip reservations"
 msgstr "حجوزات الرحلات"
 
 #: .\account\templates\account\user\profile.html:174
-#: .\reservation\templates\reservation\base.html:66
+#: .\reservation\templates\reservation\base.html:68
 #: .\reservation\templates\reservation\user\booking_list_user.html:28
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:27
 msgid "Account"
@@ -262,9 +264,10 @@ msgstr "الاكونت"
 #: .\account\templates\account\user\profile.html:193
 #: .\account\templates\account\user\profile.html:204
 #: .\reports\templates\reports\trip_report.html:38
-#: .\reservation\templates\reservation\base.html:62
-#: .\reservation\templates\reservation\base.html:119
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:27
+#: .\reservation\templates\reservation\base.html:64
+#: .\reservation\templates\reservation\base.html:124
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:26
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:28
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:28
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:26
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:26
@@ -273,6 +276,9 @@ msgstr "الاكونت"
 #: .\reservation\templates\reservation\trip\trip_list.html:28
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:5
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:5
+#: .\transport\templates\transport\bus\bus_select.html:28
+#: .\transport\templates\transport\bus\detail.html:180
+#: .\transport\templates\transport\bus\seats_select.html:28
 msgid "Trips"
 msgstr "الرحلات"
 
@@ -290,7 +296,7 @@ msgid "Packages"
 msgstr "باكدجات الاسعار"
 
 #: .\account\templates\account\user\profile.html:223
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:151
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:153
 msgid "New Package"
 msgstr "انشاء باكدج جديد"
 
@@ -311,8 +317,8 @@ msgid "Add Trip program"
 msgstr "اضافة برامج"
 
 #: .\account\templates\registration\login.html:4
-#: .\reservation\templates\reservation\base.html:44
-#: .\reservation\templates\reservation\base.html:85
+#: .\reservation\templates\reservation\base.html:46
+#: .\reservation\templates\reservation\base.html:90
 msgid "Login"
 msgstr "تسجيل دخول"
 
@@ -363,7 +369,7 @@ msgstr "سجل الادمن"
 msgid "User Log"
 msgstr "سجل المستخدم"
 
-#: .\core\settings.py:136
+#: .\core\settings.py:137 .\core\settings1.py:144
 msgid "Arabic"
 msgstr "العربية"
 
@@ -378,6 +384,15 @@ msgstr "تقرير حجز رحلة"
 msgid "Reports"
 msgstr "التقارير"
 
+#: .\reports\templates\reports\ibooking_report.html:50
+#: .\reservation\models.py:408
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:68
+#: .\reservation\templates\reservation\ibooking\detail.html:40
+#: .\transport\templates\transport\bus\bus_select.html:53
+#: .\transport\templates\transport\bus\seats_select.html:53
+msgid "Booking"
+msgstr "حجز "
+
 #: .\reports\templates\reports\ibooking_report.html:60
 #: .\reports\templates\reports\trip_booking_report.html:60
 msgid "Reservation page"
@@ -385,18 +400,16 @@ msgstr "صفحة الحجز"
 
 #: .\reports\templates\reports\ibooking_report.html:65
 #: .\reports\templates\reports\trip_booking_report.html:65
-#: .\reports\templates\reports\trip_report.html:65
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:86
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:105
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:80
 #: .\reservation\templates\reservation\ibooking\detail.html:61
-#: .\reservation\templates\reservation\ibooking\list.html:67
 msgid "Print"
 msgstr "طباعة"
 
 #: .\reports\templates\reports\ibooking_report.html:72
 #: .\reports\templates\reports\trip_booking_report.html:72
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:7
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:118
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:8
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:136
 #: .\reservation\templates\reservation\ibooking\detail.html:7
 #: .\reservation\templates\reservation\ibooking\detail.html:84
 msgid "Reservation Details"
@@ -404,437 +417,448 @@ msgstr "تفاصيل الحجز"
 
 #: .\reports\templates\reports\ibooking_report.html:84
 #: .\reports\templates\reports\trip_booking_report.html:84
-#: .\reports\templates\reports\trip_report.html:84
+#: .\reports\templates\reports\trip_report.html:85
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:103
-#: .\reservation\templates\reservation\ibooking\list.html:78
-#: .\reservation\templates\reservation\misc\booking_list_all.html:65
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:63
-#: .\reservation\templates\reservation\trip\trip_list.html:95
+#: .\reservation\templates\reservation\ibooking\list.html:79
+#: .\reservation\templates\reservation\misc\booking_list_all.html:66
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:66
+#: .\reservation\templates\reservation\trip\trip_list.html:96
 #: .\reservation\templates\reservation\user\booking_list_user.html:66
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:65
+#: .\transport\templates\transport\bus\list.html:70
 msgid "Id"
 msgstr "الرقم"
 
 #: .\reports\templates\reports\ibooking_report.html:94
-#: .\reports\templates\reports\trip_booking_report.html:94
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:41
-msgid "trip"
-msgstr "الرحلة"
-
-#: .\reports\templates\reports\ibooking_report.html:114
-#: .\reports\templates\reports\trip_booking_report.html:114
-#: .\reports\templates\reports\trip_report.html:134
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:276
-#: .\reservation\templates\reservation\ibooking\detail.html:274
-#: .\reservation\templates\reservation\trip\trip_detail.html:75
-msgid "Created at"
-msgstr "أنشئت في"
-
-#: .\reports\templates\reports\ibooking_report.html:124
-#: .\reports\templates\reports\trip_booking_report.html:124
-#: .\reports\templates\reports\trip_report.html:145
-msgid "Created by"
-msgstr "انشئت بوساطة"
-
-#: .\reports\templates\reports\ibooking_report.html:135
-#: .\reports\templates\reports\trip_booking_report.html:135
-msgid "total price"
-msgstr "السعر الكلي"
-
-#: .\reports\templates\reports\ibooking_report.html:147
-#: .\reports\templates\reports\trip_booking_report.html:147
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:112
-#: .\reservation\templates\reservation\ibooking\detail.html:79
-#: .\reservation\templates\reservation\trip\trip_detail.html:63
-msgid "Report"
-msgstr "تقرير"
-
-#: .\reports\templates\reports\ibooking_report.html:159
-#: .\reports\templates\reports\trip_booking_report.html:159
-#: .\reservation\templates\reservation\ibooking\detail.html:180
-msgid "Description"
-msgstr "الوصف"
-
-#: .\reports\templates\reports\ibooking_report.html:169
-#: .\reports\templates\reports\trip_booking_report.html:169
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:373
-#: .\reservation\templates\reservation\ibooking\detail.html:389
-msgid "Total price"
-msgstr "السعر الكلي"
-
-#: .\reports\templates\reports\ibooking_report.html:179
-#: .\reports\templates\reports\trip_booking_report.html:179
-#: .\reservation\templates\reservation\trip_programs\list.html:72
-msgid "Cost"
-msgstr "تكلفة"
-
-#: .\reports\templates\reports\ibooking_report.html:189
-#: .\reports\templates\reports\trip_booking_report.html:189
-msgid "profit"
-msgstr "الربح"
-
-#: .\reports\templates\reports\trip_report.html:4
-msgid "Trip report"
-msgstr "تقرير رحلة"
-
-#: .\reports\templates\reports\trip_report.html:60
-msgid "trip page"
-msgstr "صفحة الرحلة"
-
-#: .\reports\templates\reports\trip_report.html:72
-msgid "Trip Details"
-msgstr "تفاصيل الرحلة"
-
-#: .\reports\templates\reports\trip_report.html:94 .\reservation\models.py:423
-#: .\reservation\templates\reservation\trip\trip_detail.html:132
-msgid "accommodation"
-msgstr "الاقامة"
-
-#: .\reports\templates\reports\trip_report.html:104
-#: .\reservation\templates\reservation\trip\trip_detail.html:142
-msgid "from"
-msgstr "من "
-
-#: .\reports\templates\reports\trip_report.html:114
-#: .\reservation\templates\reservation\trip\trip_detail.html:152
-msgid "to"
-msgstr "الى"
-
-#: .\reports\templates\reports\trip_report.html:124
-msgid "Nights"
-msgstr "عدد الليالي"
-
-#: .\reports\templates\reports\trip_report.html:158
-msgid "Stats "
-msgstr "احصائيات"
-
-#: .\reports\templates\reports\trip_report.html:170
-msgid "reservations"
-msgstr "الحجوزات"
-
-#: .\reports\templates\reports\trip_report.html:180
-#: .\reservation\templates\reservation\trip\trip_detail.html:204
-msgid "Rooms booked"
-msgstr "عدد الغرف المحجوزة"
-
-#: .\reports\templates\reports\trip_report.html:190
-msgid "Total persons"
-msgstr "عدد الاشخاص"
-
-#: .\reports\templates\reports\trip_report.html:200
-msgid "Extra seats"
-msgstr "عدد المقاعد الاضافية"
-
-#: .\reports\templates\reports\trip_report.html:210
-msgid "Total seats"
-msgstr "عدد المقاعد الكلي"
-
-#: .\reports\templates\reports\trip_report.html:221
-msgid "report"
-msgstr "تقرير"
-
-#: .\reports\templates\reports\trip_report.html:233
-msgid "Total Cost"
-msgstr "التكلفة الكلية"
-
-#: .\reports\templates\reports\trip_report.html:243
-msgid "Total Price"
-msgstr "السعر الكلي"
-
-#: .\reports\templates\reports\trip_report.html:253
-msgid "Total Profit"
-msgstr "الربح الكلي"
-
-#: .\reservation\forms.py:28
-msgid "amount"
-msgstr "المبلغ"
-
-#: .\reservation\models.py:71
+#: .\reservation\models.py:79
 #: .\reservation\templates\reservation\ibooking\detail.html:106
-#: .\reservation\templates\reservation\misc\booking_list_all.html:71
+#: .\reservation\templates\reservation\misc\booking_list_all.html:72
 #: .\reservation\templates\reservation\package\detail.html:92
-#: .\reservation\templates\reservation\trip\trip_list.html:98
+#: .\reservation\templates\reservation\trip\trip_list.html:99
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:120
 #: .\reservation\templates\reservation\user\booking_list_user.html:72
 msgid "Hotel"
 msgstr "الفندق"
 
-#: .\reservation\models.py:72
+#: .\reports\templates\reports\ibooking_report.html:104
+#: .\reports\templates\reports\trip_report.html:125
+msgid "Nights"
+msgstr "عدد الليالي"
+
+#: .\reports\templates\reports\ibooking_report.html:124
+#: .\reports\templates\reports\trip_booking_report.html:114
+#: .\reports\templates\reports\trip_report.html:135
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:294
+#: .\reservation\templates\reservation\ibooking\detail.html:274
+#: .\reservation\templates\reservation\trip\trip_detail.html:75
+msgid "Created at"
+msgstr "أنشئت في"
+
+#: .\reports\templates\reports\ibooking_report.html:134
+#: .\reports\templates\reports\trip_booking_report.html:124
+#: .\reports\templates\reports\trip_report.html:146
+msgid "Created by"
+msgstr "انشئت بوساطة"
+
+#: .\reports\templates\reports\ibooking_report.html:145
+#: .\reports\templates\reports\trip_booking_report.html:135
+msgid "total price"
+msgstr "السعر الكلي"
+
+#: .\reports\templates\reports\ibooking_report.html:157
+#: .\reports\templates\reports\trip_booking_report.html:147
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:131
+#: .\reservation\templates\reservation\ibooking\detail.html:79
+#: .\reservation\templates\reservation\trip\trip_detail.html:63
+msgid "Report"
+msgstr "تقرير"
+
+#: .\reports\templates\reports\ibooking_report.html:169
+#: .\reports\templates\reports\trip_booking_report.html:159
+#: .\reservation\templates\reservation\ibooking\detail.html:180
+msgid "Description"
+msgstr "الوصف"
+
+#: .\reports\templates\reports\ibooking_report.html:179
+#: .\reports\templates\reports\trip_booking_report.html:169
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:411
+#: .\reservation\templates\reservation\ibooking\detail.html:389
+msgid "Total price"
+msgstr "السعر الكلي"
+
+#: .\reports\templates\reports\ibooking_report.html:189
+#: .\reports\templates\reports\trip_booking_report.html:179
+#: .\reservation\templates\reservation\trip_programs\list.html:72
+msgid "Cost"
+msgstr "تكلفة"
+
+#: .\reports\templates\reports\ibooking_report.html:199
+#: .\reports\templates\reports\trip_booking_report.html:189
+msgid "profit"
+msgstr "الربح"
+
+#: .\reports\templates\reports\trip_booking_report.html:94
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:41
+msgid "trip"
+msgstr "الرحلة"
+
+#: .\reports\templates\reports\trip_report.html:4
+msgid "Trip report"
+msgstr "تقرير رحلة"
+
+#: .\reports\templates\reports\trip_report.html:50 .\reservation\models.py:536
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:39
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:41
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:158
+#: .\reservation\templates\reservation\booking\trip_booking_pay.html:39
+#: .\reservation\templates\reservation\booking\trip_booking_program_add.html:39
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:72
+#: .\reservation\templates\reservation\trip\trip_detail.html:39
+#: .\reservation\templates\reservation\trip\trip_detail.html:84
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:71
+#: .\transport\templates\transport\bus\bus_select.html:41
+#: .\transport\templates\transport\bus\seats_select.html:41
+msgid "Trip"
+msgstr "رحلة"
+
+#: .\reports\templates\reports\trip_report.html:60
+msgid "trip page"
+msgstr "صفحة الرحلة"
+
+#: .\reports\templates\reports\trip_report.html:73
+msgid "Trip Details"
+msgstr "تفاصيل الرحلة"
+
+#: .\reports\templates\reports\trip_report.html:95 .\reservation\models.py:434
+#: .\reservation\templates\reservation\trip\trip_detail.html:132
+msgid "accommodation"
+msgstr "الاقامة"
+
+#: .\reports\templates\reports\trip_report.html:105
+#: .\reservation\templates\reservation\trip\trip_detail.html:142
+msgid "from"
+msgstr "من "
+
+#: .\reports\templates\reports\trip_report.html:115
+#: .\reservation\templates\reservation\trip\trip_detail.html:152
+msgid "to"
+msgstr "الى"
+
+#: .\reports\templates\reports\trip_report.html:159
+msgid "Stats "
+msgstr "احصائيات"
+
+#: .\reports\templates\reports\trip_report.html:171
+msgid "reservations"
+msgstr "الحجوزات"
+
+#: .\reports\templates\reports\trip_report.html:181
+msgid "Rooms booked"
+msgstr "عدد الغرف المحجوزة"
+
+#: .\reports\templates\reports\trip_report.html:191
+msgid "Total persons"
+msgstr "عدد الاشخاص"
+
+#: .\reports\templates\reports\trip_report.html:201
+msgid "Extra seats"
+msgstr "عدد المقاعد الاضافية"
+
+#: .\reports\templates\reports\trip_report.html:211
+msgid "Total seats"
+msgstr "عدد المقاعد الكلي"
+
+#: .\reports\templates\reports\trip_report.html:222
+msgid "report"
+msgstr "تقرير"
+
+#: .\reports\templates\reports\trip_report.html:234
+msgid "Total Cost"
+msgstr "التكلفة الكلية"
+
+#: .\reports\templates\reports\trip_report.html:244
+msgid "Total Price"
+msgstr "السعر الكلي"
+
+#: .\reports\templates\reports\trip_report.html:254
+msgid "Total Profit"
+msgstr "الربح الكلي"
+
+#: .\reservation\forms.py:27
+msgid "amount"
+msgstr "المبلغ"
+
+#: .\reservation\models.py:80
 #: .\reservation\templates\reservation\package\detail.html:102
 msgid "label"
 msgstr "الاسم"
 
-#: .\reservation\models.py:73 .\reservation\models.py:180
-#: .\reservation\models.py:434
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:168
+#: .\reservation\models.py:81 .\reservation\models.py:190
+#: .\reservation\models.py:445
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:171
 #: .\reservation\templates\reservation\ibooking\detail.html:160
 #: .\reservation\templates\reservation\package\detail.html:112
-#: .\reservation\templates\reservation\trip\trip_list.html:101
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:123
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:148
+#: .\transport\templates\transport\bus\detail.html:97
+#: .\transport\templates\transport\bus\list.html:73
+#: .\transport\templates\transport\seats_1.html:6
 msgid "From"
 msgstr "من "
 
-#: .\reservation\models.py:74
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:171
+#: .\reservation\models.py:82
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:174
 #: .\reservation\templates\reservation\ibooking\detail.html:170
 #: .\reservation\templates\reservation\package\detail.html:122
-#: .\reservation\templates\reservation\trip\trip_list.html:104
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:126
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:151
+#: .\transport\templates\transport\bus\detail.html:107
+#: .\transport\templates\transport\bus\list.html:76
+#: .\transport\templates\transport\seats_1.html:7
 msgid "To"
 msgstr "الى"
 
-#: .\reservation\models.py:83
+#: .\reservation\models.py:91
 msgid "Single Room price, Half board"
 msgstr "سعر الغرفة السنجل نصف اقامة"
 
-#: .\reservation\models.py:88
+#: .\reservation\models.py:96
 msgid "Single Room cost, Half board"
 msgstr "تكلفة الغرفة السنجل نصف اقامة"
 
-#: .\reservation\models.py:93
+#: .\reservation\models.py:101
 msgid "Single Room price, Full board"
 msgstr "سعر الغرفة السنجل اقامة كاملة"
 
-#: .\reservation\models.py:98
+#: .\reservation\models.py:106
 msgid "Single Room cost, Full board"
 msgstr "تكلفة الغرفة السنجل اقامة كاملة"
 
-#: .\reservation\models.py:103
+#: .\reservation\models.py:111
 msgid "Double Room price, Half board"
 msgstr "سعر الغرفة المزدوجة نصف اقامة"
 
-#: .\reservation\models.py:108
+#: .\reservation\models.py:116
 msgid "Double Room cost, Half board"
 msgstr "تكلفة الغرفة المزدوجة نصف اقامة"
 
-#: .\reservation\models.py:113
+#: .\reservation\models.py:121
 msgid "Double Room price, Full board"
 msgstr "سعر الغرفة المزدوجة اقامة كاملة"
 
-#: .\reservation\models.py:118
+#: .\reservation\models.py:126
 msgid "Double Room cost, Full board"
 msgstr "تكلفة الغرفة المزدوجة اقامة كاملة"
 
-#: .\reservation\models.py:123
+#: .\reservation\models.py:131
 msgid "Triple Room price, Half board"
 msgstr "سعر الغرفة الثلاثية نصف اقامة"
 
-#: .\reservation\models.py:128
+#: .\reservation\models.py:136
 msgid "Triple Room cost, Half board"
 msgstr "تكلفة الغرفة الثلاثية نصف اقامة"
 
-#: .\reservation\models.py:133
+#: .\reservation\models.py:141
 msgid "Triple Room price, Full board"
 msgstr "سعر الغرفة الثلاثية اقامة كاملة"
 
-#: .\reservation\models.py:138
+#: .\reservation\models.py:146
 msgid "Triple Room cost, Full board"
 msgstr "تكلفة الغرفة الثلاثية اقامة كاملة"
 
-#: .\reservation\models.py:175 .\reservation\models.py:616
+#: .\reservation\models.py:185 .\reservation\models.py:626
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:304
 msgid "Notes"
 msgstr "ملاحظات"
 
-#: .\reservation\models.py:183 .\reservation\models.py:437
+#: .\reservation\models.py:193 .\reservation\models.py:448
 msgid "Until"
 msgstr "الى"
 
-#: .\reservation\models.py:186
+#: .\reservation\models.py:196
 msgid "Time period"
 msgstr "الفترة"
 
-#: .\reservation\models.py:190
+#: .\reservation\models.py:200
 msgid "Time unit"
 msgstr "وحدة الزمن"
 
-#: .\reservation\models.py:196 .\reservation\models.py:425
-#: .\reservation\models.py:527
+#: .\reservation\models.py:206 .\reservation\models.py:436
+#: .\reservation\models.py:538
 msgid "Creation date"
 msgstr "تاريخ الانشاء"
 
-#: .\reservation\models.py:212 .\reservation\models.py:535
+#: .\reservation\models.py:222 .\reservation\models.py:546
 msgid "Single Rooms"
 msgstr "عدد الغرف السنجل"
 
-#: .\reservation\models.py:216 .\reservation\models.py:539
+#: .\reservation\models.py:226 .\reservation\models.py:550
 msgid "Double Rooms"
 msgstr "عدد الغرف الدوبل"
 
-#: .\reservation\models.py:220 .\reservation\models.py:543
+#: .\reservation\models.py:230 .\reservation\models.py:554
 msgid "Triple Rooms"
 msgstr "عدد الغرف التريبل"
 
-#: .\reservation\models.py:224
+#: .\reservation\models.py:234
 msgid "Number of Adults"
 msgstr "عدد البالغين"
 
-#: .\reservation\models.py:228
+#: .\reservation\models.py:238
 msgid "Number of Children"
 msgstr "عدد الاطفال"
 
-#: .\reservation\models.py:235 .\reservation\models.py:454
+#: .\reservation\models.py:242
+#: .\reservation\templates\reservation\base.html:75
+#: .\reservation\templates\reservation\ibooking\detail.html:150
+#: .\transport\templates\transport\bus\detail.html:27
+msgid "Transport"
+msgstr "مواصلات"
+
+#: .\reservation\models.py:246 .\reservation\models.py:465
 msgid "Transport price per person"
 msgstr "سعر المواصلة للفرد"
 
-#: .\reservation\models.py:239
+#: .\reservation\models.py:250
 msgid "Number of extra seats"
 msgstr "عدد المقاعد الاضافية"
 
-#: .\reservation\models.py:247 .\reservation\models.py:578
+#: .\reservation\models.py:258 .\reservation\models.py:588
 msgid "discount percentage"
 msgstr "نسبة الخصم"
 
-#: .\reservation\models.py:253 .\reservation\models.py:584
+#: .\reservation\models.py:264 .\reservation\models.py:594
 msgid "discount amount"
 msgstr "خصم مبلغ"
 
-#: .\reservation\models.py:259
+#: .\reservation\models.py:270
 msgid "paid amount"
 msgstr "المبلغ المدفوع"
 
-#: .\reservation\models.py:283 .\reservation\models.py:633
+#: .\reservation\models.py:294 .\reservation\models.py:644
 msgid "Single rooms"
 msgstr "غرف سنجل"
 
-#: .\reservation\models.py:284 .\reservation\models.py:634
+#: .\reservation\models.py:295 .\reservation\models.py:645
 msgid "Double rooms"
 msgstr "غرف دوبل"
 
-#: .\reservation\models.py:285 .\reservation\models.py:635
+#: .\reservation\models.py:296 .\reservation\models.py:646
 msgid "Triple rooms"
 msgstr "غرف تريبل"
 
-#: .\reservation\models.py:397
-#: .\reservation\templates\reservation\ibooking\detail.html:40
-msgid "Booking"
-msgstr "حجز "
-
-#: .\reservation\models.py:400
+#: .\reservation\models.py:411
 msgid "Message"
 msgstr "رسالة"
 
-#: .\reservation\models.py:411
-#: .\reservation\templates\reservation\misc\booking_list_all.html:77
+#: .\reservation\models.py:422
+#: .\reservation\templates\reservation\ibooking\list.html:88
+#: .\reservation\templates\reservation\misc\booking_list_all.html:78
+#: .\reservation\templates\reservation\trip\trip_list.html:102
 #: .\reservation\templates\reservation\user\booking_list_user.html:78
+#: .\transport\templates\transport\bus\list.html:79
 msgid "Date"
 msgstr "تاريخ"
 
-#: .\reservation\models.py:421
+#: .\reservation\models.py:432
 #: .\reservation\templates\reservation\trip\trip_detail.html:122
 msgid "destination"
 msgstr "الوجهة"
 
-#: .\reservation\models.py:439
+#: .\reservation\models.py:450
 msgid "rooms total"
 msgstr "عدد الغرف"
 
-#: .\reservation\models.py:441
+#: .\reservation\models.py:452
 msgid "rooms_booked"
 msgstr "الغرف المحجوزة"
 
-#: .\reservation\models.py:443
+#: .\reservation\models.py:454
 msgid "bus_total"
 msgstr "عدد الباصات"
 
-#: .\reservation\models.py:445
+#: .\reservation\models.py:456
 msgid "Trip starting location"
 msgstr "مكان التجمع"
 
-#: .\reservation\models.py:448
+#: .\reservation\models.py:459
 msgid "Trip starting time"
-msgstr "معاج التجمع"
+msgstr "معاد التجمع"
 
-#: .\reservation\models.py:460
+#: .\reservation\models.py:471
 msgid "single room cost"
 msgstr "تكلفة الغرفة السنجل"
 
-#: .\reservation\models.py:465
+#: .\reservation\models.py:476
 msgid "double room cost"
 msgstr "تكلفة الغرفة الدوبل"
 
-#: .\reservation\models.py:470
+#: .\reservation\models.py:481
 msgid "triple room cost"
 msgstr "تكلفة الغرفة التريبل"
 
-#: .\reservation\models.py:476
+#: .\reservation\models.py:487
 msgid "Single Room price / Person"
 msgstr "سعر الفرد في الغرفة السنجل"
 
-#: .\reservation\models.py:482
-#: .\reservation\templates\reservation\trip\trip_list.html:107
+#: .\reservation\models.py:493
+#: .\reservation\templates\reservation\trip\trip_list.html:112
 msgid "Double Room price / Person"
 msgstr "سعر الفرد في الغرفة الدوبل"
 
-#: .\reservation\models.py:487
-#: .\reservation\templates\reservation\trip\trip_list.html:112
+#: .\reservation\models.py:498
+#: .\reservation\templates\reservation\trip\trip_list.html:117
 msgid "Triple Room price/ Person"
 msgstr "سعر الفرد في الغرفة التريبل"
 
-#: .\reservation\models.py:525
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:40
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:140
-#: .\reservation\templates\reservation\booking\trip_booking_pay.html:39
-#: .\reservation\templates\reservation\booking\trip_booking_program_add.html:39
-#: .\reservation\templates\reservation\trip\trip_detail.html:39
-#: .\reservation\templates\reservation\trip\trip_detail.html:84
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:71
-msgid "Trip"
-msgstr "رحلة"
-
-#: .\reservation\models.py:547
+#: .\reservation\models.py:558
 msgid "Persons in Single Rooms"
 msgstr "عدد الافراد في الغرف السنجل"
 
-#: .\reservation\models.py:551
+#: .\reservation\models.py:562
 msgid "Persons in Double Rooms"
 msgstr "عدد الافراد في الغرف الدوبل"
 
-#: .\reservation\models.py:555
+#: .\reservation\models.py:566
 msgid "Persons in Triple Rooms"
 msgstr "عدد الافراد في الغرف التريبل"
 
-#: .\reservation\models.py:559
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:151
+#: .\reservation\models.py:570
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:169
 #: .\reservation\templates\reservation\ibooking\detail.html:284
 msgid "Adults"
 msgstr "عدد البالغين"
 
-#: .\reservation\models.py:563
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:161
+#: .\reservation\models.py:574
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:179
 #: .\reservation\templates\reservation\ibooking\detail.html:294
 msgid "Children"
 msgstr "عدد الاطفال"
 
-#: .\reservation\models.py:567
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:171
+#: .\reservation\models.py:578
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:189
 #: .\reservation\templates\reservation\ibooking\detail.html:304
 msgid "Extra Seats"
 msgstr "المقاعد الاضافية"
 
-#: .\reservation\models.py:572
-msgid "Seats"
-msgstr "المقاعد"
-
-#: .\reservation\models.py:594
+#: .\reservation\models.py:604
 msgid "Paid amount"
 msgstr "المبلغ المدفوع"
 
-#: .\reservation\models.py:606
+#: .\reservation\models.py:616
 msgid "Phone number"
 msgstr "الهاتف"
 
-#: .\reservation\models.py:610
+#: .\reservation\models.py:620
 msgid "Additional Phone number"
 msgstr "هاتف اضافي"
 
-#: .\reservation\templates\reservation\base.html:56
+#: .\reservation\templates\reservation\base.html:58
 msgid "Home"
 msgstr "الصفحة الرئيسية"
 
-#: .\reservation\templates\reservation\base.html:59
-#: .\reservation\templates\reservation\base.html:116
+#: .\reservation\templates\reservation\base.html:61
+#: .\reservation\templates\reservation\base.html:121
 #: .\reservation\templates\reservation\destination\destination_detail.html:4
 #: .\reservation\templates\reservation\destination\destination_detail.html:28
 #: .\reservation\templates\reservation\destination\destination_list.html:5
@@ -848,241 +872,277 @@ msgstr "الصفحة الرئيسية"
 msgid "Destinations"
 msgstr "الوجهات"
 
-#: .\reservation\templates\reservation\base.html:70
-#: .\reservation\templates\reservation\base.html:122
+#: .\reservation\templates\reservation\base.html:72
+#: .\reservation\templates\reservation\base.html:127
 msgid "Reservations"
 msgstr "الحجوزات"
 
-#: .\reservation\templates\reservation\base.html:80
+#: .\reservation\templates\reservation\base.html:85
 msgid "Logout"
 msgstr "تسجيل خروج"
 
-#: .\reservation\templates\reservation\base.html:113
+#: .\reservation\templates\reservation\base.html:118
 msgid "Resources"
 msgstr "الموارد"
 
-#: .\reservation\templates\reservation\base.html:127
+#: .\reservation\templates\reservation\base.html:132
 msgid "Follow us"
 msgstr "تابعنا"
 
-#: .\reservation\templates\reservation\base.html:130
+#: .\reservation\templates\reservation\base.html:135
 msgid "Facebook"
 msgstr "فيسبوك"
 
-#: .\reservation\templates\reservation\base.html:133
+#: .\reservation\templates\reservation\base.html:138
 msgid "Instagram"
 msgstr "انستجرام"
 
-#: .\reservation\templates\reservation\base.html:138
+#: .\reservation\templates\reservation\base.html:143
 msgid "Legal"
 msgstr "قانوني"
 
-#: .\reservation\templates\reservation\base.html:141
+#: .\reservation\templates\reservation\base.html:146
 msgid "Privacy Policy"
 msgstr "سياسة الخصوصية"
 
-#: .\reservation\templates\reservation\base.html:144
+#: .\reservation\templates\reservation\base.html:149
 msgid "Terms &amp; Conditions"
 msgstr "الشروط و الاحكام"
 
-#: .\reservation\templates\reservation\booking\trip_booking_create.html:6
-msgid "New Trip Booking"
-msgstr "حجز رحلة جديد"
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:6
+#| msgid "paid amount"
+msgid "Add amounts"
+msgstr "اضافة مبالغ اضافية"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:52
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:51
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:53
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:5
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:53
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:51
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:51
-#: .\reservation\templates\reservation\ibooking\list.html:5
-#: .\reservation\templates\reservation\ibooking\list.html:53
+#: .\reservation\templates\reservation\ibooking\list.html:6
+#: .\reservation\templates\reservation\ibooking\list.html:54
 #: .\reservation\templates\reservation\package\detail.html:69
 msgid "Reservation list"
 msgstr "قائمة الحجوزات"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:64
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:63
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:63
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:63
 #: .\reservation\templates\reservation\ibooking\detail.html:41
 msgid "rooms"
 msgstr "غرف"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:72
+#: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:75
+#| msgid "paid amount"
+msgid "Add amount"
+msgstr "اضافة مبلغ"
+
+#: .\reservation\templates\reservation\booking\trip_booking_create.html:6
+#: .\reservation\templates\reservation\ibooking\create.html:6
+msgid "New Trip Booking"
+msgstr "حجز رحلة جديد"
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:88
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:75
 #: .\reservation\templates\reservation\ibooking\detail.html:50
 msgid "Pay"
 msgstr "دفع"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:75
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:91
+#: .\reservation\templates\reservation\booking\trip_booking_program_add.html:6
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:75
 msgid "Add program"
 msgstr "اضافة برامج"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:92
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:94
+#| msgid "paid amount"
+msgid "Add Amount"
+msgstr "اضافة مبلغ "
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:111
 #: .\reservation\templates\reservation\ibooking\detail.html:66
-#| msgid "Delete booking"
 msgid "Cancel booking"
 msgstr "إلغاء الحجز"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:98
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:117
 #: .\reservation\templates\reservation\ibooking\detail.html:72
-#| msgid "Delete booking"
 msgid "Activate booking"
 msgstr "تفعيل الحجز"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:106
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:125
 msgid "Delete booking"
 msgstr "حذف الحجز"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:130
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:148
 #: .\reservation\templates\reservation\ibooking\detail.html:96
 #: .\reservation\templates\reservation\misc\reservations_page.html:48
 #: .\reservation\templates\reservation\misc\reservations_page.html:62
 msgid "Booking Id"
 msgstr "رقم الحجز"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:181
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:199
 #: .\reservation\templates\reservation\ibooking\detail.html:314
 msgid "Total Seats"
 msgstr "عدد المقاعد الكلي"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:197
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:215
 msgid "Active"
 msgstr "مفعل"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:200
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:218
 msgid "Cancelled"
 msgstr "ملغي"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:214
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:232
 #: .\reservation\templates\reservation\ibooking\detail.html:222
 msgid "Personl Details"
 msgstr "البيانات الشخصية"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:246
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:264
 #: .\reservation\templates\reservation\ibooking\detail.html:254
 msgid "Phone Numbre"
 msgstr "الهاتف"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:256
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:274
 msgid "Phone Numbre 2"
 msgstr "الهاتف الاضافي"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:266
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:284
 #: .\reservation\templates\reservation\ibooking\detail.html:264
 msgid "Created By"
 msgstr "انشئت بوساطة"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:300
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:328
 #: .\reservation\templates\reservation\ibooking\detail.html:326
 msgid "Price Details"
 msgstr "تفاصيل السعر"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:323
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:351
 #: .\reservation\templates\reservation\ibooking\detail.html:349
 msgid "Reservation Price | Discount"
 msgstr "سعر الحجز | نسبة الخصم"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:333
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:361
 #: .\reservation\templates\reservation\ibooking\detail.html:359
 msgid "Extra discount"
 msgstr "خصم اضافي"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:343
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:371
 #: .\reservation\templates\reservation\ibooking\detail.html:369
 msgid "Price after discount"
 msgstr "السعر بعد الخصم"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:353
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:381
 #: .\reservation\templates\reservation\ibooking\detail.html:379
 msgid "Extra Seats price"
 msgstr "سعر المقاعد الاضفية"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:363
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:391
 msgid "Programs Price"
 msgstr "سعر البرامج"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:383
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:401
+#| msgid "discount amount"
+msgid "Additional amounts"
+msgstr "مبالغ اضافية"
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:421
 #: .\reservation\templates\reservation\ibooking\detail.html:399
 msgid "Paid | Remaining"
 msgstr "المدفوع | المتبقي "
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:396
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:434
 msgid "Programs Details"
 msgstr "تفاصيل البرامج الاضافية"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:409
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:447
 msgid "Quantity"
 msgstr "العدد"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:412
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:450
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:82
 #: .\reservation\templates\reservation\trip_programs\list.html:69
-#: .\reservation\views.py:185
+#: .\reservation\views.py:192
 msgid "Price"
 msgstr "السعر"
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:437
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:475
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:528
 msgid "Total"
 msgstr "السعر الكلي"
 
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:487
+#| msgid "discount amount"
+msgid "AdditionalAmount"
+msgstr "مبالغ اضافية"
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:497
+#| msgid "amount"
+msgid "Amount"
+msgstr "مبلغ"
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:500
+msgid "Reason"
+msgstr "السبب"
+
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:61
-#: .\reservation\templates\reservation\ibooking\list.html:61
+#: .\reservation\templates\reservation\ibooking\list.html:62
 msgid "New reservaion"
 msgstr "حجز جديد"
 
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:66
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:93
-#| msgid "Trip reservations"
 msgid "Active reservations"
 msgstr "الحجوزات الفعالة"
 
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:71
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:91
-#| msgid "All Reservations"
 msgid "Cancelled reservations"
 msgstr "الحجوزات الملغاة"
 
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:109
-#: .\reservation\templates\reservation\ibooking\list.html:84
-#: .\reservation\templates\reservation\misc\booking_list_all.html:74
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:69
+#: .\reservation\templates\reservation\ibooking\list.html:85
+#: .\reservation\templates\reservation\misc\booking_list_all.html:75
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:75
 #: .\reservation\templates\reservation\user\booking_list_user.html:75
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:74
 msgid "Rooms"
 msgstr "الغرف"
 
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:112
-#: .\reservation\templates\reservation\ibooking\list.html:87
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:72
+#: .\reservation\templates\reservation\ibooking\list.html:91
 msgid "Persons [adults/children]"
 msgstr "الاشخاص[اطفال / بالغين]"
 
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:121
-#: .\reservation\templates\reservation\ibooking\list.html:96
-#: .\reservation\templates\reservation\misc\booking_list_all.html:86
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:81
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:122
+#: .\reservation\templates\reservation\ibooking\list.html:100
+#: .\reservation\templates\reservation\misc\booking_list_all.html:87
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:84
 #: .\reservation\templates\reservation\user\booking_list_user.html:87
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:83
 msgid "Payment Status"
 msgstr "حالة الدفع"
 
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:155
-#: .\reservation\templates\reservation\misc\booking_list_all.html:134
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:157
+#: .\reservation\templates\reservation\ibooking\list.html:147
+#: .\reservation\templates\reservation\misc\booking_list_all.html:137
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:130
 #: .\reservation\templates\reservation\user\booking_list_user.html:135
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:129
 msgid "remaining"
 msgstr "المتبقي "
 
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:159
-#: .\reservation\templates\reservation\misc\booking_list_all.html:138
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:161
+#: .\reservation\templates\reservation\ibooking\list.html:151
+#: .\reservation\templates\reservation\misc\booking_list_all.html:141
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:134
 #: .\reservation\templates\reservation\user\booking_list_user.html:139
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:133
 msgid "complete"
 msgstr "مكتمل"
 
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:6
-#: .\reservation\templates\reservation\booking\trip_booking_program_add.html:6
 msgid "Reservation Pay"
 msgstr "دفع الحجز"
 
@@ -1169,8 +1229,8 @@ msgid "Favourit Hotels"
 msgstr "الفنادق المفضلة"
 
 #: .\reservation\templates\reservation\destination\destination_detail.html:159
-#: .\reservation\templates\reservation\hotel\hotel_list.html:160
-#: .\reservation\templates\reservation\trip\trip_list.html:158
+#: .\reservation\templates\reservation\hotel\hotel_list.html:161
+#: .\reservation\templates\reservation\trip\trip_list.html:167
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:176
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:198
 msgid "Book"
@@ -1195,17 +1255,17 @@ msgstr "اضافة فندق"
 msgid "Hotel Details"
 msgstr "تفاصيل الفندق"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:165
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:168
 msgid "Label"
 msgstr "الفترة"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:174
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:178
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:182
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:177
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:181
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:185
 msgid "Night price in"
 msgstr "سعر الليلة في"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:175
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:178
 #: .\reservation\templates\reservation\ibooking\detail.html:426
 #: .\reservation\templates\reservation\ibooking\detail.html:470
 #: .\reservation\templates\reservation\package\detail.html:156
@@ -1213,7 +1273,7 @@ msgstr "سعر الليلة في"
 msgid "Single Room"
 msgstr "الغرفة السنجل"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:179
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:182
 #: .\reservation\templates\reservation\ibooking\detail.html:436
 #: .\reservation\templates\reservation\ibooking\detail.html:480
 #: .\reservation\templates\reservation\package\detail.html:166
@@ -1221,7 +1281,7 @@ msgstr "الغرفة السنجل"
 msgid "Double Room"
 msgstr "الغرفة  الدوبل"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:183
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:186
 #: .\reservation\templates\reservation\ibooking\detail.html:446
 #: .\reservation\templates\reservation\ibooking\detail.html:490
 #: .\reservation\templates\reservation\package\detail.html:176
@@ -1229,7 +1289,7 @@ msgstr "الغرفة  الدوبل"
 msgid "Triple Room"
 msgstr "الغرفة  التريبل"
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:244
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:247
 msgid "No packages or prices available ..."
 msgstr "لا توجد باكدجات اسعار "
 
@@ -1243,6 +1303,7 @@ msgstr ""
 "الفنادق في %(destination)s\n"
 
 #: .\reservation\templates\reservation\ibooking\detail.html:27
+#: .\reservation\templates\reservation\ibooking\list.html:6
 msgid "Individual Bookings"
 msgstr "حجوزات فردية"
 
@@ -1258,10 +1319,6 @@ msgstr "نوع الاقامة"
 msgid "duration"
 msgstr "المدة"
 
-#: .\reservation\templates\reservation\ibooking\detail.html:150
-msgid "Transport"
-msgstr "مواصلات"
-
 #: .\reservation\templates\reservation\ibooking\detail.html:414
 #: .\reservation\templates\reservation\package\detail.html:187
 msgid "Full Board"
@@ -1272,13 +1329,58 @@ msgstr "اقامة كاملة"
 msgid "Half Board"
 msgstr "نصف اقامة"
 
-#: .\reservation\templates\reservation\ibooking\list.html:71
+#: .\reservation\templates\reservation\ibooking\list.html:66
+#| msgid "Package"
+msgid "Package page"
+msgstr "صفحة الباكدج"
+
+#: .\reservation\templates\reservation\ibooking\list.html:72
 msgid "All Reservations"
 msgstr "كل الحجوزات"
 
+#: .\reservation\templates\reservation\ibooking\list.html:134
+#: .\reservation\templates\reservation\misc\booking_list_all.html:121
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:116
+#: .\reservation\templates\reservation\pagination.html:11
+#: .\reservation\templates\reservation\trip\trip_detail.html:168
+#: .\reservation\templates\reservation\user\booking_list_user.html:121
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:115
+#: .\transport\templates\transport\bus\detail.html:123
+#: .\transport\templates\transport\bus\detail.html:143
+#: .\transport\templates\transport\bus\list.html:134
+#: .\transport\templates\transport\bus\list.html:146
+msgid "Previous"
+msgstr "السابق"
+
+#: .\reservation\templates\reservation\ibooking\list.html:137
+#: .\reservation\templates\reservation\misc\booking_list_all.html:124
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:119
+#: .\reservation\templates\reservation\trip\trip_detail.html:171
+#: .\reservation\templates\reservation\user\booking_list_user.html:124
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:118
+#: .\transport\templates\transport\bus\detail.html:126
+#: .\transport\templates\transport\bus\detail.html:146
+#: .\transport\templates\transport\bus\list.html:137
+#: .\transport\templates\transport\bus\list.html:149
+msgid "Ongoing"
+msgstr "جارية"
+
+#: .\reservation\templates\reservation\ibooking\list.html:140
+#: .\reservation\templates\reservation\misc\booking_list_all.html:128
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:122
+#: .\reservation\templates\reservation\trip\trip_detail.html:174
+#: .\reservation\templates\reservation\user\booking_list_user.html:127
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:121
+#: .\transport\templates\transport\bus\detail.html:129
+#: .\transport\templates\transport\bus\detail.html:149
+#: .\transport\templates\transport\bus\list.html:140
+#: .\transport\templates\transport\bus\list.html:152
+msgid "Upcoming"
+msgstr "قادمة"
+
 #: .\reservation\templates\reservation\misc\booking_list_all.html:8
 #: .\reservation\templates\reservation\misc\reservations_page.html:6
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:6
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:8
 #: .\reservation\templates\reservation\user\booking_list_user.html:7
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:7
 msgid "Reservation Page"
@@ -1286,24 +1388,9 @@ msgstr "صفحة الحجوزات"
 
 #: .\reservation\templates\reservation\misc\booking_list_all.html:28
 #: .\reservation\templates\reservation\misc\reservations_page.html:26
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:26
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:28
 msgid "Bookings"
 msgstr "الحجوزات"
-
-#: .\reservation\templates\reservation\misc\booking_list_all.html:120
-#: .\reservation\templates\reservation\pagination.html:11
-#: .\reservation\templates\reservation\trip\trip_detail.html:168
-#: .\reservation\templates\reservation\user\booking_list_user.html:121
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:115
-msgid "Previous"
-msgstr "السابق"
-
-#: .\reservation\templates\reservation\misc\booking_list_all.html:123
-#: .\reservation\templates\reservation\trip\trip_detail.html:171
-#: .\reservation\templates\reservation\user\booking_list_user.html:124
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:118
-msgid "Ongoing"
-msgstr "جارية"
 
 #: .\reservation\templates\reservation\misc\not_found.html:14
 msgid "No result"
@@ -1373,24 +1460,36 @@ msgstr "رقم الرحلة"
 msgid "Total rooms"
 msgstr "عدد الغرف الكلي"
 
-#: .\reservation\templates\reservation\trip\trip_detail.html:214
+#: .\reservation\templates\reservation\trip\trip_detail.html:215
 msgid "Total buses"
 msgstr "عدد الباصات"
 
-#: .\reservation\templates\reservation\trip\trip_detail.html:224
+#: .\reservation\templates\reservation\trip\trip_detail.html:225
 msgid "transport price / person"
 msgstr "سعر المواصلة للفرد"
 
-#: .\reservation\templates\reservation\trip\trip_detail.html:234
+#: .\reservation\templates\reservation\trip\trip_detail.html:225
+#| msgid "Extra seats"
+msgid "For extra seats"
+msgstr "للمقاعد الاضافية"
+
+#: .\reservation\templates\reservation\trip\trip_detail.html:235
 msgid "Single Room / Person"
 msgstr "سعر الفرد في الغرفة السنجل"
 
-#: .\reservation\templates\reservation\trip\trip_detail.html:244
+#: .\reservation\templates\reservation\trip\trip_detail.html:235
+#: .\reservation\templates\reservation\trip\trip_detail.html:245
+#: .\reservation\templates\reservation\trip\trip_detail.html:255
+#| msgid "Transport"
+msgid "Transport included"
+msgstr "شامل الانتقالات"
+
+#: .\reservation\templates\reservation\trip\trip_detail.html:245
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:154
 msgid "Double Room / Person"
 msgstr "سعر الفرد في الغرفة الدوبل"
 
-#: .\reservation\templates\reservation\trip\trip_detail.html:254
+#: .\reservation\templates\reservation\trip\trip_detail.html:255
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:132
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:157
 msgid "Triple Room / Person"
@@ -1404,80 +1503,167 @@ msgstr "الرحلات الجارية"
 msgid " Double Room / Person"
 msgstr "سعر الفرد في الغرفة الدوبل"
 
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:121
-msgid "Upcoming"
-msgstr "قادمة"
-
-#: .\reservation\views.py:171
+#: .\reservation\views.py:178
 msgid "Trip Information"
 msgstr "معلومات الرحلة"
 
-#: .\reservation\views.py:180
+#: .\reservation\views.py:187
 msgid "Cost per night"
 msgstr "تكلفة الليلة الواحدة"
 
-#: .\reservation\views.py:200
+#: .\reservation\views.py:207
 msgid "created trip to"
 msgstr "قام بانشاء رحلة جديدة "
 
-#: .\reservation\views.py:227
-#| msgid "Delete trip"
+#: .\reservation\views.py:234
 msgid "Deleted Trip"
 msgstr "قام بحذف الرحلة"
 
-#: .\reservation\views.py:242 .\reservation\views.py:354
-msgid "Choose trip"
-msgstr "اختار الرحلة"
-
-#: .\reservation\views.py:245 .\reservation\views.py:356
-#: .\reservation\views.py:494
+#: .\reservation\views.py:254 .\reservation\views.py:371
+#: .\reservation\views.py:562
 msgid "Numbre of Rooms"
 msgstr "عدد الغرف"
 
-#: .\reservation\views.py:252 .\reservation\views.py:363
-#: .\reservation\views.py:499
+#: .\reservation\views.py:259 .\reservation\views.py:378
+#: .\reservation\views.py:567
 msgid "Persons"
 msgstr "الاشخاص"
 
-#: .\reservation\views.py:259 .\reservation\views.py:370
-#: .\reservation\views.py:504
+#: .\reservation\views.py:264 .\reservation\views.py:383
+#: .\reservation\views.py:572
 msgid "Personal Detail"
 msgstr "البيانات الشخصية"
 
-#: .\reservation\views.py:286
+#: .\reservation\views.py:299
 msgid "made trip booking to"
 msgstr "قام بحجز رحلة الى "
 
-#: .\reservation\views.py:321
-#| msgid "made trip booking to"
+#: .\reservation\views.py:334
 msgid "permenantly deleted trip booking"
 msgstr "قام بحذف نهائي لحجز رحلة الى "
 
-#: .\reservation\views.py:387
-#| msgid "made trip booking to"
+#: .\reservation\views.py:400
 msgid "updated trip booking"
 msgstr "قام بتعديل حجز رحلة الى "
 
-#: .\reservation\views.py:400
-#| msgid "paid amount"
-msgid "Recieved amount"
-msgstr "عملية دفع حجز رحلة استقبل "
+#: .\reservation\views.py:413
+#| msgid "Recieved amount"
+msgid "Recieved amount for trip booking"
+msgstr "استلم باقي دفع حجز رحلة"
 
-#: .\reservation\views.py:433
+#: .\reservation\views.py:435
+#| msgid "made individual booking to"
+msgid "Recieved amount for individual booking"
+msgstr "استلم باقي دفع حجز فردي"
+
+#: .\reservation\views.py:466
 msgid "added trip booking program to"
 msgstr "قام باضافة برامج ترفيهية لحجز"
 
-#: .\reservation\views.py:535
+#: .\reservation\views.py:492
+#| msgid "added trip booking program to"
+msgid "added trip booking addititonal amount to"
+msgstr "قام باضافة مبلغ اضافي للحجز"
+
+#: .\reservation\views.py:613
 msgid "made individual booking to"
 msgstr "قام بحجز فردي الى "
 
-#: .\reservation\views.py:563
+#: .\reservation\views.py:639
 msgid "Prices per night"
 msgstr "السعر باليلة"
 
-#: .\reservation\views.py:597
+#: .\reservation\views.py:678
 msgid "created new package for"
 msgstr "قام باضافة باكدج سعر الى "
+
+#: .\transport\templates\transport\bus\bus_select.html:8
+msgid "Bus select"
+msgstr "اختيار الباص"
+
+#: .\transport\templates\transport\bus\bus_select.html:65
+#: .\transport\templates\transport\bus\bus_select.html:70
+msgid "Select bus"
+msgstr "اختيار الباص"
+
+#: .\transport\templates\transport\bus\bus_select.html:71
+#: .\transport\templates\transport\bus\seats_select.html:77
+msgid "Seats to book"
+msgstr "عدد المقاعد المطلوب حجزها"
+
+#: .\transport\templates\transport\bus\bus_select.html:72
+#| msgid "Total buses"
+msgid "Available buses"
+msgstr "الباصات المتاحة"
+
+#: .\transport\templates\transport\bus\create.html:6
+#: .\transport\templates\transport\bus\list.html:50
+#| msgid "New user"
+msgid "New Bus"
+msgstr "باص جديد"
+
+#: .\transport\templates\transport\bus\detail.html:39
+msgid "Bus"
+msgstr "باص"
+
+#: .\transport\templates\transport\bus\detail.html:87
+msgid "Bus Id"
+msgstr "رقم الباص"
+
+#: .\transport\templates\transport\bus\detail.html:117
+#| msgid "Booking ID"
+msgid "Going Date"
+msgstr "تاريخ الذهاب"
+
+#: .\transport\templates\transport\bus\detail.html:137
+msgid "Return Date"
+msgstr "معاد العودة"
+
+#: .\transport\templates\transport\bus\list.html:7
+msgid "Buses Page"
+msgstr "صفحة الباصات"
+
+#: .\transport\templates\transport\bus\list.html:27
+msgid "Buses"
+msgstr "الباصات"
+
+#: .\transport\templates\transport\bus\list.html:55
+#| msgid "Ongoing"
+msgid "Going"
+msgstr "ذهاب"
+
+#: .\transport\templates\transport\bus\list.html:60
+msgid "Return"
+msgstr "العودة"
+
+#: .\transport\templates\transport\bus\list.html:62
+#| msgid "Users list"
+msgid "Bus list"
+msgstr "قائمة الباصات"
+
+#: .\transport\templates\transport\bus\list.html:83
+#| msgid "Trip starting location"
+msgid "Start location , Time"
+msgstr "مكان و معاد التجمع"
+
+#: .\transport\templates\transport\bus\seats_select.html:8
+msgid "Seats select"
+msgstr "اختيار المقاعد"
+
+#: .\transport\templates\transport\bus\seats_select.html:65
+#| msgid "Extra seats"
+msgid "Select seats"
+msgstr "اختيار المقاعد"
+
+#~ msgid "Seats"
+#~ msgstr "المقاعد"
+
+#, fuzzy
+#~ msgid "upcoming"
+#~ msgstr "قادمة"
+
+#~ msgid "Choose trip"
+#~ msgstr "اختار الرحلة"
 
 #~ msgid "Create package"
 #~ msgstr "انشاء باكدج سعر جديد"
@@ -1505,9 +1691,6 @@ msgstr "قام باضافة باكدج سعر الى "
 
 #~ msgid "profile information"
 #~ msgstr "معلومات المستخدم"
-
-#~ msgid "Booking ID"
-#~ msgstr "رقم الحجز"
 
 #~ msgid "Number of total seats"
 #~ msgstr "عدد المقاعد الكلي"

@@ -1,8 +1,16 @@
 from django.contrib import admin
-from .models import Destination, Hotel, Booking, AccommodationType, HotelPackage, Trip, TripBooking, TripProgram, TripBookingProgram
+from .models import AdditionalAmount, Destination, Hotel, Booking, AccommodationType, HotelPackage, Trip, TripBooking, TripProgram, TripBookingProgram , Client
 # Register your models here.
 
 
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Client
+@admin.register(AdditionalAmount)
+class AdditionalAmountAdmin(admin.ModelAdmin):
+    class Meta:
+        model = AdditionalAmount
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
     list_display = ('name',)

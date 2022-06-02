@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'actions.apps.ActionsConfig',
     'reports',
     'django.contrib.humanize',
+    'transport',
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
@@ -103,7 +104,14 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-    'default':env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'solytravel',
+        'USER': 'solytravel',
+        'PASSWORD': 'solytravel',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 

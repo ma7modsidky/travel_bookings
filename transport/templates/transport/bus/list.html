@@ -1,0 +1,175 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load humanize %}
+{% block title %} {% trans 'Buses Page' %}  {% endblock %}
+{% block content %}
+<div class="bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href=""
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Buses' %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                        {% if type == 'going' %}
+                            {% trans 'Going' %}
+                        {% elif type == 'return'%}
+                            {% trans 'Return' %}    
+                        {% endif %}
+                            </a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <hr class="my-2 border dark:border-gray-800"/>
+    <div class="flex flex-wrap my-2 gap-2">
+        <a href="{% url 'transport:bus_create' %}"
+            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'New Bus' %}</a>
+        <a href="{% url 'transport:bus_list' 'going' %}"
+            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Going' %}</a>
+        <a href="{% url 'transport:bus_list' 'return' %}"
+            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Return' %}</a>    
+    </div>
+    <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Bus list' %} ({{type}})</h2>
+    {% include "reservation/pagination.html"  %}
+    <div class="bg-white dark:bg-gray-600 rounded-md my-2">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Id' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'From' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'To' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Date' %}
+                        </th>
+                        {% if type == 'going' %}
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Start location , Time' %}
+                        </th>
+                        {% endif %}
+                        
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Status' %}
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in object_list.all %}
+                    <tr
+                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        <td class="px-3 py-2">
+                            <a href="{% url 'transport:bus_detail' b.id %}">{{b.id}}</a>
+                        </td>
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+
+                            {% if type == 'going' %}
+                                <a>{{b.origin}}</a>
+                            {% elif type == 'return' %}
+                                <a>{{b.destination}}</a>  
+                            {% endif %}
+                        </th>
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            
+                            {% if type == 'going' %}
+                                <a>{{b.destination}}</a>
+                            {% elif type == 'return' %}
+                                <a>{{b.origin}}</a>  
+                            {% endif %}
+                        </th>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if type == 'going' %}
+                            <a>{{b.date_1}}</a>
+                            {% elif type == 'return' %}
+                            <a>{{b.date_2}}</a>
+                            {% endif %}
+                           
+                        </td>
+                        {% if type == 'going' %}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            <div>{{b.start_location}}</div>
+                            <div>{{b.start_time}}</div>
+                        </td>
+                        {% endif %}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if type == 'going' %}
+                                {% if b.get_going_state == 'previous' %}
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{% trans 'Previous' %}</span>
+                                {% elif b.get_going_state == 'ongoing' %}
+                                    <span
+                                        class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
+                                {% elif b.get_going_state == 'upcoming' %}
+                                        <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                            dark:bg-blue-200 dark:text-blue-800">{% trans 'Upcoming' %}</span>
+                                {% endif %}
+                                  
+                            {% else %}
+                                {% if b.get_return_state == 'previous' %}
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{% trans 'Previous' %}</span>
+                                {% elif b.get_return_state == 'ongoing' %}
+                                    <span
+                                        class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
+                                {% elif b.get_return_state == 'upcoming' %}
+                                        <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                            dark:bg-blue-200 dark:text-blue-800">{% trans 'Upcoming' %}</span>
+                                {% endif %}
+                            
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+        
+</div>
+
+
+{% endblock %}
