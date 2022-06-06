@@ -85,6 +85,8 @@ urlpatterns = [
           name='booking_create'),
      path('ibooking/<int:pk>/detail', views.booking_detail.as_view(),
           name='booking_detail'),
+     path('ibooking/<int:pk>/update', views.ibooking_update.as_view(),
+          name='booking_update'),
      path('ibooking/<int:package_id>/list', views.booking_list_package.as_view(),
           name='booking_list_package'),
      path('ibookings/<int:pk>/invoice', views.i_invoice_pdf,

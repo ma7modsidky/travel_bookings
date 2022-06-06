@@ -12,7 +12,7 @@
                 <h4 class="st">بطاقة ضريبية 987-327-528</h2>
         </div>
         <div class="logo">
-            <img src="/static/images/logo.png" alt="brand">
+            <img src="/static/images/logo-min.png" alt="brand">
         </div>
     </div>
     <hr>
@@ -32,8 +32,8 @@
                 <span class="">{{object.trip.accommodation.name}}</span>
             </div>
             <div>
-                <span class="bold">ميعاد التجمع : </span>
-                <span class="">{{object.meeting_location}}</span>
+                <span class="bold">مكان التجمع : </span>
+                <span class="">{{object.trip.meeting_location}}</span>
             </div>
             <div>
                 <span class="bold">عدد البالغين : </span>
@@ -69,8 +69,8 @@
                     <span class="">{{object.trip.date_from |date:"d / m / Y"}}</span>
                 </div>
                 <div>
-                    <span class="bold">ميعاد التحرك : </span>
-                    <span class="">{{object.meeting_time}}</span>
+                    <span class="bold">معاد التحرك : </span>
+                    <span class="">{{object.trip.meeting_time}}</span>
                 </div>
                 <div>
                     <span class="bold">عدد الاطفال : </span>
@@ -93,7 +93,12 @@
     <hr>    
     <div>
         <span class="bold">ارقام الكراسي : </span>
-        <span class="">{{object.seats}}</span>
+        
+        {% for seat in object.bus_seats.all %}
+            <span>{{seat.number}} -</span>
+        {% endfor %}
+            
+        
     </div>
     <hr>
     <h2>الشرروط و الاحكام</h3>
@@ -104,8 +109,14 @@
     </ul>
     <hr>
     <div class="flex">
-        <div class="bold">توقيع العميل</div>
-        <div class="bold">نوقيع المستلم</div>
+        <div class="bold">
+            <div>توقيع العميل</div>
+            <div></div>
+        </div>
+        <div class="bold">
+            <div>نوقيع المستلم</div>
+            <div>{{user}}</div>
+        </div>
     </div>
 </body>
 

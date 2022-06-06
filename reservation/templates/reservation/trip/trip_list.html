@@ -89,7 +89,7 @@
     </div>
     {% include "reservation/pagination.html"  %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-right">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -107,6 +107,10 @@
                     <th scope="col" class="px-6 py-3">
                          {% trans "To" %}
                     </th> {% endcomment %}
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Single Room price / Person" %}
+                        {% comment %} {% trans "Double Room" %} {% endcomment %}
+                    </th>
                     <th scope="col" class="px-6 py-3">
                         {% trans "Double Room price / Person" %}
                         {% comment %} {% trans "Double Room" %} {% endcomment %}
@@ -139,6 +143,9 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         {{trip.date_until |date:"d / m / Y"}}
                     </td> -->
+                    <td class="px-6 py-4">
+                        {{trip.single_room_price |intcomma:False}}
+                    </td>
                     <td class="px-6 py-4">
                         {{trip.double_room_price |intcomma:False}}
                     </td>

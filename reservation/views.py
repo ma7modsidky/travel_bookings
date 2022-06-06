@@ -496,8 +496,8 @@ class trip_booking_amounts_add(LoginRequiredMixin, CreateView):
 
 def invoice_pdf(request,pk):
     booking = get_object_or_404(TripBooking, id=pk)
-    html = render_to_string('reservation/pdf/invoice.html',
-                            {'object': booking})
+    html = render_to_string('reservation/pdf/trip_booking_invoice.html',
+                            {'object': booking, 'user':request.user})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'filename=booking_{booking.id}.pdf'
     weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response,
@@ -507,7 +507,7 @@ def invoice_pdf(request,pk):
 
 def i_invoice_pdf(request, pk):
     booking = get_object_or_404(Booking, id=pk)
-    html = render_to_string('reservation/pdf/invoice.html',
+    html = render_to_string('reservation/pdf/ibooking_invoice.html',
                             {'object': booking})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'filename=booking_{booking.id}.pdf'
@@ -605,7 +605,7 @@ class booking_create(LoginRequiredMixin, CreateView):
                 phone=form.instance.phone)
         except Client.DoesNotExist:
             client = Client.objects.create(
-                name=form.instance.name, phone=form.instance.phone, phone2=form.instance.phone2)
+                name=form.instance.name, phone=form.instance.phone)
             client.save()
             form.instance.client = Client.objects.get(
                 phone=form.instance.phone)
@@ -618,6 +618,58 @@ class booking_create(LoginRequiredMixin, CreateView):
         # profile.save()
         return super().form_valid(form)
 
+
+class ibooking_update(LoginRequiredMixin, UpdateView):
+    model = Booking
+    fields = fields = ['accommodation', 'package', 'accommodation_type', 'transport', 'single_room_count', 'date_from', 'date_until', 'double_room_count',  'triple_room_count', 'adults', 'children',
+                       'extra_seats', 'name', 'email', 'phone', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
+    template_name = 'reservation/ibooking/update.html'
+    exclude = ['creation_user']
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.layout = Layout(
+            Row(Field('accommodation', css_class='min-w-[8rem] hidden'), Field('package', readonly='readonly', css_class='min-w-[8rem] hidden'),
+                css_class='flex flex-row gap-2',),
+            Row('accommodation_type',
+                css_class='flex flex-row gap-2'),
+            'transport',
+            HTML('<hr class="my-2 ">'),
+            Field('date_from'),
+            Field('date_until'),
+            HTML('<hr class="my-2 ">'),
+            Fieldset(_('Numbre of Rooms'),
+                     Row('single_room_count', 'double_room_count',
+                         'triple_room_count', css_class='flex flex-row gap-2'),
+                     ),
+            HTML('<hr class="my-2 ">'),
+            Fieldset(_('Persons'),
+                     Row('adults', 'children',
+                         'extra_seats', css_class='flex flex-row gap-2'),
+                     ),
+            HTML('<hr class="my-2 ">'),
+            Fieldset(_('Personal Detail'),
+                     'name',
+                     'email',
+                     Row('phone',
+                         css_class='flex flex-row gap-2 w-full')
+                     ),
+            Field('notes', rows=2),
+            'discount_percentage', 'discount_amount',
+            'paid_amount',
+        )
+        form.helper.legend_class = 'dark:text-gray-200'
+        form.helper.label_class = 'dark:text-gray-200'
+        form.helper.add_input(
+            Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
+        return form
+
+    def form_valid(self, form):
+        verb = _('updated individual booking')
+        create_action(self.request.user,
+                      f'updated individual booking {form.instance}', self.object)
+        return super().form_valid(form)
 class package_create(LoginRequiredMixin,PermissionRequiredMixin ,CreateView):
     model = HotelPackage
     fields = ['hotel', 'label', 'date_from', 'date_until',

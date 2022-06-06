@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'reports',
     'django.contrib.humanize',
     'transport',
+    'clients'
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = 'tailwind'
@@ -184,6 +185,7 @@ ABSOLUTE_URL_OVERRIDES = {
     'reservation.additionalamount': lambda u: reverse_lazy('reservation:trip_booking_detail', args=[u.booking.id]),
     'reservation.booking': lambda u: reverse_lazy('reservation:booking_detail', args=[u.id]),
     'transport.bus': lambda u: reverse_lazy('transport:bus_detail', args=[u.id]),
+    'reservation.client': lambda u: reverse_lazy('clients:client_detail', args=[u.id]),
 
 }
 

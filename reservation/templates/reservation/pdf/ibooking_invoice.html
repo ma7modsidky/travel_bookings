@@ -1,0 +1,122 @@
+{% load humanize %}
+<html dir="rtl" lang="ar">
+    <head>
+        <!-- <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" /> -->
+        <link rel="stylesheet" href="/static/css/invoice.css" />
+    </head>
+<body>
+    <div class="invoice flex">
+        <div>
+            <h2 class="branch">فرع الزقازيق</h2>
+            <h4 class="st">سجل تجاري 15367</h2>
+                <h4 class="st">بطاقة ضريبية 987-327-528</h2>
+        </div>
+        <div class="logo">
+            <img src="/static/images/logo-min.png" alt="brand">
+        </div>
+    </div>
+    <hr>
+    
+    <div class="flex">
+        <div class="first_c">
+            {% comment %} <div>
+                <span class="bold">تاريخ الحجز : </span>
+                <span class="">{{object.date_from |date:"d / m / Y"}}</span>
+            </div> {% endcomment %}
+            <div>
+                <span class="bold">اسم العميل : </span>
+                <span class="">{{object.name}}</span>
+            </div>
+            <div>
+                <span class="bold">الوصف : </span>
+                <span class="">{{object.get_description}}</span>
+            </div>
+            <div>
+                <span class="bold">من : </span>
+                <span class="">{{object.date_from |date:"d / m / Y"}}</span>
+            </div>
+            {% comment %} <div>
+                <span class="bold">ميعاد التجمع : </span>
+                <span class="">{{object.meeting_location}}</span>
+            </div> {% endcomment %}
+            <div>
+                <span class="bold">عدد البالغين : </span>
+                <span class="">{{object.adults}}</span>
+            </div>
+            <div>
+                <span class="bold">عدد المقاعد الاضافية : </span>
+                <span class="">{{object.extra_seats}}</span>
+            </div>
+            
+            <div>
+                <span class="bold">المبلغ الاجمالي : </span>
+                <span class="">{{object.get_total_price|intcomma:False}}</span>
+            </div>
+            <div>
+                <span class="bold">المبلغ المدفوع : </span>
+                <span class="">{{object.paid_amount|intcomma:False}}</span>
+            </div>
+            <div>
+                    <span class="bold">الموظف : </span>
+                    <span class="">{{object.creation_user}} ({{object.creation_date|date:"d / m / Y" }})</span>
+                </div>
+            
+        </div>
+        <div class="second_c">
+            <div class="first_c">
+                <div>
+                    <span class="bold">رقم الحجز : </span>
+                    <span class="">{{object.id}}</span>
+                </div>
+                <div>
+                    <span class="bold"> رقم الهاتف : </span>
+                    <span class="">{{object.phone}}</span>
+                </div>
+                {% comment %} <div>
+                    <span class="bold">الموظف : </span>
+                    <span class="">{{object.creation_user}} (object.creation_date)</span>
+                </div> {% endcomment %}
+                <div>
+                    <span class="bold">الى : </span>
+                    <span class="">{{object.date_until |date:"d / m / Y"}}</span>
+                </div>
+                
+                <div>
+                    <span class="bold">عدد الاطفال : </span>
+                    <span class="">{{object.children}}</span>
+                </div>
+                <div>
+                    <span class="bold">عدد المقاعد الاجمالي : </span>
+                    <span class="">{{object.get_total_seats}}</span>
+                </div>
+                <br>
+                <div>
+                    <span class="bold">المبلغ المتبقي : </span>
+                    <span class="">{{object.get_remained_price|intcomma:False}}</span>
+                </div>
+                
+        </div>
+
+        </div>
+    </div>
+    {% comment %} <hr>    
+    <div>
+        <span class="bold">ارقام الكراسي : </span>
+        <span class="">{{object.seats}}</span>
+    </div> {% endcomment %}
+    <hr>
+    <h2>الشرروط و الاحكام</h3>
+    <ul style="direction:RTL; text-align:right">
+        <li>في حالة الغاء الحجز او التغيير يتم خصم 50% من اجمالي المبلغ المفترض دفعه</li>
+        <li>في حالة الغاء الحجز او التغيير قبل الرحلة بثلاثة ايام يتم خصم المبلغ بالكامل(المفترض دفعه)</li>
+        <li>يعتبر توقيع العميل على هذا الايصال بمثابة موافقة على الشروط و الاحكام</li>
+    </ul>
+    <hr>
+    <div class="flex">
+        <div class="bold">توقيع العميل</div>
+        <div class="bold">نوقيع المستلم</div>
+    </div>
+</body>
+
+</html>

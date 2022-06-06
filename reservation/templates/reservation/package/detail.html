@@ -153,8 +153,24 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                
+                            </th>
+                            <td class="px-3 py-2">
+                                {% trans 'Cost' %}
+                            </td>
+                            <td class="px-3 py-2">
+                                {% trans 'Price' %}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Single Room' %}
                             </th>
+                            <td class="px-3 py-2">
+                                {{ object.single_room_half_cost }}
+                            </td>
                             <td class="px-3 py-2">
                                 {{ object.single_room_half }}
                             </td>
@@ -166,6 +182,9 @@
                                 {% trans 'Double Room' %}
                             </th>
                             <td class="px-3 py-2">
+                                {{object.double_room_half_cost}}
+                            </td>
+                            <td class="px-3 py-2">
                                 {{object.double_room_half}}
                             </td>
                         </tr>
@@ -175,6 +194,9 @@
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Triple Room' %}
                             </th>
+                            <td class="px-3 py-2">
+                                {{object.triple_room_half_cost}}
+                            </td>
                             <td class="px-3 py-2">
                                 {{object.triple_room_half}}
                             </td>
@@ -196,8 +218,24 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                
+                            </th>
+                            <td class="px-3 py-2">
+                                {% trans 'Cost' %}
+                            </td>
+                            <td class="px-3 py-2">
+                                {% trans 'Price' %}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Single Room' %}
                             </th>
+                            <td class="px-3 py-2">
+                                {{ object.single_room_full_cost }}
+                            </td>
                             <td class="px-3 py-2">
                                 {{ object.single_room_full }}
                             </td>
@@ -209,6 +247,9 @@
                                 {% trans 'Double Room' %}
                             </th>
                             <td class="px-3 py-2">
+                                {{object.double_room_full_cost}}
+                            </td>
+                            <td class="px-3 py-2">
                                 {{object.double_room_full}}
                             </td>
                         </tr>
@@ -218,6 +259,9 @@
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                 {% trans 'Triple Room' %}
                             </th>
+                            <td class="px-3 py-2">
+                                {{object.triple_room_full_cost}}
+                            </td>
                             <td class="px-3 py-2">
                                 {{object.triple_room_full}}
                             </td>

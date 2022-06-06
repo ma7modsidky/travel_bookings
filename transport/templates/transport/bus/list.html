@@ -65,7 +65,11 @@
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Return' %}</a>    
     </div>
-    <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Bus list' %} ({{type}})</h2>
+    <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Bus list' %} {% if type == 'going' %}
+                            [{% trans 'Going' %}]
+                        {% elif type == 'return'%}
+                            [{% trans 'Return' %}]   
+                        {% endif %}</h2>
     {% include "reservation/pagination.html"  %}
     <div class="bg-white dark:bg-gray-600 rounded-md my-2">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">

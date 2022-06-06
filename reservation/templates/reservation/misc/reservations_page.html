@@ -29,6 +29,9 @@
         </ol>
     </nav>
     <hr class="my-2 border dark:border-gray-800"/>
+    {% if user.profile.role == 'gold' %}
+        
+    
     <div class="flex flex-wrap my-2 gap-2">
         <a href="{% url 'reservation:trip_booking_list_all' %}"
             class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
@@ -42,6 +45,7 @@
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>    
     </div>
     <hr class="my-2 border dark:border-gray-800"/>
+    {% endif %}
     <div>
         <h3 class='text-xl font-bold dark:text-white'>{% trans 'Trip reservations' %}</h3>
         <form action="{% url 'reservation:search_booking'%}" method="get">
@@ -55,7 +59,7 @@
         <p class='dark:text-white italic text-md text-red-500'>{% trans "no result found for id" %}  [{{q}}]</p>
         {% endif %}
     </div>
-    <hr class="my-2 border dark:border-gray-800" />
+    <hr class="my-2 border dark:border-gray-800" />    
     <div>
         <h3 class='text-xl font-bold dark:text-white'>{% trans 'Indivdual reservations' %}</h3>
         <form action="{% url 'reservation:search_ibooking'%}" method="get">

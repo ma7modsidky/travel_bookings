@@ -256,6 +256,23 @@
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Add Trip program' %}</a>
             </div>
+
+
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Clients' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href="{% url 'clients:client_list' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Clients list' %}</a>
+                <a href="{% url 'clients:client_export_csv'%}"
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Export' %}</a>
+
+            </div>
             {% endif %}
             {% comment %} <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
                 <span>{% trans 'Reports' %}</span>

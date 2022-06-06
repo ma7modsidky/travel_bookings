@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-31 21:18+0200\n"
+"POT-Creation-Date: 2022-06-06 19:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,8 +20,9 @@ msgstr ""
 
 #: .\account\forms.py:21 .\reservation\views.py:201 .\reservation\views.py:276
 #: .\reservation\views.py:394 .\reservation\views.py:585
-#: .\reservation\views.py:658 .\reservation\views.py:772
-#: .\reservation\views.py:790 .\transport\views.py:63
+#: .\reservation\views.py:665 .\reservation\views.py:710
+#: .\reservation\views.py:824 .\reservation\views.py:842
+#: .\transport\views.py:63
 msgid "Create"
 msgstr ""
 
@@ -43,10 +44,14 @@ msgid "address"
 msgstr ""
 
 #: .\account\forms.py:32 .\account\forms.py:34 .\account\models.py:25
+#: .\clients\templates\client\detail.html:64
+#: .\clients\templates\client\detail.html:103
+#: .\clients\templates\client\list.html:64
+#: .\clients\templates\client\list.html:84
 msgid "phone"
 msgstr ""
 
-#: .\account\models.py:13 .\reports\templates\reports\ibooking_report.html:114
+#: .\account\models.py:13 .\reports\templates\reports\ibooking_report.html:147
 #: .\reports\templates\reports\trip_booking_report.html:104
 #: .\reservation\models.py:172
 msgid "name"
@@ -56,7 +61,8 @@ msgstr ""
 msgid "role"
 msgstr ""
 
-#: .\account\models.py:27
+#: .\account\models.py:27 .\clients\templates\client\detail.html:113
+#: .\clients\templates\client\list.html:87
 msgid "phone2"
 msgstr ""
 
@@ -78,6 +84,8 @@ msgstr ""
 #: .\reservation\templates\reservation\confirm_delete.html:32
 #: .\reservation\templates\reservation\hotel\hotel_create.html:22
 #: .\reservation\templates\reservation\ibooking\create.html:23
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:73
+#: .\reservation\templates\reservation\ibooking\update.html:21
 #: .\reservation\templates\reservation\misc\not_found.html:18
 #: .\reservation\templates\reservation\package\create.html:25
 #: .\reservation\templates\reservation\program\create.html:17
@@ -106,14 +114,17 @@ msgstr ""
 #: .\account\templates\account\user\detail.html:53
 #: .\account\templates\account\user\list.html:78
 #: .\account\templates\account\user\profile.html:47
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:209
+#: .\clients\templates\client\detail.html:162
+#: .\clients\templates\client\detail.html:261
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:234
+#: .\reservation\templates\reservation\ibooking\detail.html:190
 #: .\reservation\templates\reservation\ibooking\list.html:97
 #: .\reservation\templates\reservation\misc\booking_list_all.html:84
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:81
 #: .\reservation\templates\reservation\trip\trip_detail.html:162
 #: .\reservation\templates\reservation\user\booking_list_user.html:84
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:80
-#: .\transport\templates\transport\bus\list.html:88
+#: .\transport\templates\transport\bus\list.html:98
 msgid "Status"
 msgstr ""
 
@@ -128,17 +139,18 @@ msgid "Reservations made"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:121
-#: .\account\templates\account\user\profile.html:311
+#: .\account\templates\account\user\profile.html:328
 msgid "About"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:126
-#: .\account\templates\account\user\profile.html:316
-#: .\reservation\models.py:608
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:244
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:444
+#: .\account\templates\account\user\profile.html:333
+#: .\clients\templates\client\detail.html:93
+#: .\clients\templates\client\list.html:81 .\reservation\models.py:657
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:267
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:464
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:106
-#: .\reservation\templates\reservation\ibooking\detail.html:234
+#: .\reservation\templates\reservation\ibooking\detail.html:255
 #: .\reservation\templates\reservation\ibooking\list.html:82
 #: .\reservation\templates\reservation\misc\booking_list_all.html:69
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:69
@@ -149,7 +161,7 @@ msgid "Name"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:136
-#: .\account\templates\account\user\profile.html:326
+#: .\account\templates\account\user\profile.html:343
 #: .\reservation\models.py:180
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:115
 #: .\reservation\templates\reservation\ibooking\list.html:94
@@ -161,15 +173,15 @@ msgid "Phone"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:140
-#: .\account\templates\account\user\profile.html:330
+#: .\account\templates\account\user\profile.html:347
 msgid "Current Address"
 msgstr ""
 
 #: .\account\templates\account\user\detail.html:144
-#: .\account\templates\account\user\profile.html:334
-#: .\reservation\models.py:176 .\reservation\models.py:612
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:254
-#: .\reservation\templates\reservation\ibooking\detail.html:244
+#: .\account\templates\account\user\profile.html:351
+#: .\reservation\models.py:176 .\reservation\models.py:661
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:277
+#: .\reservation\templates\reservation\ibooking\detail.html:265
 msgid "Email"
 msgstr ""
 
@@ -187,14 +199,16 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: .\account\templates\account\user\list.html:138 .\reservation\models.py:416
+#: .\account\templates\account\user\list.html:138
+#: .\clients\templates\client\detail.html:222
+#: .\clients\templates\client\detail.html:321 .\reservation\models.py:465
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:173
 #: .\reservation\templates\reservation\destination\destination_detail.html:144
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:227
 #: .\reservation\templates\reservation\hotel\hotel_list.html:146
 #: .\reservation\templates\reservation\ibooking\list.html:163
 #: .\reservation\templates\reservation\misc\booking_list_all.html:154
-#: .\reservation\templates\reservation\trip\trip_list.html:159
+#: .\reservation\templates\reservation\trip\trip_list.html:167
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:168
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:190
 #: .\reservation\templates\reservation\user\booking_list_user.html:152
@@ -202,7 +216,9 @@ msgid "Details"
 msgstr ""
 
 #: .\account\templates\account\user\list.html:146
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:99
+#: .\clients\templates\client\detail.html:231
+#: .\clients\templates\client\detail.html:330
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:103
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:182
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:236
 #: .\reservation\templates\reservation\ibooking\detail.html:55
@@ -216,12 +232,15 @@ msgstr ""
 #: .\account\templates\account\user\profile.html:158
 #: .\account\templates\account\user\profile.html:189
 #: .\account\templates\account\user\profile.html:231
-#: .\reports\templates\reports\ibooking_report.html:38
+#: .\clients\templates\client\detail.html:133
+#: .\clients\templates\client\detail.html:144
+#: .\clients\templates\client\list.html:93
+#: .\reports\templates\reports\ibooking_report.html:37
 #: .\reservation\templates\reservation\misc\booking_list_all.html:40
 #: .\reservation\templates\reservation\misc\booking_list_all.html:56
 #: .\reservation\templates\reservation\misc\booking_list_all.html:58
-#: .\reservation\templates\reservation\misc\reservations_page.html:42
-#: .\reservation\templates\reservation\misc\reservations_page.html:60
+#: .\reservation\templates\reservation\misc\reservations_page.html:45
+#: .\reservation\templates\reservation\misc\reservations_page.html:64
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:56
 #: .\reservation\templates\reservation\user\booking_list_user.html:40
 #: .\reservation\templates\reservation\user\booking_list_user.html:56
@@ -239,10 +258,12 @@ msgstr ""
 
 #: .\account\templates\account\user\profile.html:149
 #: .\account\templates\account\user\profile.html:185
+#: .\clients\templates\client\detail.html:123
+#: .\clients\templates\client\detail.html:243
 #: .\reports\templates\reports\trip_booking_report.html:38
 #: .\reservation\templates\reservation\misc\booking_list_all.html:51
-#: .\reservation\templates\reservation\misc\reservations_page.html:37
-#: .\reservation\templates\reservation\misc\reservations_page.html:46
+#: .\reservation\templates\reservation\misc\reservations_page.html:40
+#: .\reservation\templates\reservation\misc\reservations_page.html:50
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:40
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:51
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:58
@@ -315,6 +336,26 @@ msgstr ""
 msgid "Add Trip program"
 msgstr ""
 
+#: .\account\templates\account\user\profile.html:265
+#: .\clients\templates\client\detail.html:28
+#: .\clients\templates\client\list.html:28
+msgid "Clients"
+msgstr ""
+
+#: .\account\templates\account\user\profile.html:271
+#: .\clients\templates\client\detail.html:51
+#: .\clients\templates\client\list.html:7
+#: .\clients\templates\client\list.html:51
+#: .\clients\templates\client\list.html:70
+msgid "Clients list"
+msgstr ""
+
+#: .\account\templates\account\user\profile.html:276
+#: .\clients\templates\client\detail.html:56
+#: .\clients\templates\client\list.html:56
+msgid "Export"
+msgstr ""
+
 #: .\account\templates\registration\login.html:4
 #: .\reservation\templates\reservation\base.html:46
 #: .\reservation\templates\reservation\base.html:90
@@ -368,53 +409,28 @@ msgstr ""
 msgid "User Log"
 msgstr ""
 
-#: .\core\settings.py:137 .\core\settings1.py:144
-msgid "Arabic"
+#: .\clients\templates\client\detail.html:7
+#: .\clients\templates\client\detail.html:71
+msgid "Client Information"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:4
-#: .\reports\templates\reports\trip_booking_report.html:4
-msgid "Trip booking report"
+#: .\clients\templates\client\detail.html:40
+#: .\clients\templates\client\list.html:40
+msgid "Client\\"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:26
-#: .\reports\templates\reports\trip_booking_report.html:26
-#: .\reports\templates\reports\trip_report.html:26
-msgid "Reports"
+#: .\clients\templates\client\detail.html:59
+#: .\clients\templates\client\detail.html:65
+#: .\clients\templates\client\list.html:59
+#: .\clients\templates\client\list.html:65
+msgid "Search"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:50
-#: .\reservation\models.py:408
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:68
-#: .\reservation\templates\reservation\ibooking\detail.html:40
-#: .\transport\templates\transport\bus\bus_select.html:53
-#: .\transport\templates\transport\bus\seats_select.html:53
-msgid "Booking"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:60
-#: .\reports\templates\reports\trip_booking_report.html:60
-msgid "Reservation page"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:65
-#: .\reports\templates\reports\trip_booking_report.html:65
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:105
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:80
-#: .\reservation\templates\reservation\ibooking\detail.html:61
-msgid "Print"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:72
-#: .\reports\templates\reports\trip_booking_report.html:72
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:8
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:136
-#: .\reservation\templates\reservation\ibooking\detail.html:7
-#: .\reservation\templates\reservation\ibooking\detail.html:84
-msgid "Reservation Details"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:84
+#: .\clients\templates\client\detail.html:83
+#: .\clients\templates\client\detail.html:150
+#: .\clients\templates\client\detail.html:249
+#: .\clients\templates\client\list.html:78
+#: .\reports\templates\reports\ibooking_report.html:87
 #: .\reports\templates\reports\trip_booking_report.html:84
 #: .\reports\templates\reports\trip_report.html:85
 #: .\reservation\templates\reservation\booking\trip_booking_list.html:103
@@ -424,11 +440,12 @@ msgstr ""
 #: .\reservation\templates\reservation\trip\trip_list.html:96
 #: .\reservation\templates\reservation\user\booking_list_user.html:66
 #: .\reservation\templates\reservation\user\trip_booking_list_user.html:65
-#: .\transport\templates\transport\bus\list.html:70
+#: .\transport\templates\transport\bus\list.html:80
 msgid "Id"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:94
+#: .\clients\templates\client\detail.html:153
+#: .\reports\templates\reports\ibooking_report.html:97
 #: .\reservation\models.py:79
 #: .\reservation\templates\reservation\ibooking\detail.html:106
 #: .\reservation\templates\reservation\misc\booking_list_all.html:72
@@ -439,76 +456,104 @@ msgstr ""
 msgid "Hotel"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:104
-#: .\reports\templates\reports\trip_report.html:125
-msgid "Nights"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:124
-#: .\reports\templates\reports\trip_booking_report.html:114
-#: .\reports\templates\reports\trip_report.html:135
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:294
-#: .\reservation\templates\reservation\ibooking\detail.html:274
-#: .\reservation\templates\reservation\trip\trip_detail.html:75
-msgid "Created at"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:134
-#: .\reports\templates\reports\trip_booking_report.html:124
-#: .\reports\templates\reports\trip_report.html:146
-msgid "Created by"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:145
-#: .\reports\templates\reports\trip_booking_report.html:135
-msgid "total price"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:157
-#: .\reports\templates\reports\trip_booking_report.html:147
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:131
-#: .\reservation\templates\reservation\ibooking\detail.html:79
-#: .\reservation\templates\reservation\trip\trip_detail.html:63
-msgid "Report"
-msgstr ""
-
-#: .\reports\templates\reports\ibooking_report.html:169
+#: .\clients\templates\client\detail.html:156
+#: .\clients\templates\client\detail.html:255
+#: .\reports\templates\reports\ibooking_report.html:107
 #: .\reports\templates\reports\trip_booking_report.html:159
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:184
 #: .\reservation\templates\reservation\ibooking\detail.html:180
 msgid "Description"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:179
-#: .\reports\templates\reports\trip_booking_report.html:169
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:411
-#: .\reservation\templates\reservation\ibooking\detail.html:389
-msgid "Total price"
+#: .\clients\templates\client\detail.html:159
+#: .\clients\templates\client\detail.html:258 .\reservation\models.py:471
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:173
+#: .\reservation\templates\reservation\ibooking\list.html:88
+#: .\reservation\templates\reservation\misc\booking_list_all.html:78
+#: .\reservation\templates\reservation\trip\trip_list.html:102
+#: .\reservation\templates\reservation\user\booking_list_user.html:78
+#: .\transport\templates\transport\bus\list.html:89
+msgid "Date"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:189
-#: .\reports\templates\reports\trip_booking_report.html:179
-#: .\reservation\templates\reservation\trip_programs\list.html:72
-msgid "Cost"
+#: .\clients\templates\client\detail.html:165
+#: .\clients\templates\client\detail.html:264
+msgid "Payment status"
 msgstr ""
 
-#: .\reports\templates\reports\ibooking_report.html:199
-#: .\reports\templates\reports\trip_booking_report.html:189
-msgid "profit"
+#: .\clients\templates\client\detail.html:193
+#: .\clients\templates\client\detail.html:292
+#: .\reservation\templates\reservation\ibooking\list.html:134
+#: .\reservation\templates\reservation\misc\booking_list_all.html:121
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:116
+#: .\reservation\templates\reservation\pagination.html:11
+#: .\reservation\templates\reservation\trip\trip_detail.html:168
+#: .\reservation\templates\reservation\user\booking_list_user.html:121
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:115
+#: .\transport\templates\transport\bus\detail.html:123
+#: .\transport\templates\transport\bus\detail.html:143
+#: .\transport\templates\transport\bus\list.html:144
+#: .\transport\templates\transport\bus\list.html:156
+msgid "Previous"
 msgstr ""
 
-#: .\reports\templates\reports\trip_booking_report.html:94
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:41
-msgid "trip"
+#: .\clients\templates\client\detail.html:196
+#: .\clients\templates\client\detail.html:295
+#: .\reservation\templates\reservation\ibooking\list.html:137
+#: .\reservation\templates\reservation\misc\booking_list_all.html:124
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:119
+#: .\reservation\templates\reservation\trip\trip_detail.html:171
+#: .\reservation\templates\reservation\user\booking_list_user.html:124
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:118
+#: .\transport\templates\transport\bus\detail.html:126
+#: .\transport\templates\transport\bus\detail.html:146
+#: .\transport\templates\transport\bus\list.html:147
+#: .\transport\templates\transport\bus\list.html:159
+msgid "Ongoing"
 msgstr ""
 
-#: .\reports\templates\reports\trip_report.html:4
-msgid "Trip report"
+#: .\clients\templates\client\detail.html:199
+#: .\clients\templates\client\detail.html:298
+#: .\reservation\templates\reservation\ibooking\list.html:140
+#: .\reservation\templates\reservation\misc\booking_list_all.html:128
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:122
+#: .\reservation\templates\reservation\trip\trip_detail.html:174
+#: .\reservation\templates\reservation\user\booking_list_user.html:127
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:121
+#: .\transport\templates\transport\bus\detail.html:129
+#: .\transport\templates\transport\bus\detail.html:149
+#: .\transport\templates\transport\bus\list.html:150
+#: .\transport\templates\transport\bus\list.html:162
+msgid "Upcoming"
 msgstr ""
 
-#: .\reports\templates\reports\trip_report.html:50 .\reservation\models.py:536
+#: .\clients\templates\client\detail.html:206
+#: .\clients\templates\client\detail.html:305
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:157
+#: .\reservation\templates\reservation\ibooking\list.html:147
+#: .\reservation\templates\reservation\misc\booking_list_all.html:137
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:130
+#: .\reservation\templates\reservation\user\booking_list_user.html:135
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:129
+msgid "remaining"
+msgstr ""
+
+#: .\clients\templates\client\detail.html:210
+#: .\clients\templates\client\detail.html:309
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:161
+#: .\reservation\templates\reservation\ibooking\list.html:151
+#: .\reservation\templates\reservation\misc\booking_list_all.html:141
+#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:134
+#: .\reservation\templates\reservation\user\booking_list_user.html:139
+#: .\reservation\templates\reservation\user\trip_booking_list_user.html:133
+msgid "complete"
+msgstr ""
+
+#: .\clients\templates\client\detail.html:252
+#: .\reports\templates\reports\trip_report.html:50 .\reservation\models.py:585
 #: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:39
 #: .\reservation\templates\reservation\booking\trip_booking_detail.html:41
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:158
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:162
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:39
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:39
 #: .\reservation\templates\reservation\misc\trip_booking_list_all.html:72
@@ -520,6 +565,241 @@ msgstr ""
 msgid "Trip"
 msgstr ""
 
+#: .\clients\templates\client\list.html:90
+msgid "Trip bookings"
+msgstr ""
+
+#: .\core\settings.py:138 .\core\settings1.py:144
+msgid "Arabic"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:5
+msgid "Booking report"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:25
+#: .\reports\templates\reports\trip_booking_report.html:26
+#: .\reports\templates\reports\trip_report.html:26
+msgid "Reports"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:49
+#: .\reservation\models.py:457
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:65
+#: .\reservation\templates\reservation\ibooking\detail.html:40
+#: .\transport\templates\transport\bus\bus_select.html:53
+#: .\transport\templates\transport\bus\seats_select.html:53
+msgid "Booking"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:59
+#: .\reports\templates\reports\trip_booking_report.html:60
+msgid "Reservation page"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:63
+#: .\reservation\templates\reservation\ibooking\list.html:66
+msgid "Package page"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:68
+#: .\reports\templates\reports\trip_booking_report.html:65
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:109
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:80
+#: .\reservation\templates\reservation\ibooking\detail.html:61
+msgid "Print"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:75
+#: .\reports\templates\reports\trip_booking_report.html:72
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:8
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:140
+#: .\reservation\templates\reservation\ibooking\detail.html:7
+#: .\reservation\templates\reservation\ibooking\detail.html:84
+msgid "Reservation Details"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:117
+#: .\reservation\models.py:81 .\reservation\models.py:190
+#: .\reservation\models.py:494
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:171
+#: .\reservation\templates\reservation\ibooking\detail.html:160
+#: .\reservation\templates\reservation\package\detail.html:112
+#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:123
+#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:148
+#: .\transport\templates\transport\bus\detail.html:97
+#: .\transport\templates\transport\bus\list.html:83
+#: .\transport\templates\transport\seats_1.html:6
+msgid "From"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:127
+#: .\reservation\models.py:82
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:174
+#: .\reservation\templates\reservation\ibooking\detail.html:170
+#: .\reservation\templates\reservation\package\detail.html:122
+#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:126
+#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:151
+#: .\transport\templates\transport\bus\detail.html:107
+#: .\transport\templates\transport\bus\list.html:86
+#: .\transport\templates\transport\seats_1.html:7
+msgid "To"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:137
+#: .\reports\templates\reports\ibooking_report.html:348
+#: .\reports\templates\reports\trip_report.html:125
+#: .\reservation\templates\reservation\ibooking\detail.html:142
+msgid "Nights"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:158
+#: .\reports\templates\reports\trip_booking_report.html:124
+#: .\reports\templates\reports\trip_report.html:146
+msgid "Created by"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:168
+#: .\reports\templates\reports\trip_booking_report.html:114
+#: .\reports\templates\reports\trip_report.html:135
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:317
+#: .\reservation\templates\reservation\ibooking\detail.html:295
+#: .\reservation\templates\reservation\trip\trip_detail.html:75
+msgid "Created at"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:178
+#: .\reports\templates\reports\trip_booking_report.html:135
+msgid "total price"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:192
+#: .\reports\templates\reports\ibooking_report.html:234
+#: .\reservation\templates\reservation\ibooking\detail.html:444
+#: .\reservation\templates\reservation\ibooking\detail.html:488
+#: .\reservation\templates\reservation\package\detail.html:80
+msgid "Package Details"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:192
+#: .\reservation\templates\reservation\ibooking\detail.html:444
+#: .\reservation\templates\reservation\package\detail.html:209
+msgid "Full Board"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:204
+#: .\reports\templates\reports\ibooking_report.html:246
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:178
+#: .\reservation\templates\reservation\ibooking\detail.html:456
+#: .\reservation\templates\reservation\ibooking\detail.html:500
+#: .\reservation\templates\reservation\package\detail.html:169
+#: .\reservation\templates\reservation\package\detail.html:234
+msgid "Single Room"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:214
+#: .\reports\templates\reports\ibooking_report.html:256
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:182
+#: .\reservation\templates\reservation\ibooking\detail.html:466
+#: .\reservation\templates\reservation\ibooking\detail.html:510
+#: .\reservation\templates\reservation\package\detail.html:182
+#: .\reservation\templates\reservation\package\detail.html:247
+msgid "Double Room"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:224
+#: .\reports\templates\reports\ibooking_report.html:266
+#: .\reservation\templates\reservation\hotel\hotel_detail.html:186
+#: .\reservation\templates\reservation\ibooking\detail.html:476
+#: .\reservation\templates\reservation\ibooking\detail.html:520
+#: .\reservation\templates\reservation\package\detail.html:195
+#: .\reservation\templates\reservation\package\detail.html:260
+msgid "Triple Room"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:234
+#: .\reservation\templates\reservation\ibooking\detail.html:488
+#: .\reservation\templates\reservation\package\detail.html:144
+msgid "Half Board"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:276
+msgid "Pricing Details"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:290
+#: .\reservation\models.py:222 .\reservation\models.py:595
+msgid "Single Rooms"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:305
+#: .\reservation\models.py:226 .\reservation\models.py:599
+msgid "Double Rooms"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:320
+#: .\reservation\models.py:230 .\reservation\models.py:603
+msgid "Triple Rooms"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:334
+msgid "Sum"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:363
+msgid "Discount"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:376
+msgid "Discount Amount"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:389
+msgid "Final price"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:405
+#: .\reports\templates\reports\trip_booking_report.html:147
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:135
+#: .\reservation\templates\reservation\ibooking\detail.html:79
+#: .\reservation\templates\reservation\trip\trip_detail.html:63
+msgid "Report"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:405
+#: .\reports\templates\reports\ibooking_report.html:437
+#: .\reports\templates\reports\trip_booking_report.html:189
+msgid "profit"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:417
+#: .\reports\templates\reports\trip_booking_report.html:169
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:433
+#: .\reservation\templates\reservation\ibooking\detail.html:419
+msgid "Total price"
+msgstr ""
+
+#: .\reports\templates\reports\ibooking_report.html:427
+#: .\reports\templates\reports\trip_booking_report.html:179
+#: .\reservation\templates\reservation\package\detail.html:159
+#: .\reservation\templates\reservation\package\detail.html:224
+#: .\reservation\templates\reservation\trip_programs\list.html:72
+msgid "Cost"
+msgstr ""
+
+#: .\reports\templates\reports\trip_booking_report.html:4
+msgid "Trip booking report"
+msgstr ""
+
+#: .\reports\templates\reports\trip_booking_report.html:94
+#: .\reservation\templates\reservation\booking\trip_booking_list.html:41
+msgid "trip"
+msgstr ""
+
+#: .\reports\templates\reports\trip_report.html:4
+msgid "Trip report"
+msgstr ""
+
 #: .\reports\templates\reports\trip_report.html:60
 msgid "trip page"
 msgstr ""
@@ -528,7 +808,7 @@ msgstr ""
 msgid "Trip Details"
 msgstr ""
 
-#: .\reports\templates\reports\trip_report.html:95 .\reservation\models.py:434
+#: .\reports\templates\reports\trip_report.html:95 .\reservation\models.py:483
 #: .\reservation\templates\reservation\trip\trip_detail.html:132
 msgid "accommodation"
 msgstr ""
@@ -592,31 +872,6 @@ msgstr ""
 msgid "label"
 msgstr ""
 
-#: .\reservation\models.py:81 .\reservation\models.py:190
-#: .\reservation\models.py:445
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:171
-#: .\reservation\templates\reservation\ibooking\detail.html:160
-#: .\reservation\templates\reservation\package\detail.html:112
-#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:123
-#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:148
-#: .\transport\templates\transport\bus\detail.html:97
-#: .\transport\templates\transport\bus\list.html:73
-#: .\transport\templates\transport\seats_1.html:6
-msgid "From"
-msgstr ""
-
-#: .\reservation\models.py:82
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:174
-#: .\reservation\templates\reservation\ibooking\detail.html:170
-#: .\reservation\templates\reservation\package\detail.html:122
-#: .\reservation\templates\reservation\trip\trip_list_by_destination.html:126
-#: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:151
-#: .\transport\templates\transport\bus\detail.html:107
-#: .\transport\templates\transport\bus\list.html:76
-#: .\transport\templates\transport\seats_1.html:7
-msgid "To"
-msgstr ""
-
 #: .\reservation\models.py:91
 msgid "Single Room price, Half board"
 msgstr ""
@@ -665,12 +920,13 @@ msgstr ""
 msgid "Triple Room cost, Full board"
 msgstr ""
 
-#: .\reservation\models.py:185 .\reservation\models.py:626
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:304
+#: .\reservation\models.py:185 .\reservation\models.py:675
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:327
+#: .\reservation\templates\reservation\ibooking\detail.html:345
 msgid "Notes"
 msgstr ""
 
-#: .\reservation\models.py:193 .\reservation\models.py:448
+#: .\reservation\models.py:193 .\reservation\models.py:497
 msgid "Until"
 msgstr ""
 
@@ -682,21 +938,9 @@ msgstr ""
 msgid "Time unit"
 msgstr ""
 
-#: .\reservation\models.py:206 .\reservation\models.py:436
-#: .\reservation\models.py:538
+#: .\reservation\models.py:206 .\reservation\models.py:485
+#: .\reservation\models.py:587
 msgid "Creation date"
-msgstr ""
-
-#: .\reservation\models.py:222 .\reservation\models.py:546
-msgid "Single Rooms"
-msgstr ""
-
-#: .\reservation\models.py:226 .\reservation\models.py:550
-msgid "Double Rooms"
-msgstr ""
-
-#: .\reservation\models.py:230 .\reservation\models.py:554
-msgid "Triple Rooms"
 msgstr ""
 
 #: .\reservation\models.py:234
@@ -713,7 +957,7 @@ msgstr ""
 msgid "Transport"
 msgstr ""
 
-#: .\reservation\models.py:246 .\reservation\models.py:465
+#: .\reservation\models.py:246 .\reservation\models.py:514
 msgid "Transport price per person"
 msgstr ""
 
@@ -721,11 +965,11 @@ msgstr ""
 msgid "Number of extra seats"
 msgstr ""
 
-#: .\reservation\models.py:258 .\reservation\models.py:588
+#: .\reservation\models.py:258 .\reservation\models.py:637
 msgid "discount percentage"
 msgstr ""
 
-#: .\reservation\models.py:264 .\reservation\models.py:594
+#: .\reservation\models.py:264 .\reservation\models.py:643
 msgid "discount amount"
 msgstr ""
 
@@ -733,121 +977,113 @@ msgstr ""
 msgid "paid amount"
 msgstr ""
 
-#: .\reservation\models.py:294 .\reservation\models.py:644
+#: .\reservation\models.py:294 .\reservation\models.py:693
 msgid "Single rooms"
 msgstr ""
 
-#: .\reservation\models.py:295 .\reservation\models.py:645
+#: .\reservation\models.py:295 .\reservation\models.py:694
 msgid "Double rooms"
 msgstr ""
 
-#: .\reservation\models.py:296 .\reservation\models.py:646
+#: .\reservation\models.py:296 .\reservation\models.py:695
 msgid "Triple rooms"
 msgstr ""
 
-#: .\reservation\models.py:411
+#: .\reservation\models.py:460
 msgid "Message"
 msgstr ""
 
-#: .\reservation\models.py:422
-#: .\reservation\templates\reservation\ibooking\list.html:88
-#: .\reservation\templates\reservation\misc\booking_list_all.html:78
-#: .\reservation\templates\reservation\trip\trip_list.html:102
-#: .\reservation\templates\reservation\user\booking_list_user.html:78
-#: .\transport\templates\transport\bus\list.html:79
-msgid "Date"
-msgstr ""
-
-#: .\reservation\models.py:432
+#: .\reservation\models.py:481
 #: .\reservation\templates\reservation\trip\trip_detail.html:122
 msgid "destination"
 msgstr ""
 
-#: .\reservation\models.py:450
+#: .\reservation\models.py:499
 msgid "rooms total"
 msgstr ""
 
-#: .\reservation\models.py:452
+#: .\reservation\models.py:501
 msgid "rooms_booked"
 msgstr ""
 
-#: .\reservation\models.py:454
+#: .\reservation\models.py:503
 msgid "bus_total"
 msgstr ""
 
-#: .\reservation\models.py:456
+#: .\reservation\models.py:505
 msgid "Trip starting location"
 msgstr ""
 
-#: .\reservation\models.py:459
+#: .\reservation\models.py:508
 msgid "Trip starting time"
 msgstr ""
 
-#: .\reservation\models.py:471
+#: .\reservation\models.py:520
 msgid "single room cost"
 msgstr ""
 
-#: .\reservation\models.py:476
+#: .\reservation\models.py:525
 msgid "double room cost"
 msgstr ""
 
-#: .\reservation\models.py:481
+#: .\reservation\models.py:530
 msgid "triple room cost"
 msgstr ""
 
-#: .\reservation\models.py:487
+#: .\reservation\models.py:536
+#: .\reservation\templates\reservation\trip\trip_list.html:112
 msgid "Single Room price / Person"
 msgstr ""
 
-#: .\reservation\models.py:493
-#: .\reservation\templates\reservation\trip\trip_list.html:112
+#: .\reservation\models.py:542
+#: .\reservation\templates\reservation\trip\trip_list.html:117
 msgid "Double Room price / Person"
 msgstr ""
 
-#: .\reservation\models.py:498
-#: .\reservation\templates\reservation\trip\trip_list.html:117
+#: .\reservation\models.py:547
+#: .\reservation\templates\reservation\trip\trip_list.html:122
 msgid "Triple Room price/ Person"
 msgstr ""
 
-#: .\reservation\models.py:558
+#: .\reservation\models.py:607
 msgid "Persons in Single Rooms"
 msgstr ""
 
-#: .\reservation\models.py:562
+#: .\reservation\models.py:611
 msgid "Persons in Double Rooms"
 msgstr ""
 
-#: .\reservation\models.py:566
+#: .\reservation\models.py:615
 msgid "Persons in Triple Rooms"
 msgstr ""
 
-#: .\reservation\models.py:570
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:169
-#: .\reservation\templates\reservation\ibooking\detail.html:284
+#: .\reservation\models.py:619
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:194
+#: .\reservation\templates\reservation\ibooking\detail.html:305
 msgid "Adults"
 msgstr ""
 
-#: .\reservation\models.py:574
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:179
-#: .\reservation\templates\reservation\ibooking\detail.html:294
+#: .\reservation\models.py:623
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:204
+#: .\reservation\templates\reservation\ibooking\detail.html:315
 msgid "Children"
 msgstr ""
 
-#: .\reservation\models.py:578
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:189
-#: .\reservation\templates\reservation\ibooking\detail.html:304
+#: .\reservation\models.py:627
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:214
+#: .\reservation\templates\reservation\ibooking\detail.html:325
 msgid "Extra Seats"
 msgstr ""
 
-#: .\reservation\models.py:604
+#: .\reservation\models.py:653
 msgid "Paid amount"
 msgstr ""
 
-#: .\reservation\models.py:616
+#: .\reservation\models.py:665
 msgid "Phone number"
 msgstr ""
 
-#: .\reservation\models.py:620
+#: .\reservation\models.py:669
 msgid "Additional Phone number"
 msgstr ""
 
@@ -926,7 +1162,7 @@ msgstr ""
 #: .\reservation\templates\reservation\booking\trip_booking_amounts_add.html:63
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:63
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:63
-#: .\reservation\templates\reservation\ibooking\detail.html:41
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:39
 msgid "rooms"
 msgstr ""
 
@@ -939,142 +1175,172 @@ msgstr ""
 msgid "New Trip Booking"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:88
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:72
+msgid "Payment"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:73
+msgid "is less than half of the price"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:74
+msgid "Pay now"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:79
+msgid "Bus Seats"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:79
+msgid "Hasnt been selected yet"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:79
+msgid "Book now"
+msgstr ""
+
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:92
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:75
 #: .\reservation\templates\reservation\ibooking\detail.html:50
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:52
 msgid "Pay"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:91
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:95
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:6
 #: .\reservation\templates\reservation\booking\trip_booking_program_add.html:75
 msgid "Add program"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:94
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:98
 msgid "Add Amount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:111
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:115
 #: .\reservation\templates\reservation\ibooking\detail.html:66
 msgid "Cancel booking"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:117
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:121
 #: .\reservation\templates\reservation\ibooking\detail.html:72
 msgid "Activate booking"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:125
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:129
 msgid "Delete booking"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:148
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:152
 #: .\reservation\templates\reservation\ibooking\detail.html:96
-#: .\reservation\templates\reservation\misc\reservations_page.html:48
-#: .\reservation\templates\reservation\misc\reservations_page.html:62
+#: .\reservation\templates\reservation\misc\reservations_page.html:52
+#: .\reservation\templates\reservation\misc\reservations_page.html:66
 msgid "Booking Id"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:199
-#: .\reservation\templates\reservation\ibooking\detail.html:314
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:224
+#: .\reservation\templates\reservation\ibooking\detail.html:335
 msgid "Total Seats"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:215
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:240
+#: .\reservation\templates\reservation\ibooking\detail.html:196
 msgid "Active"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:218
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:243
+#: .\reservation\templates\reservation\ibooking\detail.html:199
 msgid "Cancelled"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:232
-#: .\reservation\templates\reservation\ibooking\detail.html:222
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:255
+#: .\reservation\templates\reservation\ibooking\detail.html:243
 msgid "Personl Details"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:264
-#: .\reservation\templates\reservation\ibooking\detail.html:254
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:287
+#: .\reservation\templates\reservation\ibooking\detail.html:275
 msgid "Phone Numbre"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:274
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:297
 msgid "Phone Numbre 2"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:284
-#: .\reservation\templates\reservation\ibooking\detail.html:264
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:307
+#: .\reservation\templates\reservation\ibooking\detail.html:285
 msgid "Created By"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:328
-#: .\reservation\templates\reservation\ibooking\detail.html:326
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:350
+#: .\reservation\templates\reservation\ibooking\detail.html:356
 msgid "Price Details"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:351
-#: .\reservation\templates\reservation\ibooking\detail.html:349
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:373
+#: .\reservation\templates\reservation\ibooking\detail.html:379
 msgid "Reservation Price | Discount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:361
-#: .\reservation\templates\reservation\ibooking\detail.html:359
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:383
+#: .\reservation\templates\reservation\ibooking\detail.html:389
 msgid "Extra discount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:371
-#: .\reservation\templates\reservation\ibooking\detail.html:369
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:393
+#: .\reservation\templates\reservation\ibooking\detail.html:399
 msgid "Price after discount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:381
-#: .\reservation\templates\reservation\ibooking\detail.html:379
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:403
+#: .\reservation\templates\reservation\ibooking\detail.html:409
 msgid "Extra Seats price"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:391
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:413
 msgid "Programs Price"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:401
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:423
 msgid "Additional amounts"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:421
-#: .\reservation\templates\reservation\ibooking\detail.html:399
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:443
+#: .\reservation\templates\reservation\ibooking\detail.html:429
 msgid "Paid | Remaining"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:434
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:454
 msgid "Programs Details"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:447
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:467
 msgid "Quantity"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:450
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:470
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:82
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:59
+#: .\reservation\templates\reservation\package\detail.html:162
+#: .\reservation\templates\reservation\package\detail.html:227
 #: .\reservation\templates\reservation\trip_programs\list.html:69
 #: .\reservation\views.py:192
 msgid "Price"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:475
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:528
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:495
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:548
 msgid "Total"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:487
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:507
 msgid "AdditionalAmount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:497
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:517
 msgid "Amount"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_detail.html:500
+#: .\reservation\templates\reservation\booking\trip_booking_detail.html:520
 msgid "Reason"
 msgstr ""
 
@@ -1116,25 +1382,8 @@ msgstr ""
 msgid "Payment Status"
 msgstr ""
 
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:157
-#: .\reservation\templates\reservation\ibooking\list.html:147
-#: .\reservation\templates\reservation\misc\booking_list_all.html:137
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:130
-#: .\reservation\templates\reservation\user\booking_list_user.html:135
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:129
-msgid "remaining"
-msgstr ""
-
-#: .\reservation\templates\reservation\booking\trip_booking_list.html:161
-#: .\reservation\templates\reservation\ibooking\list.html:151
-#: .\reservation\templates\reservation\misc\booking_list_all.html:141
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:134
-#: .\reservation\templates\reservation\user\booking_list_user.html:139
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:133
-msgid "complete"
-msgstr ""
-
 #: .\reservation\templates\reservation\booking\trip_booking_pay.html:6
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:6
 msgid "Reservation Pay"
 msgstr ""
 
@@ -1220,7 +1469,7 @@ msgstr ""
 
 #: .\reservation\templates\reservation\destination\destination_detail.html:159
 #: .\reservation\templates\reservation\hotel\hotel_list.html:161
-#: .\reservation\templates\reservation\trip\trip_list.html:167
+#: .\reservation\templates\reservation\trip\trip_list.html:175
 #: .\reservation\templates\reservation\trip\trip_list_by_destination.html:176
 #: .\reservation\templates\reservation\trip\trip_list_by_hotel.html:198
 msgid "Book"
@@ -1255,30 +1504,6 @@ msgstr ""
 msgid "Night price in"
 msgstr ""
 
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:178
-#: .\reservation\templates\reservation\ibooking\detail.html:426
-#: .\reservation\templates\reservation\ibooking\detail.html:470
-#: .\reservation\templates\reservation\package\detail.html:156
-#: .\reservation\templates\reservation\package\detail.html:199
-msgid "Single Room"
-msgstr ""
-
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:182
-#: .\reservation\templates\reservation\ibooking\detail.html:436
-#: .\reservation\templates\reservation\ibooking\detail.html:480
-#: .\reservation\templates\reservation\package\detail.html:166
-#: .\reservation\templates\reservation\package\detail.html:209
-msgid "Double Room"
-msgstr ""
-
-#: .\reservation\templates\reservation\hotel\hotel_detail.html:186
-#: .\reservation\templates\reservation\ibooking\detail.html:446
-#: .\reservation\templates\reservation\ibooking\detail.html:490
-#: .\reservation\templates\reservation\package\detail.html:176
-#: .\reservation\templates\reservation\package\detail.html:219
-msgid "Triple Room"
-msgstr ""
-
 #: .\reservation\templates\reservation\hotel\hotel_detail.html:247
 msgid "No packages or prices available ..."
 msgstr ""
@@ -1291,6 +1516,7 @@ msgid ""
 msgstr ""
 
 #: .\reservation\templates\reservation\ibooking\detail.html:27
+#: .\reservation\templates\reservation\ibooking\ibooking_pay.html:26
 #: .\reservation\templates\reservation\ibooking\list.html:6
 msgid "Individual Bookings"
 msgstr ""
@@ -1307,62 +1533,12 @@ msgstr ""
 msgid "duration"
 msgstr ""
 
-#: .\reservation\templates\reservation\ibooking\detail.html:414
-#: .\reservation\templates\reservation\package\detail.html:187
-msgid "Full Board"
-msgstr ""
-
-#: .\reservation\templates\reservation\ibooking\detail.html:458
-#: .\reservation\templates\reservation\package\detail.html:144
-msgid "Half Board"
-msgstr ""
-
-#: .\reservation\templates\reservation\ibooking\list.html:66
-msgid "Package page"
-msgstr ""
-
 #: .\reservation\templates\reservation\ibooking\list.html:72
 msgid "All Reservations"
 msgstr ""
 
-#: .\reservation\templates\reservation\ibooking\list.html:134
-#: .\reservation\templates\reservation\misc\booking_list_all.html:121
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:116
-#: .\reservation\templates\reservation\pagination.html:11
-#: .\reservation\templates\reservation\trip\trip_detail.html:168
-#: .\reservation\templates\reservation\user\booking_list_user.html:121
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:115
-#: .\transport\templates\transport\bus\detail.html:123
-#: .\transport\templates\transport\bus\detail.html:143
-#: .\transport\templates\transport\bus\list.html:134
-#: .\transport\templates\transport\bus\list.html:146
-msgid "Previous"
-msgstr ""
-
-#: .\reservation\templates\reservation\ibooking\list.html:137
-#: .\reservation\templates\reservation\misc\booking_list_all.html:124
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:119
-#: .\reservation\templates\reservation\trip\trip_detail.html:171
-#: .\reservation\templates\reservation\user\booking_list_user.html:124
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:118
-#: .\transport\templates\transport\bus\detail.html:126
-#: .\transport\templates\transport\bus\detail.html:146
-#: .\transport\templates\transport\bus\list.html:137
-#: .\transport\templates\transport\bus\list.html:149
-msgid "Ongoing"
-msgstr ""
-
-#: .\reservation\templates\reservation\ibooking\list.html:140
-#: .\reservation\templates\reservation\misc\booking_list_all.html:128
-#: .\reservation\templates\reservation\misc\trip_booking_list_all.html:122
-#: .\reservation\templates\reservation\trip\trip_detail.html:174
-#: .\reservation\templates\reservation\user\booking_list_user.html:127
-#: .\reservation\templates\reservation\user\trip_booking_list_user.html:121
-#: .\transport\templates\transport\bus\detail.html:129
-#: .\transport\templates\transport\bus\detail.html:149
-#: .\transport\templates\transport\bus\list.html:140
-#: .\transport\templates\transport\bus\list.html:152
-msgid "Upcoming"
+#: .\reservation\templates\reservation\ibooking\update.html:6
+msgid "Update Booking"
 msgstr ""
 
 #: .\reservation\templates\reservation\misc\booking_list_all.html:8
@@ -1383,8 +1559,8 @@ msgstr ""
 msgid "No result"
 msgstr ""
 
-#: .\reservation\templates\reservation\misc\reservations_page.html:55
-#: .\reservation\templates\reservation\misc\reservations_page.html:69
+#: .\reservation\templates\reservation\misc\reservations_page.html:59
+#: .\reservation\templates\reservation\misc\reservations_page.html:73
 msgid "no result found for id"
 msgstr ""
 
@@ -1399,10 +1575,6 @@ msgstr ""
 
 #: .\reservation\templates\reservation\package\detail.html:74
 msgid "Delete package"
-msgstr ""
-
-#: .\reservation\templates\reservation\package\detail.html:80
-msgid "Package Details"
 msgstr ""
 
 #: .\reservation\templates\reservation\package\detail.html:132
@@ -1505,17 +1677,17 @@ msgid "Deleted Trip"
 msgstr ""
 
 #: .\reservation\views.py:254 .\reservation\views.py:371
-#: .\reservation\views.py:562
+#: .\reservation\views.py:562 .\reservation\views.py:642
 msgid "Numbre of Rooms"
 msgstr ""
 
 #: .\reservation\views.py:259 .\reservation\views.py:378
-#: .\reservation\views.py:567
+#: .\reservation\views.py:567 .\reservation\views.py:647
 msgid "Persons"
 msgstr ""
 
 #: .\reservation\views.py:264 .\reservation\views.py:383
-#: .\reservation\views.py:572
+#: .\reservation\views.py:572 .\reservation\views.py:652
 msgid "Personal Detail"
 msgstr ""
 
@@ -1551,11 +1723,15 @@ msgstr ""
 msgid "made individual booking to"
 msgstr ""
 
-#: .\reservation\views.py:639
+#: .\reservation\views.py:669
+msgid "updated individual booking"
+msgstr ""
+
+#: .\reservation\views.py:691
 msgid "Prices per night"
 msgstr ""
 
-#: .\reservation\views.py:678
+#: .\reservation\views.py:730
 msgid "created new package for"
 msgstr ""
 
@@ -1569,7 +1745,7 @@ msgid "Select bus"
 msgstr ""
 
 #: .\transport\templates\transport\bus\bus_select.html:71
-#: .\transport\templates\transport\bus\seats_select.html:77
+#: .\transport\templates\transport\bus\seats_select.html:76
 msgid "Seats to book"
 msgstr ""
 
@@ -1578,7 +1754,7 @@ msgid "Available buses"
 msgstr ""
 
 #: .\transport\templates\transport\bus\create.html:6
-#: .\transport\templates\transport\bus\list.html:50
+#: .\transport\templates\transport\bus\list.html:56
 msgid "New Bus"
 msgstr ""
 
@@ -1606,19 +1782,23 @@ msgstr ""
 msgid "Buses"
 msgstr ""
 
-#: .\transport\templates\transport\bus\list.html:55
+#: .\transport\templates\transport\bus\list.html:41
+#: .\transport\templates\transport\bus\list.html:61
+#: .\transport\templates\transport\bus\list.html:69
 msgid "Going"
 msgstr ""
 
-#: .\transport\templates\transport\bus\list.html:60
+#: .\transport\templates\transport\bus\list.html:43
+#: .\transport\templates\transport\bus\list.html:66
+#: .\transport\templates\transport\bus\list.html:71
 msgid "Return"
 msgstr ""
 
-#: .\transport\templates\transport\bus\list.html:62
+#: .\transport\templates\transport\bus\list.html:68
 msgid "Bus list"
 msgstr ""
 
-#: .\transport\templates\transport\bus\list.html:83
+#: .\transport\templates\transport\bus\list.html:93
 msgid "Start location , Time"
 msgstr ""
 

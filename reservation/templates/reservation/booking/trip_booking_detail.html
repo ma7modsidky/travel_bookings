@@ -61,8 +61,6 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    {% comment %} <a 
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">[{{object.get_rooms_count}} {% trans 'rooms' %}] [{{object.name}}]</a> {% endcomment %}
                     <a 
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{object.id}}]</a>    
                 </div>
@@ -71,14 +69,14 @@
     </nav>
     {% if object.get_cancellation_price > object.paid_amount %}
         <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
-        <span class="font-medium">Payment ({{object.paid_amount |intcomma:False}}EGP) is less than half of the
-            price({{object.get_total_price |intcomma:False}}EGP)</span> <a
-            href="{% url 'reservation:trip_booking_pay' object.id %}" class='font-bold'>Pay now</a>
+        <span class="font-medium">{% trans 'Payment' %} ({{object.paid_amount |intcomma:False}}EGP)
+        {% trans 'is less than half of the price' %} ({{object.get_total_price |intcomma:False}}EGP)</span> <a
+            href="{% url 'reservation:trip_booking_pay' object.id %}" class='font-bold'>{% trans 'Pay now' %}</a>
         </div>
     {% endif %}
     {% if not object.seats_booked and object.get_status == 'active'%}
         <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
-        <span class="font-medium">Bus Seats</span> Hasn't been selected yet <a href="{% url "transport:bus_select" object.id %}" class='font-bold'>Book now</a>
+        <span class="font-medium">{% trans 'Bus Seats' %} </span> {% trans 'Hasnt been selected yet' %} <a href="{% url "transport:bus_select" object.id %}" class='font-bold'>{% trans 'Book now' %}</a>
     </div>
     {% endif %}
     
@@ -165,6 +163,17 @@
                             </th>
                             <td class="px-3 py-2">
                                 <a href="{{object.trip.get_absolute_url}}">{{object.trip}}</a>
+                                
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Date' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.trip.date_from}}
                                 
                             </td>
                         </tr>

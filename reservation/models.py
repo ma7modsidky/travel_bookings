@@ -325,7 +325,7 @@ class Booking(models.Model):
 
     @property
     def get_fullboard_price(self):
-        return Decimal(self.single_room_count*self.package.single_room_full+self.double_room_count*self.package.double_room_full+self.triple_room_count*self.package.triple_room_full)
+        return Decimal((self.single_room_count*self.package.single_room_full)+(self.double_room_count*self.package.double_room_full)+(self.triple_room_count*self.package.triple_room_full))
 
     @property
     def get_fullboard_cost(self):
@@ -356,6 +356,10 @@ class Booking(models.Model):
     @property
     def get_primary_price_after_discount(self):
         return int(self.get_primary_price - self.get_discount - self.discount_amount)
+
+    @property
+    def get_primary_price_after_discount_2(self):
+        return int(self.get_primary_price - self.get_discount)
 
     @property
     def get_profit(self):
@@ -401,6 +405,51 @@ class Booking(models.Model):
         else :
             return 'complete'
 
+    @property
+    def get_single_room_price(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.single_room_half
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.single_room_full
+
+    @property
+    def get_single_room_price_all(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.single_room_half* self.single_room_count
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.single_room_full * self.single_room_count
+
+    @property
+    def get_double_room_price(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.double_room_half
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.double_room_full 
+
+    @property
+    def get_double_room_price_all(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.double_room_half* self.double_room_count
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.double_room_full * self.double_room_count
+
+    @property
+    def get_triple_room_price(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.triple_room_half
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.triple_room_full
+
+    @property
+    def get_triple_room_price_all(self):
+        if self.accommodation_type.name == 'Half Board':
+            return self.package.triple_room_half *self.triple_room_count
+        elif self.accommodation_type.name == 'Full Board':
+            return self.package.triple_room_full * self.triple_room_count
+
+    @property
+    def get_price_per_night(self):
+        return self.get_triple_room_price_all+self.get_double_room_price_all+self.get_single_room_price_all
 class BookingError(models.Model):
     booking = models.ForeignKey(
         Booking,

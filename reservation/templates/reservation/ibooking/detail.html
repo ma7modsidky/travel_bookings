@@ -38,7 +38,7 @@
                     <a href="#"
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400
                         dark:hover:text-white">{% trans 'Booking' %}<span
-                            class="font-bold">[{{object.id}}]</span>-[{{object.get_rooms_count}}{% trans 'rooms' %}]</a>
+                            class="font-bold">[{{object.id}}]</span></a>
                 </div>
             </li>
         </ol>
@@ -48,7 +48,7 @@
         <a href='{% url 'reservation:ibooking_pay' object.id%}'
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
             {% trans 'Pay' %}</a>   
-        <a href=''
+        <a href='{% url 'reservation:booking_update' object.id%}'
         class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
@@ -139,7 +139,7 @@
                                 {% trans 'duration' %}
                             </th>
                             <td class="px-3 py-2">
-                                <span>{{object.get_nights_count}}</span>
+                                <span>{% trans 'Nights' %} {{object.get_nights_count}} </span>
 
                             </td>
                         </tr>
@@ -183,6 +183,27 @@
                                 {{object.get_description |linebreaks}}
                             </td>
                         </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Status' %}
+                            </th>
+                            <td class="px-3 py-2">
+
+                                {% if object.get_active_status == 'active' %}
+                                <span
+                                    class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">{% trans 'Active' %}</span>
+                                {% elif object.get_active_status == 'cancelled' %}
+                                <span
+                                    class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{% trans 'Cancelled' %}</span>
+                                {% else %}
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                    dark:bg-blue-200 dark:text-blue-800">{{object.get_active_status}}</span>
+                                {% endif %}
+
+
+                            </td>
                         {% comment %} <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
@@ -316,7 +337,16 @@
                                 {{object.get_total_seats}}
                             </td>
                         </tr>
-                        
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Notes' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.notes |linebreaks}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -408,8 +438,8 @@
         </div>
         
         {% if object.accommodation_type.name == 'Full Board' %}
-            <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Full Board' %}</h2>
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Package Details' %} ({% trans 'Full Board' %})</h2>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                     <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
                             text-right
@@ -450,10 +480,10 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        {% else %}
+        </div>
+        {% elif object.accommodation_type.name == 'Half Board' %}
             <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
-                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Half Board' %}</h2>
+                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Package Details' %} ({% trans 'Half Board' %})</h2>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
                     <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
                             text-right
