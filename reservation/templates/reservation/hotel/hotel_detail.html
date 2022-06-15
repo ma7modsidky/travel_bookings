@@ -157,20 +157,15 @@
     {% endif %}
     {% if hotel.packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6 text-center">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        {% comment %} <th scope="col" class="px-6 py-3">
-                            {% trans "Id" %}
-                        </th> {% endcomment %}
+                        
                         <th scope="col" class="px-6 py-3">
                             {% trans "Label" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            {% trans "From" %}
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            {% trans "To" %}
+                            {% trans "Date" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <p>{% trans "Night price in" %}</p>
@@ -200,10 +195,9 @@
                             {{package.label}}
                         </th>
                         <td class="px-3 py-2 whitespace-nowrap">
-                            {{package.date_from |date:"d / m / Y"}}
-                        </td>
-                        <td class="px-3 py-2 whitespace-nowrap">
-                            {{package.date_until |date:"d / m / Y"}}
+                            <div>{{package.date_from |date:"d / m / Y"}}</div>
+                            <div>{{package.date_until |date:"d / m / Y"}}</div>
+                            
                         </td>
                         <td class="px-3 py-2 ">
                             {{package.single_room_full}}
@@ -231,7 +225,7 @@
                                 {% else %}
                                 rounded-r-md
                             {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
-                                    {% trans 'Edit' %}
+                                    {% trans 'Book' %}
                                 </a>
                             </div>
                         </td>

@@ -7,6 +7,9 @@
 html {
     font-family: 'Tajawal', sans-serif !important;
 }
+body{
+    padding: 0 16px;
+}
 div,h2,li{
     margin: 12px 0;
 }
@@ -17,17 +20,17 @@ div,h2,li{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: center;
 }
 
 .first_c,.second_c{
     flex:1
 }
 .first_c .bold{
-    font-size: 24px;
+    font-size: 20px;
 }
 .branch {
-    font-size: 26px;
+    font-size: 20px;
     color: black;
     margin: 8px 0;
 }

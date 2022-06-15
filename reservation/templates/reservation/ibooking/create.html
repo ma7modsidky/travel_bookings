@@ -3,15 +3,103 @@
 {% load static %}
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
-{% block title %} {% trans 'New Trip Booking' %} {% endblock %}
+{% block title %} {% trans 'New idividual Booking' %} {% endblock %}
 {% block head %}
     <script src="https://unpkg.com/flowbite@1.4.5/dist/datepicker.js"></script>
 {% endblock %}
 
 {% block content %}
-    <form method="post" class='text-sm'>{% csrf_token %}
-        {% comment %} {{ form | crispy}} {% endcomment %}
-        {% crispy form  %}
+    <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                        text-right
+                        {% else %}
+                        text-left
+                    {% endif %} text-gray-500 dark:text-gray-400 mb-4">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{hotel.name}}
+                            </th>
+                            <td class="px-3 py-2">
+                               {{ package.label }}
+                            </td>
+                            <td class="px-3 py-2">
+                                <div>{% trans 'Available from' %} ({{package.date_from}})</div>
+                                <div>{% trans 'Until' %} ({{package.date_until}})</div>
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                
+                            </th>
+                            <td class="px-3 py-2">
+                                <div>{% trans 'Half Board' %}</div>
+
+                            </td>
+                            <td class="px-3 py-2">
+                                <div>{% trans 'Full Board' %}</div>
+
+                            </td>
+
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Single Room' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                <div>{{package.single_room_half}}</div>
+
+                            </td>
+                            <td class="px-3 py-2">
+                                <div>{{package.single_room_full}}</div>
+
+                            </td>
+
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Double Room' %}
+                            </th>
+                            
+                            <td class="px-3 py-2">
+                                <div>{{package.double_room_half}}</div>
+
+                            </td>
+                            <td class="px-3 py-2">
+                                <div>{{package.double_room_full}}</div>
+
+                            </td>
+
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Triple Room' %}
+                            </th>
+
+                            <td class="px-3 py-2">
+                                <div>{{package.triple_room_half}}</div>
+
+                            </td>
+                            <td class="px-3 py-2">
+                                <div>{{package.triple_room_full}}</div>
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+    <form method="post" class='text-sm' autocomplete='off'>{% csrf_token %}
+        
+        {% crispy form  form.helper %}
         {% comment %} <input type="submit" value="Confirm" class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
                 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
                 cursor-pointer my-4'> {% endcomment %}

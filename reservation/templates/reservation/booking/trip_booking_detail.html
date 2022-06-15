@@ -5,7 +5,7 @@
 {% load humanize %}
 {% load bus_tags %}
 {% load i18n %}
-{% block title %} {% trans 'Reservation Details' %}  {% endblock %}
+{% block title %} {% trans 'Reservation Details' %} {% endblock %}
 {% block content %}
 <div class="bg-white dark:bg-gray-600 rounded-md p-4">
     <!-- breadcrumb -->
@@ -70,13 +70,13 @@
     {% if object.get_cancellation_price > object.paid_amount %}
         <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
         <span class="font-medium">{% trans 'Payment' %} ({{object.paid_amount |intcomma:False}}EGP)
-        {% trans 'is less than half of the price' %} ({{object.get_total_price |intcomma:False}}EGP)</span> <a
+        {% trans 'is less than half of the price' %} ({{object.get_cancellation_price |intcomma:False}}EGP)</span> <a
             href="{% url 'reservation:trip_booking_pay' object.id %}" class='font-bold'>{% trans 'Pay now' %}</a>
         </div>
     {% endif %}
     {% if not object.seats_booked and object.get_status == 'active'%}
         <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
-        <span class="font-medium">{% trans 'Bus Seats' %} </span> {% trans 'Hasnt been selected yet' %} <a href="{% url "transport:bus_select" object.id %}" class='font-bold'>{% trans 'Book now' %}</a>
+        <span class="font-medium">{% trans 'Bus Seats' %} </span> {% trans 'Hasnt been selected yet' %} <a href="{% url "transport:bus_select" 'trip' object.id %}" class='font-bold'>{% trans 'Book now' %}</a>
     </div>
     {% endif %}
     
@@ -476,7 +476,7 @@
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {{p.program.name}}[{{p.program.price|intcomma:False}}]
+                                {{p.unit_name}} [{{p.unit_price|intcomma:False}}]
                             </th>
                             <td class="px-3 py-2">
                                 {{p.quantity}}
@@ -561,7 +561,7 @@
         <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             {% if object.seats_booked %}
             
-                {% booking_seats object.id%}
+                {% booking_seats object.id 'trip'%}
             
             {% endif %}
         </div>

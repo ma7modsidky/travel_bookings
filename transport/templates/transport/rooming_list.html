@@ -1,0 +1,167 @@
+{% load humanize %}
+{% load i18n %}
+<html dir="rtl" lang="ar">
+    <head>
+        <!-- <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" /> -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" />
+        <link rel="stylesheet" href="/static/css/invoice.css" />
+    </head>
+<body>
+    <div class="invoice flex">
+            <h2 class="branch text-2xl font-bold">فرع الزقازيق</h2>
+        <!-- <div>
+            {% comment %} <h4 class="st">سجل تجاري 15367</h2>
+                <h4 class="st">بطاقة ضريبية 987-327-528</h2> {% endcomment %}
+        </div> -->
+        <div class="logo">
+            <img src="/static/images/logo-min.png" alt="brand">
+        </div>
+    </div>
+    <hr>
+    <div class="container bg-white">
+        <table class="w-full text-sm border border-gray-200 text-left text-gray-500 dark:text-gray-400 text-right">
+            <thead
+                class="border border-gray-200 text-xs text-gray-700 uppercase bg-blue-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-3 py-2">
+                        {% trans 'Bus' %}
+                    </th>
+                    <th scope="col" class="px-3 py-2">
+                        {% trans 'Destination' %}
+                    </th>
+                    <th scope="col" class="px-3 py-2 whitespace-nowrap">
+                        <div>{% trans 'From' %}</div>
+                    </th>
+                    <th scope="col" class="px-3 py-2">
+                        {% trans 'To' %}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+
+                    <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white ">
+                        [{{bus.id}}] {{bus.label}}
+                    </th>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        {{bus.origin}} -> {{bus.destination}}
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        {{bus.date_1 |date:"d / m / Y"}}
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                        {{bus.date_2 |date:"d / m / Y"}}
+                    </td>
+                </tr>
+
+                
+            </tbody>
+        </table>
+        <div class="relative   sm:rounded-lg my-6">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-right border border-gray-200">
+                <thead
+                    class="text-xs text-gray-700 uppercase bg-blue-50 dark:bg-gray-700 dark:text-gray-400 border border-gray-200">
+                    <tr>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Name' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Rooms' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2 whitespace-nowrap">
+                            <!-- {% trans 'Persons [adults/children]' %} -->
+                            <div>{% trans 'Persons' %}</div>
+                            <!-- <div>{% trans '[adults/children]' %}</div> -->
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Phone' %}
+                        </th>
+                        {% comment %} <th scope="col" class="px-3 py-2">
+                            {% trans 'Status' %}
+                        </th> {% endcomment %}
+                        <th scope="col" class="px-3 py-2 ">
+                            {% trans 'Payment Status' %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bookings.all %}
+                    <tr
+                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white ">
+                            <a href="{% url 'reservation:trip_booking_detail' b.id %}">[{{b.id}}]
+                                {{b.name}}</a>
+                        </th>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.get_description |linebreaks}}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            <span class="font-bold">{{b.get_person_count}}</span> [{{b.adults}}/{{b.children}}]
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.phone}}
+                        </td>
+                        {% comment %} <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.get_status}}
+                        </td> {% endcomment %}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if b.get_payment_status == 'remaining' %}
+                            <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">{% trans 'remaining' %}
+                                {{b.get_remained_price |intcomma:False}}</span>
+                            {% elif b.get_payment_status == 'complete' %}
+                            <span
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
+                            {% else %}
+                            {% endif %}
+                        </td>
+                        
+                    </tr>
+                   
+                    {% endfor %}
+                    {% for b in ibookings.all %}
+                    <tr
+                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white ">
+                            <a href="{% url 'reservation:trip_booking_detail' b.id %}">[{{b.id}}]
+                                {{b.name}}</a>
+                        </th>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.get_description |linebreaks}}
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            <span class="font-bold">{{b.get_person_count}}</span> [{{b.adults}}/{{b.children}}]
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.phone}}
+                        </td>
+                        {% comment %} <td class="px-3 py-2 whitespace-nowrap">
+                            {{b.get_status}}
+                        </td> {% endcomment %}
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            {% if b.get_payment_status == 'remaining' %}
+                            <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">{% trans 'remaining' %}
+                                {{b.get_remained_price |intcomma:False}}</span>
+                            {% elif b.get_payment_status == 'complete' %}
+                            <span
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
+                            {% else %}
+                            {% endif %}
+                        </td>
+                        
+                    </tr>
+                   
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/flowbite@1.4.2/dist/flowbite.js"></script>
+</html>

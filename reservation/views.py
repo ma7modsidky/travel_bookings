@@ -1,5 +1,7 @@
 
 
+
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
@@ -7,9 +9,9 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from django.views.generic.edit import DeleteView
 from django.conf import settings
 from django import http
+from django_confirmation_mixin import UpdateConfirmationMixin, CreateConfirmationMixin
 
 from transport.models import Seat
 from .models import  Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram , AdditionalAmount , Client
@@ -19,7 +21,7 @@ from datetime import datetime, timedelta, date
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, Row, Div, Field, HTML
 from crispy_tailwind import layout
-from .forms import PayTripBookingForm
+from .forms import PayTripBookingForm, BookingForm
 from django.utils.translation import gettext_lazy as _
 from actions.utils import create_action
 from account.models import Profile
@@ -56,7 +58,11 @@ class hotel_list(LoginRequiredMixin, ListView):
     def get_queryset(self):
         destination = Destination.objects.get(slug=self.kwargs.get("slug"))
         qs = Hotel.objects.filter(
-            destination=destination).prefetch_related('destination')
+            destination=destination)
+        if self.request.GET.get('query'):
+            qs = qs.filter(name__icontains=self.request.GET.get('query'))
+        if self.request.GET.get('star'):
+            qs = qs.filter(level=self.request.GET.get('star'))  
         return qs    
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -64,8 +70,7 @@ class hotel_list(LoginRequiredMixin, ListView):
         # Add in a QuerySet of all the books
         destination = Destination.objects.get(slug=self.kwargs.get("slug"))
         context['destination'] = destination
-        # context['object_list'] = Hotel.objects.filter(
-        #     destination=destination).prefetch_related('destination')
+        
         return context
 
 
@@ -78,9 +83,14 @@ class trip_list(LoginRequiredMixin, ListView):
     model = Trip
     # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/trip/trip_list.html'
-    paginate_by = 7
+    paginate_by = 15
     def get_queryset(self):
-        time = self.kwargs.get("time")
+        time = self.request.GET.get("time")
+        sdate = self.request.GET.get("date")
+        if sdate:
+            qs = Trip.objects.filter(
+                date_from=sdate)
+            return qs    
         if time == 'upcoming':
             qs = Trip.objects.filter(
                 date_from__gte=date.today())
@@ -100,13 +110,40 @@ class trip_list(LoginRequiredMixin, ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['time'] = self.kwargs.get("time")
+        time = self.request.GET.get("time")
+        if self.request.GET.get("date"):
+            context['date'] = self.request.GET.get("date")
+        context['time'] = time
         return context
+
 
 class trip_list_by_destination(LoginRequiredMixin, ListView):
     model = Trip
-    # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/trip/trip_list_by_destination.html'
+    paginate_by = 15
+
+    def get_queryset(self):
+        time = self.request.GET.get("time")
+        sdate = self.request.GET.get("date")
+        if sdate:
+            qs = Trip.objects.filter(
+                date_from=sdate)
+            return qs
+        if time == 'upcoming':
+            qs = Trip.objects.filter(
+                date_from__gte=date.today())
+        elif time == 'previous':
+            qs = Trip.objects.filter(
+                date_until__lt=date.today())
+        elif time == 'ongoing':
+            qs = Trip.objects.filter(
+                date_from__lte=date.today(), date_until__gte=date.today())
+        elif time == 'all':
+            qs = Trip.objects.all()
+        else:
+            qs = qs = Trip.objects.filter(
+                date_from__gte=date.today())
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -114,20 +151,31 @@ class trip_list_by_destination(LoginRequiredMixin, ListView):
         # Add in a QuerySet of all the books
         destination = Destination.objects.get(slug=self.kwargs.get("slug"))
         context['destination'] = destination
-        context['time'] = self.kwargs.get("time")
-        if self.kwargs.get("time") == 'upcoming':
-            context['object_list'] = Trip.objects.filter(
-                destination=destination, date_from__gte=timezone.now())
-        elif self.kwargs.get("time") == 'previous':
-            context['object_list'] = Trip.objects.filter(
-                destination=destination, date_until__lt=timezone.now())
-        elif self.kwargs.get("time") == 'ongoing':
-            context['object_list'] = Trip.objects.filter(
-                destination=destination, date_from__lte=timezone.now(), date_until__gte=timezone.now())
-        else:
-            context['object_list'] = Trip.objects.filter(
-                destination=destination)
+        time = self.request.GET.get("time")
+        if self.request.GET.get("date"):
+            context['date'] = self.request.GET.get("date")
+        context['time'] = time
         return context
+    # def get_context_data(self, **kwargs):
+    #     # Call the base implementation first to get a context
+    #     context = super().get_context_data(**kwargs)
+    #     # Add in a QuerySet of all the books
+    #     destination = Destination.objects.get(slug=self.kwargs.get("slug"))
+    #     context['destination'] = destination
+    #     context['time'] = self.kwargs.get("time")
+    #     if self.kwargs.get("time") == 'upcoming':
+    #         context['object_list'] = Trip.objects.filter(
+    #             destination=destination, date_from__gte=timezone.now())
+    #     elif self.kwargs.get("time") == 'previous':
+    #         context['object_list'] = Trip.objects.filter(
+    #             destination=destination, date_until__lt=timezone.now())
+    #     elif self.kwargs.get("time") == 'ongoing':
+    #         context['object_list'] = Trip.objects.filter(
+    #             destination=destination, date_from__lte=timezone.now(), date_until__gte=timezone.now())
+    #     else:
+    #         context['object_list'] = Trip.objects.filter(
+    #             destination=destination)
+    #     return context
 
 class trip_list_by_hotel(LoginRequiredMixin, ListView):
     model = Trip
@@ -448,7 +496,7 @@ class trip_booking_program_add(LoginRequiredMixin, CreateView):
     model = TripBookingProgram 
     fields = ['booking', 'program', 'quantity']
     template_name = 'reservation/booking/trip_booking_program_add.html'
-    # success_url = reverse_lazy('reservation:trip_booking_detail', args=[1])
+   
     def get_context_data(self, **kwargs):
         context= super().get_context_data(**kwargs)
         context['object'] = get_object_or_404(
@@ -463,11 +511,16 @@ class trip_booking_program_add(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         booking = get_object_or_404(TripBooking, id=self.kwargs.get('pk'))
+        form.instance.unit_price = form.instance.program.price
+        form.instance.unit_cost = form.instance.program.cost
+        form.instance.unit_name = form.instance.program.name
         verb = _('added trip booking program to')
         create_action(self.request.user,
                       f'{verb} {form.instance.booking}', booking)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy('reservation:trip_booking_detail', kwargs={'pk': self.kwargs.get('pk')})
 
 class trip_booking_amounts_add(LoginRequiredMixin, CreateView):
     model = AdditionalAmount
@@ -515,7 +568,15 @@ def i_invoice_pdf(request, pk):
                                                                                   )
     return response
 
+def invoice_html(request,pk):
+    booking = get_object_or_404(Booking, id=pk)
+    return render(request, 'reservation/pdf/ibooking_invoice.html', {'object':booking})
 
+def rooming_list(request,pk):
+    trip = get_object_or_404(Trip, id=pk)
+    bookings = TripBooking.objects.filter(trip=trip, status='active')
+    return render(request, 'reservation/pdf/rooming_list.html', {'trip': trip , 'bookings':bookings})
+    
 def trip_bookings_list_pdf(request, pk):
     trip = get_object_or_404(Trip, id=pk)
     html = render_to_string('reservation/pdf/booking_list.html',
@@ -540,24 +601,31 @@ def load_hotels(request):
 # Individual Booking
 class booking_create(LoginRequiredMixin, CreateView):
     model = Booking
-    fields = ['accommodation', 'package', 'accommodation_type','transport' ,'single_room_count','date_from','date_until' ,'double_room_count',  'triple_room_count', 'adults', 'children',
+    fields = [ 'accommodation_type','transport','transport_price_person' ,'single_room_count','date_from','date_until' ,'double_room_count',  'triple_room_count', 'adults', 'children',
               'extra_seats', 'name', 'email', 'phone', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
     template_name = 'reservation/ibooking/create.html'
     exclude = ['creation_user']
+    
     # permission_required = ('')
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.helper = FormHelper()
         form.helper.layout = Layout(
-            Row(Field('accommodation',css_class='min-w-[8rem] hidden'), Field('package', readonly='readonly',css_class='min-w-[8rem] hidden'),
-                css_class='flex flex-row gap-2',),
-            Row('accommodation_type',
-                css_class='flex flex-row gap-2'),
-            'transport',
+            
+            # Row(Field('accommodation',css_class='min-w-[8rem] '), Field('package', css_class='min-w-[8rem] '),
+            #     css_class='flex flex-row gap-2',),
+            Row('accommodation_type', 
+                css_class='flex flex-row gap-4',),
             HTML('<hr class="my-2 ">'),
-            Field('date_from'),
-            Field('date_until'),
+            'transport',
+            'transport_price_person',
+            HTML('<p class="my-1 dark:text-white text-xs">(السعر يشمل الذهاب و العودة)</p>'),
+            HTML('<hr class="my-2 ">'),
+            Row('date_from', 'date_until',
+                css_class='flex flex-row gap-4',),
+            # Field('date_from'),
+            # Field('date_until'),
             HTML('<hr class="my-2 ">'),
             Fieldset(_('Numbre of Rooms'),
                      Row('single_room_count', 'double_room_count',
@@ -579,26 +647,31 @@ class booking_create(LoginRequiredMixin, CreateView):
             'discount_percentage', 'discount_amount',
             'paid_amount',
         )
-        form.helper.legend_class = 'dark:text-gray-200'
+        form.helper.legend_class = 'dark:text-white'
         form.helper.label_class = 'dark:text-gray-200'
         form.helper.add_input(
             Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
         return form
 
     def get_initial(self):
-        if self.kwargs.get('hotel_id'):
-            accommodation = get_object_or_404(
-                Hotel, id=self.kwargs.get('hotel_id'))
-        if self.kwargs.get('package_id'):
-            package = get_object_or_404(
-                HotelPackage, id=self.kwargs.get('package_id'))
-        return {
-            'accommodation': accommodation,
-            'package': package,
-        }
+        initial = super().get_initial()
+        
+        initial['accommodation'] = Hotel.objects.get(
+            id=self.kwargs.get('hotel_id'))
+        initial['package'] = get_object_or_404(
+            HotelPackage, id=self.kwargs.get('package_id'))
+        return initial
+
 
     def form_valid(self, form):
         form.instance.creation_user = self.request.user
+        form.instance.accommodation = Hotel.objects.get(
+            id=self.kwargs.get('hotel_id'))
+        form.instance.package = HotelPackage.objects.get(
+            id=self.kwargs.get('package_id'))
+        if form.instance.date_from > form.instance.package.date_until or form.instance.date_until > form.instance.package.date_until:
+            raise ValidationError(
+                _('Booking not in the right dates of the package'))
         try:
             client = Client.objects.get(phone=form.instance.phone)
             form.instance.client = Client.objects.get(
@@ -618,10 +691,14 @@ class booking_create(LoginRequiredMixin, CreateView):
         # profile.save()
         return super().form_valid(form)
 
-
+    def get_context_data(self, **kwargs):
+        context= super().get_context_data(**kwargs)
+        context['hotel'] = Hotel.objects.get(id=self.kwargs.get('hotel_id'))
+        context['package'] = HotelPackage.objects.get(id=self.kwargs.get('package_id'))
+        return context
 class ibooking_update(LoginRequiredMixin, UpdateView):
     model = Booking
-    fields = fields = ['accommodation', 'package', 'accommodation_type', 'transport', 'single_room_count', 'date_from', 'date_until', 'double_room_count',  'triple_room_count', 'adults', 'children',
+    fields = fields = [ 'accommodation_type', 'transport', 'single_room_count', 'date_from', 'date_until', 'double_room_count',  'triple_room_count', 'adults', 'children',
                        'extra_seats', 'name', 'email', 'phone', 'notes', 'discount_percentage', 'discount_amount', 'paid_amount']
     template_name = 'reservation/ibooking/update.html'
     exclude = ['creation_user']
@@ -668,7 +745,7 @@ class ibooking_update(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         verb = _('updated individual booking')
         create_action(self.request.user,
-                      f'updated individual booking {form.instance}', self.object)
+                      f'{verb} {form.instance}', self.object)
         return super().form_valid(form)
 class package_create(LoginRequiredMixin,PermissionRequiredMixin ,CreateView):
     model = HotelPackage
@@ -832,7 +909,13 @@ class trip_program_create(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
 
     template_name = 'reservation/program/create.html'
     permission_required = ('reservation.add_hotel')
-    success_url = reverse_lazy('account:profile')
+    # success_url = reverse_lazy('account:profile')
+
+    def get_success_url(self):
+        if self.kwargs.get('destination_slug'):
+            return reverse_lazy('reservation:trip_program_list', kwargs={'destination_slug': self.kwargs['destination_slug']})
+        else:
+            return reverse_lazy('account:profile')
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.helper = FormHelper()
@@ -842,6 +925,39 @@ class trip_program_create(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
             Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
         return form
 
+    def form_valid(self, form):
+            verb = _('created trip program')
+            create_action(self.request.user,
+                        f'{verb} {form.instance}', self.object)
+            return super().form_valid(form)
+    
+
+class trip_program_edit(LoginRequiredMixin, UpdateView):
+    model = TripProgram
+    fields = ['name', 'destination', 'cost',
+              'price']
+
+    template_name = 'reservation/program/create.html'
+    permission_required = ('reservation.add_hotel')
+    
+    def get_success_url(self):
+        slug = self.kwargs['destination_slug']
+        return reverse_lazy('reservation:trip_program_list', kwargs={'destination_slug': slug})
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.label_class = 'dark:text-gray-200'
+        # form.helper.Field('date_from',readonly='readonly', id="date_start", template='reservation/datepicker.html')
+        form.helper.add_input(
+            Submit('submit', _('Create'), css_class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer my-4'))
+        return form
+    
+    def form_valid(self, form):
+        verb = _('updated trip program')
+        create_action(self.request.user,
+                      f'{verb} {form.instance}', self.object)
+        return super().form_valid(form)
 class trip_program_list(LoginRequiredMixin,ListView):
     model = TripProgram
     template_name = 'reservation/trip_programs/list.html'
@@ -857,6 +973,20 @@ class trip_program_list(LoginRequiredMixin,ListView):
         context =  super().get_context_data(**kwargs)    
         context['destination'] = Destination.objects.get(slug=self.kwargs.get('destination_slug'))
         return context
+
+class trip_program_delete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
+    model = TripProgram
+    template_name = "reservation/confirm_delete.html"
+    permission_required = ('reservation.add_hotel')
+    def get_success_url(self):
+        slug = self.kwargs['destination_slug']
+        return reverse_lazy('reservation:trip_program_list', kwargs={'destination_slug': slug})
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(trip_program_delete, self).get_object()
+        verb = _('permenantly deleted trip program')    
+        create_action(self.request.user, f'{verb} {obj}', obj)
+        return obj
 
 def trip_booking_cancel(request,booking_type,pk):
     if booking_type == 'trip_booking':

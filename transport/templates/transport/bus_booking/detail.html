@@ -36,57 +36,46 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a 
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Bus' %} [{{object.id}}]</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Bus' %} [{{object.Bus.id}}]</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{object.id}}]</a>
                 </div>
             </li>
         </ol>
     </nav>
     <div class="flex flex-wrap my-4 gap-2">
-        {% comment %} <a href={% url 'transport:bus_only_booking_create'  object.id%}
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
-            {% trans "New Reservation" %}
-            </a> {% endcomment %}
-        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 px-5 mr-2 mb-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            {% trans "Reservations list" %}
-        </button>  
-       <a href='{% url 'transport:bus_booking_html' object.id 'going'%}' target="_blank"
-            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
-            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
-            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Print' %}</a>
-            </a>  
-        <a href={% url 'transport:bus_delete' object.id%}
+        <a href={% url 'transport:seats_select_other' object.id object.Bus.id %}
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+        {% trans "Select seats" %}
+        </a>
+        <a 
             class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
             rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
             cursor-pointer">
             {% trans "Delete" %}</a>
             </a>
     </div>
-    <div id="dropdownDivider"
-        class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-            <li>
-                <a href="{% url "transport:bus_bookings" object.id 'going' %}"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Going" %}</a>
-            </li>
-            <li>
-                <a href="{% url "transport:bus_bookings" object.id 'return' %}"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Return" %}</a>
-            </li>
-        </ul>
-    </div>
+    
     <section class="hotel_detail flex flex-col md:flex-row h-auto w-[100%] my-4">
-        <div class="w-[100%] md:w-[48%] p-0 mb-2 md:mb-0 drop-shadow-md order-1 md:order-2 ">
+        {% comment %} <div class="w-[100%] md:w-[48%] p-0 mb-2 md:mb-0 drop-shadow-md order-1 md:order-2 ">
             {% seats_by_type object.id 'going' %}
         </div>
         <div class="w-[100%] md:w-[48%] p-0 mb-2 md:mb-0 drop-shadow-md order-1 md:order-2 ">
             {% seats_by_type object.id 'return'%}
-        </div>
+        </div> {% endcomment %}
         
         <div class="w-[100%] md:w-[48%] p-0 md:p-3 md:pt-0 order-2 md:order-1 ">
-           <h1 class="text-2xl mb-2  font-bold dark:text-gray-200">{{object.label}} ({{object.date_1}}) [{{object.id}}]
-            </h1>
+            
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4 border border-gray-200">
                 <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
                                 text-right
@@ -101,6 +90,16 @@
                                 {% trans 'Bus Id' %} 
                             </th>
                             <td class="px-3 py-2 font-bold">
+                                {{object.Bus.id}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Booking Id' %} 
+                            </th>
+                            <td class="px-3 py-2 font-bold">
                                 {{object.id}}
                             </td>
                         </tr>
@@ -111,17 +110,67 @@
                                 {% trans 'Name' %} 
                             </th>
                             <td class="px-3 py-2 font-bold">
-                                {{object.label}}
+                                {{object.name}}
                             </td>
                         </tr>
                         <tr
                             class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                             <th scope="row"
                                 class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                 {% trans 'From' %}
+                                {% trans 'Phone' %} 
+                            </th>
+                            <td class="px-3 py-2 font-bold">
+                                {{object.phone}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Phone2' %} 
+                            </th>
+                            <td class="px-3 py-2 font-bold">
+                                {{object.phone2}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                 {% trans 'Type' %}
                             </th>
                             <td class="px-3 py-2">
-                                {{object.origin}}
+                                ذهاب و عودة
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'date' %} {% trans 'Going' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.Bus.date_1}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'date' %} {% trans 'Return' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.Bus.date_2}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'From' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.Bus.origin}}
                             </td>
                         </tr>
                         <tr
@@ -131,73 +180,26 @@
                                 {% trans 'To' %}
                             </th>
                             <td class="px-3 py-2">
-                                {{object.destination}}
+                                {{object.Bus.destination}}
                             </td>
                         </tr>
-                        <tr
-                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                            <th scope="row"
-                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {% trans 'Going Date' %}
-                            </th>
-                            <td class="px-3 py-2">
-                                {{object.date_1}}
-                                {% if object.get_going_state == 'previous' %}
-                                    <span
-                                        class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{% trans 'Previous' %}</span>
-                                {% elif object.get_going_state == 'ongoing' %}
-                                    <span
-                                        class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
-                                {% elif object.get_going_state == 'upcoming' %}
-                                        <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
-                                            dark:bg-blue-200 dark:text-blue-800">{% trans 'Upcoming' %}</span>
-                                {% endif %}    
-                            </td>
-                        </tr>
-                        <tr
-                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                            <th scope="row"
-                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {% trans 'Return Date' %}
-                            </th>
-                            <td class="px-3 py-2">
-                                {{object.date_2}} 
-                                {% if object.get_return_state == 'previous' %}
-                                    <span
-                                        class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{% trans 'Previous' %}</span>
-                                {% elif object.get_return_state == 'ongoing' %}
-                                    <span
-                                        class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Ongoing' %}</span>
-                                {% elif object.get_return_state == 'upcoming' %}
-                                        <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
-                                            dark:bg-blue-200 dark:text-blue-800">{% trans 'Upcoming' %}</span>
-                                {% endif %}  
-                            </td>
-                        </tr>
-                        <tr
-                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
-                            <th scope="row"
-                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                {% trans 'Trips' %}
-                            </th>
-                            <td class="px-3 py-2">
-                                {{object.trips}}
-                            </td>
-                        </tr>
+                        
+                        
+                        
                     </tbody>
                 </table>
             </div>
-            
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                
+            </div>
         </div>
 
+
+    </section>
 </div>
 
 
-</section>
-</div>
 
 
 
-
-</div>
 {% endblock %}

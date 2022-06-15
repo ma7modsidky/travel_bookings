@@ -1,0 +1,266 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load bus_tags %}
+{% load i18n %}
+    {% block title %}  {% trans 'Reservations list' %} - {% trans 'Going' %} - {{bus}} {% endblock %}
+
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a 
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Transport' %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href={{bus.get_absolute_url}}
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Bus' %} [{{bus.id}}]</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Reservations list' %} ({{seat_type}})</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    {% comment %} <div class="flex flex-wrap my-4 gap-2">
+        <a 
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans "New Reservation" %}
+            </a>
+        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-2.5 px-5 mr-2 mb-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            {% trans "Reservations list" %}
+        </button>    
+        <a  class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans "Reservations list" %}</a>
+        <a 
+            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+            cursor-pointer">
+            {% trans "Delete" %}</a>
+            </a>
+    </div>
+    <div id="dropdownDivider"
+        class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+            <li>
+                <a href="{% url "reservation:trip_list" %}?time=ongoing"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Going" %}</a>
+            </li>
+            <li>
+                <a href="{% url "reservation:trip_list"  %}?time=upcoming"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Return" %}</a>
+            </li>
+        </ul>
+    </div> {% endcomment %}
+    <section class="h-auto w-[100%] my-4">
+        {% comment %} <div class="w-[100%] p-0 mb-2 md:mb-0 drop-shadow-md order-1 lg:order-2 ">
+            {% seats_by_type bus.id 'going' %}
+        </div> {% endcomment %}
+        <div class="w-[100%] p-0 md:p-3 md:pt-0">
+            <h3 class="font-bold">{% trans "Trip bookings" %}</h3>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                
+                <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            {% comment %} <th scope="col" class="px-3 py-2">
+                                {% trans 'Id' %}
+                            </th> {% endcomment %}
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Name' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Phone' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Seats' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Hotel' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Payment Status' %}
+                            </th>
+                            {% comment %} <th scope="col" class="px-3 py-2">
+                                <span class="sr-only"></span>
+                            </th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in bookings.all %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            {% comment %} <td class="px-3 py-2">
+                                <a href="{{b.get_absolute_url}}">{{b.id}}</a>
+                            </td> {% endcomment %}
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <a href="{{b.get_absolute_url}}">[{{b.id}}] {{b.name}}</a>
+                            </th>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {{b.phone}}
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                <div>{{b.get_total_seats}} {% trans 'Seats' %}</div>
+                                {% for seat in b.get_seats_num %}
+                                    <span class='inline-block bg-red-100 text-red-800 text-xs font-sm mr-1 px-1 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900'>{{seat}}</span>
+                                {% endfor %}
+                                
+                                
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {{b.trip.accommodation}}
+                            </td>
+                            
+                            
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {% if b.get_payment_status == 'remaining' %}
+                                <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">{% trans 'remaining' %}
+                                    {{b.get_remained_price |intcomma:False}}</span>
+                                {% elif b.get_payment_status == 'complete' %}
+                                <span
+                                    class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
+                                {% else %}
+                                {% endif %}
+
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                
+            </div>
+        </div>
+        <div class="w-[100%] p-0 md:p-3 md:pt-0">
+            <h3 class="font-bold">{% trans "Individual Bookings" %}</h3>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+
+                <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            {% comment %} <th scope="col" class="px-3 py-2">
+                                {% trans 'Id' %}
+                            </th> {% endcomment %}
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Name' %}
+                            </th>
+                            
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Phone' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Seats' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Hotel' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Payment Status' %}
+                            </th>
+                            {% comment %} <th scope="col" class="px-3 py-2">
+                                <span class="sr-only"></span>
+                            </th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in ibookings.all %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            {% comment %} <td class="px-3 py-2">
+                                <a href="{{b.get_absolute_url}}">{{b.id}}</a>
+                            </td> {% endcomment %}
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <a href="{{b.get_absolute_url}}">[{{b.id}}] {{b.name}}</a>
+                            </th>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {{b.phone}}
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                <div>{{b.get_total_seats}} {% trans 'Seats' %}</div>
+                                <div>
+                                    {% for seat in b.get_seats_num %}
+                                    <span class='inline-block bg-blue-100 text-blue-800 text-xs font-sm mr-1 px-1 py-0.5 rounded
+                                dark:bg-blue-200 dark:text-blue-900'>{{seat}}</span>
+                                    {% endfor %}
+                                </div>
+                                
+                            </td>
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {{b.accommodation.name}}
+                            </td>
+
+
+                            <td class="px-3 py-2 whitespace-nowrap">
+                                {% if b.get_payment_status == 'remaining' %}
+                                <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">{% trans 'remaining' %}
+                                    {{b.get_remained_price |intcomma:False}}</span>
+                                {% elif b.get_payment_status == 'complete' %}
+                                <span
+                                    class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'complete' %}</span>
+                                {% else %}
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+            </div>
+        </div>
+
+</div>
+
+
+</section>
+</div>
+
+
+
+
+</div>
+{% endblock %}

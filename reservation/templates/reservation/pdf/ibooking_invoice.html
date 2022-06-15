@@ -7,11 +7,11 @@
     </head>
 <body>
     <div class="invoice flex">
-        <div>
             <h2 class="branch">فرع الزقازيق</h2>
-            <h4 class="st">سجل تجاري 15367</h2>
-                <h4 class="st">بطاقة ضريبية 987-327-528</h2>
-        </div>
+        <!-- <div>
+            {% comment %} <h4 class="st">سجل تجاري 15367</h2>
+                <h4 class="st">بطاقة ضريبية 987-327-528</h2> {% endcomment %}
+        </div> -->
         <div class="logo">
             <img src="/static/images/logo-min.png" alt="brand">
         </div>
@@ -20,34 +20,32 @@
     
     <div class="flex">
         <div class="first_c">
-            {% comment %} <div>
-                <span class="bold">تاريخ الحجز : </span>
-                <span class="">{{object.date_from |date:"d / m / Y"}}</span>
-            </div> {% endcomment %}
             <div>
-                <span class="bold">اسم العميل : </span>
-                <span class="">{{object.name}}</span>
+                <span class="bold">رقم الحجز : </span>
+                <span class="">{{object.id}}</span>
             </div>
             <div>
-                <span class="bold">الوصف : </span>
-                <span class="">{{object.get_description}}</span>
+                <span class="bold">الاقامة : </span>
+                <span class="">{{object.accommodation}}</span>
             </div>
+            
             <div>
                 <span class="bold">من : </span>
                 <span class="">{{object.date_from |date:"d / m / Y"}}</span>
+            </div>
+            <div>
+                <span class="bold">الى : </span>
+                <span class="">{{object.date_until |date:"d / m / Y"}}</span>
+            </div>
+            <div>
+                <span class="bold">الوصف : </span>
+                <span class="">{{object.get_description|linebreaks}}</span>
             </div>
             {% comment %} <div>
                 <span class="bold">ميعاد التجمع : </span>
                 <span class="">{{object.meeting_location}}</span>
             </div> {% endcomment %}
-            <div>
-                <span class="bold">عدد البالغين : </span>
-                <span class="">{{object.adults}}</span>
-            </div>
-            <div>
-                <span class="bold">عدد المقاعد الاضافية : </span>
-                <span class="">{{object.extra_seats}}</span>
-            </div>
+            
             
             <div>
                 <span class="bold">المبلغ الاجمالي : </span>
@@ -58,43 +56,55 @@
                 <span class="">{{object.paid_amount|intcomma:False}}</span>
             </div>
             <div>
+                <span class="bold">المبلغ المتبقي : </span>
+                <span class="">{{object.get_remained_price|intcomma:False}}</span>
+            </div>
+            <!-- <div>
                     <span class="bold">الموظف : </span>
                     <span class="">{{object.creation_user}} ({{object.creation_date|date:"d / m / Y" }})</span>
-                </div>
+                </div> -->
             
         </div>
         <div class="second_c">
             <div class="first_c">
+                
                 <div>
-                    <span class="bold">رقم الحجز : </span>
-                    <span class="">{{object.id}}</span>
+                    <span class="bold">اسم العميل : </span>
+                    <span class="">{{object.name}}</span>
                 </div>
                 <div>
                     <span class="bold"> رقم الهاتف : </span>
                     <span class="">{{object.phone}}</span>
                 </div>
-                {% comment %} <div>
-                    <span class="bold">الموظف : </span>
-                    <span class="">{{object.creation_user}} (object.creation_date)</span>
-                </div> {% endcomment %}
-                <div>
-                    <span class="bold">الى : </span>
-                    <span class="">{{object.date_until |date:"d / m / Y"}}</span>
-                </div>
                 
+                
+                <div>
+                    <span class="bold">عدد البالغين : </span>
+                    <span class="">{{object.adults}}</span>
+                </div>
                 <div>
                     <span class="bold">عدد الاطفال : </span>
                     <span class="">{{object.children}}</span>
                 </div>
                 <div>
+                    <span class="bold">عدد المقاعد الاضافية : </span>
+                    <span class="">{{object.extra_seats}}</span>
+                </div>
+                
+                <div>
                     <span class="bold">عدد المقاعد الاجمالي : </span>
                     <span class="">{{object.get_total_seats}}</span>
                 </div>
-                <br>
                 <div>
-                    <span class="bold">المبلغ المتبقي : </span>
-                    <span class="">{{object.get_remained_price|intcomma:False}}</span>
+                    <span class="bold">الموظف : </span>
+                    <span class="">{{object.creation_user}}</span>
                 </div>
+                <div>
+                    <span class="bold">تاريخ انشاء الحجز : </span>
+                    <span class="">({{object.creation_date}})</span>
+                </div>
+                <br>
+                
                 
         </div>
 

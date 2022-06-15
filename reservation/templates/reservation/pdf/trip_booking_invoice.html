@@ -94,8 +94,8 @@
     <div>
         <span class="bold">ارقام الكراسي : </span>
         
-        {% for seat in object.bus_seats.all %}
-            <span>{{seat.number}} -</span>
+        {% for seat in object.get_seats_num %}
+            <span>{{seat}} -</span>
         {% endfor %}
             
         

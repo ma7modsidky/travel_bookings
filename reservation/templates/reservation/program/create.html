@@ -3,13 +3,13 @@
 {% load static %}
 {% load tailwind_filters %}
 {% load crispy_forms_tags %}
-{% block title %} {% trans 'create hotel' %} {% endblock %}
+{% block title %} {% trans 'Add program' %} {% endblock %}
 {% block head %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
-    <form method="post" id="tripForm" class='text-sm' data-hotels-url="{% url 'reservation:ajax_load_hotels' %}">{% csrf_token %}
+    <form method="post" id="tripForm" autocomplete='off' class='text-sm' data-hotels-url="{% url 'reservation:ajax_load_hotels' %}">{% csrf_token %}
 
         {% crispy form  %}
         <a href="{{ request.META.HTTP_REFERER }}"

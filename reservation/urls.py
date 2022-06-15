@@ -28,7 +28,7 @@ urlpatterns = [
          name='hotel_detail'),
 
      # Trips URLS
-    path('destinations/<slug:slug>/trips/<str:time>', views.trip_list_by_destination.as_view(),
+    path('destinations/<slug:slug>/trips', views.trip_list_by_destination.as_view(),
          name='trip_list_by_destination'),
     path('hotels/<slug:slug>/trips/<str:time>', views.trip_list_by_hotel.as_view(),
          name='trip_list_by_hotel'),
@@ -41,6 +41,8 @@ urlpatterns = [
     path('trips/<str:time>', views.trip_list.as_view(),
          name='trip_list'),
      path('trips', views.trip_list.as_view(),
+          name='trip_list'),
+     path('trips/', views.trip_list.as_view(),
           name='trip_list'),
      # Bookings
      path('trips/<int:trip_id>/bookings/', views.trip_booking_list.as_view(),
@@ -95,8 +97,19 @@ urlpatterns = [
     #      name='about_us'),
     path('ajax/load-hotels/', views.load_hotels, name='ajax_load_hotels'),
     path('hotels/add/', views.hotel_create.as_view(), name='hotel_create'),
-    path('trip_programs/add/', views.trip_program_create.as_view(),
+    path('trip_programs/add/<slug:destination_slug>', views.trip_program_create.as_view(),
          name='trip_program_create'),
-    path('trip_programs/<slug:destination_slug>', views.trip_program_list.as_view(),
+    path('trip_programs/add', views.trip_program_create.as_view(),
+         name='trip_program_create'),
+    path('trip_programs/list/<slug:destination_slug>', views.trip_program_list.as_view(),
          name='trip_program_list'),
+    path('trip_programs/edit/<slug:destination_slug>/<int:pk>', views.trip_program_edit.as_view(),
+         name='trip_program_edit'),
+    path('trip_programs/delete/<slug:destination_slug>/<int:pk>', views.trip_program_delete.as_view(),
+         name='trip_program_delete'),
+     path('booking/invoice/<int:pk>', views.invoice_html,
+          name='invoice_html'),
+     path('trip/rooming_list/<int:pk>', views.rooming_list,
+          name='rooming_list'),
+
 ]

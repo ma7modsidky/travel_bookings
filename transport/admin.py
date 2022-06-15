@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Bus, Seat
+from .models import Bus, Seat , BusBooking
 # Register your models here.
 
 
@@ -15,3 +15,10 @@ class BusAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Seat
+
+
+@admin.register(BusBooking)
+class BusBookingAdmin(admin.ModelAdmin):
+
+    class Meta:
+        model = BusBooking

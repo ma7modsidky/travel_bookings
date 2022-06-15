@@ -37,23 +37,19 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a 
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Client\'s list' %}</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Client' %} {{object.name}}</a>
                 </div>
             </li>
         </ol>
     </nav>
     <hr class="my-2 border dark:border-gray-800"/>
     <div class="flex flex-wrap my-2 gap-2">
-        <a href={% url 'reservation:trip_booking_list_user' %}
+        <a href={% url 'clients:client_list' %}
             class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans 'Clients list' %}</a>
-        <a  
-            class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-white focus:outline-none bg-yellow-500 rounded-lg border
-            border-gray-200 hover:bg-yellow-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200
-            dark:focus:ring-gray-700 dark:bg-yellow-500 dark:text-white dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-yellow-700 cursor-pointer">{% trans 'Export' %} Excel </a>
+        
         
             <form action="{% url 'clients:client_list'%}">
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">{% trans 'Search' %} </label>
@@ -215,21 +211,21 @@
                             <div class="inline-flex rounded-md shadow-sm">
                                 <a href="{% url 'reservation:booking_detail' b.id %}" aria-current="page"
                                     class="py-2 px-4 text-sm font-medium text-blue-700 bg-white {% if LANGUAGE_CODE == 'ar' %}
-                                rounded-r-md
+                                rounded-r-md rounded-l-lg
                                 {% else %}
                                 rounded-l-lg
                             {% endif %} border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-blue-400 dark:hover:text-blue-400 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-blue-400">
                                     {% trans 'Details' %}
                                 </a>
 
-                                <a href=""
+                                {% comment %} <a href=""
                                     class="py-2 px-4 text-sm font-medium text-red-900 bg-white{% if LANGUAGE_CODE == 'ar' %}
                                 rounded-l-lg
                                 {% else %}
                                 rounded-r-md
                             {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
                                     {% trans 'Edit' %}
-                                </a>
+                                </a> {% endcomment %}
                             </div>
                             
                         </td>
@@ -314,21 +310,21 @@
                             <div class="inline-flex rounded-md shadow-sm">
                                 <a href="{% url 'reservation:booking_detail' b.id %}" aria-current="page"
                                     class="py-2 px-4 text-sm font-medium text-blue-700 bg-white {% if LANGUAGE_CODE == 'ar' %}
-                                rounded-r-md
+                                rounded-r-md rounded-l-md
                                 {% else %}
                                 rounded-l-lg
                             {% endif %} border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-blue-400 dark:hover:text-blue-400 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-blue-400">
                                     {% trans 'Details' %}
                                 </a>
 
-                                <a href=""
+                                {% comment %} <a href=""
                                     class="py-2 px-4 text-sm font-medium text-red-900 bg-white{% if LANGUAGE_CODE == 'ar' %}
-                                rounded-l-lg
+                                rounded-l-lg 
                                 {% else %}
                                 rounded-r-md
                             {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
                                     {% trans 'Edit' %}
-                                </a>
+                                </a> {% endcomment %}
                             </div>
                             
                         </td>

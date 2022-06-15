@@ -63,13 +63,29 @@
             class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
-            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Return' %}</a>    
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Return' %}</a>
+        <form action="{% url 'transport:bus_list' type %}" autocomplete="off">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">{% trans 'Search' %} </label>
+            <div class="relative">
+            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input type="search" name="date" id="default-search" class="py-2 px-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{% trans 'Specific Date' %}" required="">
+            <button type="submit" dir='ltr' class="text-white absolute left-[-0px] bottom-[0px] top-[0px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-left">{% trans 'Search' %}</button>
+            </div>
+            </form>             
     </div>
     <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Bus list' %} {% if type == 'going' %}
                             [{% trans 'Going' %}]
                         {% elif type == 'return'%}
                             [{% trans 'Return' %}]   
-                        {% endif %}</h2>
+                        {% endif %}
+                        
+                        {% if date %}
+                            ({{date}})
+                        {% endif %}
+                            
+                        </h2>
     {% include "reservation/pagination.html"  %}
     <div class="bg-white dark:bg-gray-600 rounded-md my-2">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
@@ -78,6 +94,9 @@
                     <tr>
                         <th scope="col" class="px-3 py-2">
                             {% trans 'Id' %}
+                        </th>
+                        <th scope="col" class="px-3 py-2">
+                            {% trans 'Name' %}
                         </th>
                         <th scope="col" class="px-3 py-2">
                             {% trans 'From' %}
@@ -106,6 +125,9 @@
                         class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                         <td class="px-3 py-2">
                             <a href="{% url 'transport:bus_detail' b.id %}">{{b.id}}</a>
+                        </td>
+                        <td class="px-3 py-2">
+                            <a href="{% url 'transport:bus_detail' b.id %}">{{b.label}}</a>
                         </td>
                         <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
 
@@ -175,5 +197,17 @@
         
 </div>
 
-
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script
+    src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+    crossorigin="anonymous"></script>
+<script>
+        $(document).ready(function () {
+            $("#default-search").datepicker({ dateFormat:"yy-mm-dd", });
+        });
+    </script>    
 {% endblock %}

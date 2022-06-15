@@ -13,7 +13,7 @@
         aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
             <li class="inline-flex items-center">
-                <a href="{% url "reservation:trip_list" 'all' %}"
+                <a href="{% url "reservation:trip_list" %}?time=upcoming"
                     class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                     <svg class="{% if LANGUAGE_CODE == 'ar' %}
                                 ml-2
@@ -38,14 +38,17 @@
                     </svg>
                     <a href="#"
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                            {% if date %}
+                                {{date}}
+                            {% endif %}    
                             {% if time == 'previous' %}
                                 {% trans 'Previous Trips' %} [{{object_list.count}}]
                             {% elif time == 'ongoing' %}
                                 {% trans 'Ongoing Trips' %} [{{object_list.count}}]
                             {% elif time == 'upcoming' %}
-                                {% trans 'Upcoming Trips' %} [{{object_list.count}}]    
-                            {% else %}
-                                {% trans 'All Trips' %} [{{object_list.count}}]
+                                {% trans 'Upcoming Trips' %} [{{object_list.count}}] 
+                            {% elif time == 'all' %}
+                                {% trans 'All Trips' %} [{{object_list.count}}]      
                             {% endif %}
                          </a>
                 </div>
@@ -53,42 +56,62 @@
         </ol>
     </nav>
     <div class="flex flex-wrap my-4 gap-2">
-        <div class="inline-flex py-2 px-3  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+        
+        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            {% if date %}
+                                {{date}}
+                            {% endif %}   
+                            {% if time == 'previous' %}
+                                {% trans 'Previous Trips' %} [{{object_list.count}}]
+                            {% elif time == 'ongoing' %}
+                                {% trans 'Ongoing Trips' %} [{{object_list.count}}]
+                            {% elif time == 'upcoming' %}
+                                {% trans 'Upcoming Trips' %} [{{object_list.count}}] 
+                            {% elif time == 'all' %}
+                                {% trans 'All Trips' %} [{{object_list.count}}]       
+                            
+                            {% endif %}</button>
+         {% comment %} <div class="inline-flex py-2 px-3  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
             <a href="{% url "reservation:trip_create" %}" class="inline-flex items-center">
                 {% trans "Create trip" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" 'ongoing' %}" class="inline-flex items-center">
-                {% trans "Ongoing Trips" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" 'upcoming' %}" class="inline-flex items-center">
-            {% trans "Upcoming Trips" %}
-            </a>
-        </div>
-        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" 'previous' %}" class="inline-flex items-center">
-            {% trans "Previous Trips" %}
-            </a>
-        </div>
-        <div class="inline-flex py-2 px-3 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-            <a href="{% url "reservation:trip_list" 'all' %}" class="inline-flex items-center">
-            {% trans "All Trips" %}
-            </a>
-        </div>
+        </div> {% endcomment %}
+        <form action="{% url 'reservation:trip_list'%}" autocomplete="off">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">{% trans 'Search' %} </label>
+            <div class="relative">
+            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input type="search" name="date" id="default-search" class="py-2 px-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{% trans 'Specific Date' %}" required="">
+            
+            <button type="submit" dir='ltr' class="text-white absolute left-[-0px] bottom-[0px] top-[0px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-left">{% trans 'Search' %}</button>
+            </div>
+            </form>                   
+        
     </div>
+    
+
+<!-- Dropdown menu -->
+<div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+      <li>
+        <a href="{% url "reservation:trip_list" %}?time=ongoing" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Ongoing Trips" %}</a>
+      </li>
+      <li>
+        <a href="{% url "reservation:trip_list"  %}?time=upcoming" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Upcoming Trips" %}</a>
+      </li>
+      <li>
+        <a href="{% url "reservation:trip_list"  %}?time=previous" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Previous Trips" %}</a>
+      </li>
+    </ul>
+    <div class="py-1">
+      <a href="{% url "reservation:trip_list" %}?time=all" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{% trans "All Trips" %}</a>
+    </div>
+</div>
     {% include "reservation/pagination.html"  %}
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-right">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -182,85 +205,19 @@
         </table>
     </div>
 
-        <!-- {% for hotel in object_list.all %}
-        <div
-            class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-                <div class="w-[100%]">
-                    <img class="rounded-t-lg h-[10rem] object-cover w-[100%]"
-                        src="{% if hotel.image %}{{hotel.image.url}}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
-                        alt="">
-                </div>
-                
-            </a>
-            <div class="p-5">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        {{hotel.name|title}}
-                    </h5>
-                </a>
-                <ul class="flex mb-4">
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
-                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                            </path>
-                        </svg>
-                    </li>
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
-                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                            </path>
-                        </svg>
-                    </li>
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star"
-                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                            </path>
-                        </svg>
-                    </li>
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star"
-                            class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z">
-                            </path>
-                        </svg>
-                    </li>
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star"
-                            class="w-4 text-yellow-500" role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z">
-                            </path>
-                        </svg>
-                    </li>
-                </ul>
-                {% comment %} <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{hotel.level}}</p> {% endcomment %}
-                <a href="#"
-                    class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Read more
-                    <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
-        {% endfor %} -->
-
-    
+     
 </div>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script
+    src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+    crossorigin="anonymous"></script>
+<script>
+        $(document).ready(function () {
+            $("#default-search").datepicker({ dateFormat:"yy-mm-dd", });
+        });
+    </script>    
 {% endblock %}
