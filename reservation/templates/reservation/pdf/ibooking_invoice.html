@@ -1,9 +1,10 @@
 {% load humanize %}
+{% load static %}
 <html dir="rtl" lang="ar">
     <head>
         <!-- <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.2/dist/flowbite.min.css" /> -->
-        <link rel="stylesheet" href="/static/css/invoice.css" />
+        <link rel="stylesheet" href={% static "css/invoice.css" %} />
     </head>
 <body>
     <div class="invoice flex">
@@ -13,7 +14,7 @@
                 <h4 class="st">بطاقة ضريبية 987-327-528</h2> {% endcomment %}
         </div> -->
         <div class="logo">
-            <img src="/static/images/logo-min.png" alt="brand">
+            <img src={% static "images/logo-min.png" %} alt="brand">
         </div>
     </div>
     <hr>

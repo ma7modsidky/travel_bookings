@@ -1,4 +1,6 @@
+
 {% load humanize %}
+{% load static %}
 {% load i18n %}
 <html dir="rtl" lang="ar">
     <head>
@@ -16,7 +18,7 @@
                 <h4 class="st">بطاقة ضريبية 987-327-528</h2> {% endcomment %}
         </div> -->
         <div class="logo">
-            <img src="/static/images/logo-min.png" alt="brand">
+            <img src={% static "images/logo-min.png" %} alt="brand">
         </div>
     </div>
     <hr>
