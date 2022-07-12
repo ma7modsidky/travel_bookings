@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from requests import request
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm , OrgForm
 from django.contrib.auth.decorators import login_required , permission_required
-from .models import Profile
+from .models import Organization, Profile
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
@@ -141,6 +142,28 @@ def user_list(request):
                                                       'users': users})
     
 
+@login_required
+def org_list(request):
+    orgs = Organization.all()
+    return render(request, 'account/orgs/list.html', {
+        'orgs': orgs})
+
+@login_required
+def org_detail(request,pk):
+    org = Organization.objects.get(id=pk)
+    return render(request, 'account/orgs/detail.html', {
+        'org': org})
+
+def org_create(request):
+    if request.method == 'POST':
+        org = OrgForm(request.POST)
+        if org.is_valid():
+            org.save(commit=True)
+            return redirect('/account/orgs/')
+    else:    
+        org = OrgForm()
+    return render(request, 'account/orgs/create.html', {'org': org})
+    
 @permission_required({("auth.add_user"), ("account.add_profile")}
                      )
 @login_required

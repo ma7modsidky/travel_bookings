@@ -15,7 +15,7 @@ def trip_report(request, pk):
     profit = 0
     rooms = 0
     for b in trip.bookings.all():
-        cost += b.get_cost
+        cost += b.get_all_cost
         price += b.get_total_price
         profit += b.get_profit
         rooms += b.get_rooms_count

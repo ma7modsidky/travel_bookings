@@ -21,13 +21,13 @@ def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
 
 class Client(models.Model):
-    name = models.CharField(max_length=25)
-    phone = models.CharField(max_length=15, db_index=True , unique=True)
-    phone2 = models.CharField(max_length=15,blank=True,null=True)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=50, db_index=True , unique=True)
+    phone2 = models.CharField(max_length=50,blank=True,null=True)
     def __str__(self) -> str:
         return self.name
 class Destination(models.Model):
-    name = models.CharField(max_length=25, db_index=True)
+    name = models.CharField(max_length=50, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True)
     intro = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to='images/destination', blank=True)
@@ -39,7 +39,7 @@ class Destination(models.Model):
 
 
 class AccommodationType(models.Model):
-    name = models.CharField(max_length=25, db_index=True)
+    name = models.CharField(max_length=50, db_index=True)
 
     def __str__(self) -> str:
         return self.name
@@ -60,7 +60,7 @@ class ReturnManager(models.Manager):
         return super(ReturnManager, self).get_queryset().filter(seat_type='return')
 
 class Hotel(models.Model):
-    name = models.CharField(max_length=25, db_index=True)
+    name = models.CharField(max_length=50, db_index=True)
     slug = models.SlugField(max_length=250, unique=True, db_index=True )
     destination = models.ForeignKey(
         Destination, related_name='hotels', on_delete=models.DO_NOTHING)
@@ -183,7 +183,7 @@ class Booking(models.Model):
     client = models.ForeignKey(
         Client, related_name='ibookings', on_delete=models.SET_NULL, null=True)
     name = models.CharField(verbose_name=_('name'),
-                            max_length=20,
+                            max_length=100,
                             )
     email = models.EmailField(
         verbose_name=_('Email'),

@@ -1,3 +1,4 @@
+from pyexpat import model
 from random import choices
 from django import forms
 from django.contrib.auth.models import User
@@ -61,3 +62,8 @@ class ProfileEditForm(forms.ModelForm):
         model = Profile
         fields = ('role', 'address', 'phone_number',
                   'phone_number_2', 'org', 'percentage')
+
+class OrgForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ('name','slug','intro')

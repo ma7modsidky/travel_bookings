@@ -1,6 +1,6 @@
 
 
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django import http
 from django_confirmation_mixin import UpdateConfirmationMixin, CreateConfirmationMixin
-
+import django_filters
 from transport.models import Seat
 from .models import  Destination, Hotel, HotelPackage, Trip, TripBooking, TripBookingProgram , Booking, TripProgram , AdditionalAmount , Client
 from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin
@@ -81,16 +81,17 @@ class hotel_detail(LoginRequiredMixin, DetailView):
 
 class trip_list(LoginRequiredMixin, ListView):
     model = Trip
-    # template_name = 'reservation/hotel/hotel_list.html'
     template_name = 'reservation/trip/trip_list.html'
-    paginate_by = 15
+    paginate_by = 10
+
     def get_queryset(self):
+        qs = super().get_queryset()
         time = self.request.GET.get("time")
         sdate = self.request.GET.get("date")
         if sdate:
-            qs = Trip.objects.filter(
+            qs = qs.filter(
                 date_from=sdate)
-            return qs    
+            return qs
         if time == 'upcoming':
             qs = Trip.objects.filter(
                 date_from__gte=date.today())
@@ -106,6 +107,7 @@ class trip_list(LoginRequiredMixin, ListView):
             qs = qs = Trip.objects.filter(
                 date_from__gte=date.today())
         return qs
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
@@ -115,6 +117,70 @@ class trip_list(LoginRequiredMixin, ListView):
             context['date'] = self.request.GET.get("date")
         context['time'] = time
         return context
+
+def trip_list_by_date(request):
+    date = request.GET.get('date')
+    trips = Trip.objects.filter(date_from=date)
+    paginator = Paginator(trips, 5)
+    page = request.GET.get('page')
+    try:
+        trips = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        trips = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        trips = paginator.page(paginator.num_pages)
+    return render(request, 'reservation/trip/trip_list_by_date.html', {
+                                                        'date':date,
+                                                        'object_list': trips,
+                                                        'page': page,
+                                                        })
+# class trip_list_by_date(LoginRequiredMixin, ListView):
+#     model = Trip
+#     template_name = 'reservation/trip/trip_list.html'
+#     paginate_by = 10
+
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+
+# class trip_list_by_time(LoginRequiredMixin, ListView):
+#     model = Trip
+#     template_name = 'reservation/trip/trip_list.html'
+#     paginate_by = 20
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         time = self.request.GET.get("time")
+#         sdate = self.request.GET.get("date")
+#         if sdate:
+#             qs = Trip.objects.filter(
+#                 date_from=sdate)
+#             return qs    
+#         if time == 'upcoming':
+#             qs = Trip.objects.filter(
+#                 date_from__gte=date.today())
+#         elif time == 'previous':
+#             qs = Trip.objects.filter(
+#                 date_until__lt=date.today())
+#         elif time == 'ongoing':
+#             qs = Trip.objects.filter(
+#                 date_from__lte=date.today(), date_until__gte=date.today())
+#         elif time == 'all':
+#             qs = Trip.objects.all()
+#         else:
+#             qs = qs = Trip.objects.filter(
+#                 date_from__gte=date.today())
+
+#         return qs
+#     def get_context_data(self, **kwargs):
+#         # Call the base implementation first to get a context
+#         context = super().get_context_data(**kwargs)
+#         # Add in a QuerySet of all the books
+#         time = self.request.GET.get("time")
+#         if self.request.GET.get("date"):
+#             context['date'] = self.request.GET.get("date")
+#         context['time'] = time
+#         return context        
 
 
 class trip_list_by_destination(LoginRequiredMixin, ListView):
@@ -154,7 +220,8 @@ class trip_list_by_destination(LoginRequiredMixin, ListView):
         time = self.request.GET.get("time")
         if self.request.GET.get("date"):
             context['date'] = self.request.GET.get("date")
-        context['time'] = time
+        if self.request.GET.get("time"):
+            context['time'] = self.request.GET.get("time")
         return context
     # def get_context_data(self, **kwargs):
     #     # Call the base implementation first to get a context

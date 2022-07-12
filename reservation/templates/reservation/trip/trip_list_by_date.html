@@ -115,8 +115,8 @@
       <a href="{% url "reservation:trip_list" %}?time=all" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{% trans "All Trips" %}</a>
     </div>
     </div>
-    {% include "reservation/pagination.html"  %}
-        
+    
+    {% include "reservation/pagination2.html" with page=object_list %}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-right">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -153,7 +153,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for trip in object_list.all %}
+                {% for trip in object_list %}
                     <tr
                     class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                     <td class="px-6 py-4">
