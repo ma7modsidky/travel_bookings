@@ -1,0 +1,575 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% load bus_tags %}
+{% load i18n %}
+{% block title %} {% trans 'Reservation Details' %} {% endblock %}
+{% block content %}
+<div class="bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href="{% url "reservation:trip_list" 'all' %}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Trips' %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url "reservation:trip_detail" object.trip.id %}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{object.trip.accommodation.name | title}}
+                        {% trans 'Trip' %} [{{object.trip.date_from}}] [{{object.trip.id}}]</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url 'reservation:trip_booking_list' object.trip.id %}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Reservation list' %}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{object.id}}]</a>    
+                </div>
+            </li>
+        </ol>
+    </nav>
+    {% if object.get_cancellation_price > object.paid_amount %}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        <span class="font-medium">{% trans 'Payment' %} ({{object.paid_amount |intcomma:False}}EGP)
+        {% trans 'is less than half of the price' %} ({{object.get_cancellation_price |intcomma:False}}EGP)</span> <a
+            href="{% url 'reservation:trip_booking_pay' object.id %}" class='font-bold'>{% trans 'Pay now' %}</a>
+        </div>
+    {% endif %}
+    {% if not object.seats_booked and object.get_status == 'active'%}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        <span class="font-medium">{% trans 'Bus Seats' %} </span> {% trans 'Hasnt been selected yet' %} <a href="{% url "transport:bus_select" 'trip' object.id %}" class='font-bold'>{% trans 'Book now' %}</a>
+    </div>
+    {% endif %}
+    
+    {% if object.get_status == 'cancelled' %}
+        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 my-2" role="alert">
+        Booking has been cancelled , Cancellation price is {{object.get_cancellation_price |intcomma:False}}EGP
+        </div>
+    {% endif %}
+    
+    <div class="flex flex-wrap my-4 gap-2">
+        <a href={% url 'reservation:trip_booking_pay' object.id %}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans 'Pay' %}</a>
+        <a href={% url 'reservation:trip_booking_program_add' object.id %}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans 'Add program' %}</a>
+        <a href={% url 'reservation:trip_booking_amounts_add' object.id %}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans 'Add Amount' %}</a>      
+        <a href={% url 'reservation:trip_booking_update' object.id %} 
+        class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Edit' %}</a>
+            
+        <a href={% url 'reservation:trip_booking_invoice' object.id %} target="_blank"
+            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Print' %}</a>
+        
+        {% if object.get_status == 'active' %}
+            <a href='{% url 'reservation:trip_booking_cancel' 'trip_booking' object.id%}'
+            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+            cursor-pointer">{% trans 'Cancel booking' %}
+            </a>
+        {% elif object.get_status == 'cancelled' %}
+            <a href='{% url 'reservation:trip_booking_active' 'trip_booking' object.id%}'
+            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium
+            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900
+            cursor-pointer">{% trans 'Activate booking' %}
+            </a>
+        {% endif %}
+                
+        
+        <a href='{% url 'reservation:trip_booking_delete' object.id%}'
+            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+            rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+            cursor-pointer">{% trans 'Delete booking' %}
+        </a>
+        <a href={% url 'reports:trip_booking_report' object.id %} 
+            class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-white focus:outline-none bg-yellow-500 rounded-lg border
+            border-gray-200 hover:bg-yellow-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-yellow-500 dark:text-white dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-yellow-700 cursor-pointer">{% trans 'Report' %}</a>
+            
+    </div>
+    <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Reservation Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200 ">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Booking Id' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.id}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Trip' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                <a href="{{object.trip.get_absolute_url}}">{{object.trip}}</a>
+                                
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Date' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.trip.date_from}}
+                                
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Description' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_description}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Adults' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.adults}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Children' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.children}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Extra Seats' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.extra_seats}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total Seats' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_total_seats}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Status' %}
+                            </th>
+                            <td class="px-3 py-2">
+
+                                {% if object.get_status == 'active' %}
+                                <span
+                                    class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-900">{% trans 'Active' %}</span>
+                                {% elif object.get_status == 'cancelled' %}
+                                <span
+                                    class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">{% trans 'Cancelled' %}</span>
+                                {% else %}
+                                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                    dark:bg-blue-200 dark:text-blue-800">{{object.get_status}}</span>
+                                {% endif %}
+
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Personl Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Name' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.name}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Email' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.email}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Phone Numbre' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.phone}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Phone Numbre 2' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.phone2}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Created By' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.creation_user}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Created at' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.creation_date}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Notes' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.notes |linebreaks}}
+                            </td>
+                        </tr>
+                        {% comment %} <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total price' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_total_price}}
+                            </td>
+                        </tr> {% endcomment %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Price Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        {% comment %} <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                Status
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_status}}
+                            </td>
+                        </tr> {% endcomment %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Reservation Price | Discount' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_primary_price |intcomma:False}} | -{{object.discount_percentage |intcomma:False}}%
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Extra discount' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                - {{object.discount_amount|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Price after discount' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{object.get_primary_price_after_discount|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Extra Seats price' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                + {{object.get_extra_seats_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Programs Price' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                + {{object.get_programs_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Additional amounts' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                + {{object.get_amounts_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-bold text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total price' %}
+                            </th>
+                            <td class="px-3 py-2 font-bold text-xl">
+                                {{object.get_total_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-bold text-gray-900 dark:text-white whitespace-nowrap">
+                               {% trans 'Paid | Remaining' %}
+                            </th>
+                            <td class="px-3 py-2 font-bold text-xl">
+                               <span class="text-green-700">{{object.paid_amount|intcomma:False}}</span> | <span
+                                   class="text-red-700">{{object.get_remained_price|intcomma:False}}</span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Programs Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Name' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Quantity' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Price' %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for p in object.programs.all %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{p.unit_name}} [{{p.unit_price|intcomma:False}}]
+                            </th>
+                            <td class="px-3 py-2">
+                                {{p.quantity}}
+                            </td>
+                            <td class="px-3 py-2">
+                                {{p.get_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total' %}
+                            </th>
+                            <td class="px-3 py-2">
+
+                            </td>
+                            <td class="px-3 py-2 font-bold">
+                                {{object.get_programs_price}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'AdditionalAmount' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                                text-right
+                                {% else %}
+                                text-left
+                            {% endif %} text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Amount' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                {% trans 'Reason' %}
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for p in object.additional_amounts.all %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {{p.price}}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{p.reason}}
+                            </td>
+                            <td class="px-3 py-2">
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total' %}
+                            </th>
+                            <td class="px-3 py-2">
+
+                            </td>
+                            <td class="px-3 py-2 font-bold">
+                                {{object.get_amounts_price}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        
+        <div class="w-[100%] md:w-[48%]  xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            {% if object.seats_booked %}
+                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Bus and Seats' %}</h2>
+                {% booking_seats object.id 'trip'%}
+            
+            {% endif %}
+        </div>
+        
+    </section>
+        
+    
+</div>
+
+
+{% endblock %}

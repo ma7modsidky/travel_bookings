@@ -1,0 +1,449 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+    {% block title %} {% trans 'Booking report' %} {% endblock %}
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                    <a href=""
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                    ml-2
+                                    {% else %}
+                                    mr-2
+                                {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        {% trans "Reports" %}
+                    </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a 
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Indivdual reservations' %}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{{booking.get_absolute_url}}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Booking' %} [{{booking.id}}]</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <hr class="my-2 border rounded-md dark:border-gray-800"/>
+    <!-- Buttons -->
+    <div class="flex flex-wrap my-2 gap-2">
+        <a  href={{booking.get_absolute_url}}
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans "Reservation page" %}
+        </a>
+         <a href={{booking.package.get_absolute_url}}
+             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+             {% trans "Package page" %}
+         </a>
+        <a  class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans "Print" %}</a>
+        
+        </a>
+    </div>
+    <!-- Tables -->
+    <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Reservation Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                        text-right
+                        {% else %}
+                        text-left
+                    {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Id' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.id }}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Hotel' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.accommodation }}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Description' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.get_description |linebreaks }}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'From' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.date_from |date:"d / m / Y"}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'To' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.date_until |date:"d / m / Y"}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Nights' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.get_nights_count }}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'name' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.name}}
+                            </td>
+                        </tr>
+                        
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Created by' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.creation_user}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Created at' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.creation_date}}
+                            </td>
+                        </tr>                        
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'total price' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.get_total_price|intcomma:False}}
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            {% if booking.accommodation_type.name == 'Full Board' %}
+                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Package Details' %} ({% trans 'Full Board' %})</h2>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                    <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                            text-right
+                            {% else %}
+                            text-left
+                        {% endif %} text-gray-500 dark:text-gray-400">
+                        <tbody>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Single Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{ booking.package.single_room_full |intcomma:False}}
+                                </td>
+                            </tr>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Double Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{booking.package.double_room_full |intcomma:False}}
+                                </td>
+                            </tr>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Triple Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{booking.package.triple_room_full |intcomma:False}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% elif booking.accommodation_type.name == 'Half Board' %}
+                <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Package Details' %} ({% trans 'Half Board' %})</h2>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                    <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                            text-right
+                            {% else %}
+                            text-left
+                        {% endif %} text-gray-500 dark:text-gray-400">
+                        <tbody>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Single Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{ booking.package.single_room_half }}
+                                </td>
+                            </tr>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Double Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{booking.package.double_room_half}}
+                                </td>
+                            </tr>
+                            <tr
+                                class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row"
+                                    class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    {% trans 'Triple Room' %}
+                                </th>
+                                <td class="px-3 py-2">
+                                    {{booking.package.triple_room_half}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>  
+            {% endif %}
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Pricing Details' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                        text-right
+                        {% else %}
+                        text-left
+                    {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        
+                        {% if  booking.single_room_count%}
+                            <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Single Rooms' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.single_room_count}} * {{ booking.get_single_room_price|intcomma:False}}
+                            </td>
+                            <td class="px-3 py-2">
+                                {{ booking.get_single_room_price_all|intcomma:False}}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if  booking.double_room_count%}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Double Rooms' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.double_room_count}} * {{ booking.get_double_room_price|intcomma:False}}
+                            </td>
+                            <td class="px-3 py-2">
+                                {{ booking.get_double_room_price_all|intcomma:False}}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if  booking.triple_room_count%}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Triple Rooms' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.triple_room_count}} * {{ booking.get_triple_room_price|intcomma:False}}
+                            </td>
+                            <td class="px-3 py-2">
+                                {{ booking.get_triple_room_price_all|intcomma:False}}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Sum' %}
+                            </th>
+                            
+                            <td class="px-3 py-2">
+                                
+                            </td>
+                            <td class="px-3 py-2">
+                                {{booking.get_price_per_night|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <div>*{% trans 'Nights' %}</div>
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.get_nights_count|intcomma:False}}
+                                * {{ booking.get_price_per_night|intcomma:False}}
+
+                            </td>
+                            <td class="px-3 py-2">
+                                {{booking.get_primary_price|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Discount' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.discount_percentage}}%
+                            </td>
+                            <td class="px-3 py-2">
+                                {{ booking.get_primary_price_after_discount_2|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Discount Amount'%}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.discount_amount|intcomma:False}}
+                            </td>
+                            <td class="px-3 py-2">
+                                {{ booking.get_primary_price_after_discount|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 text-lg text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Final price' %}
+                            </th>
+                            <td class="px-3 py-2 text-lg">
+                                
+                            </td>
+                            <td class="px-3 py-2 text-lg font-bold">
+                                {{booking.get_total_price|intcomma:False}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+         
+        
+        <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
+            <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Report' %} {% trans 'profit' %}</h2>
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2 border border-gray-200">
+                <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                        text-right
+                        {% else %}
+                        text-left
+                    {% endif %} text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Total price' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{ booking.get_total_price |intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'Cost' %}
+                            </th>
+                            <td class="px-3 py-2">
+                                {{booking.get_primary_cost|intcomma:False}}
+                            </td>
+                        </tr>
+                        <tr
+                            class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                            <th scope="row"
+                                class="px-3 py-2 font-bold text-lg text-gray-900 dark:text-white whitespace-nowrap">
+                                {% trans 'profit' %}
+                            </th>
+                            <td class="px-3 py-2 font-bold text-lg">
+                                {{booking.get_profit|intcomma:False}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,370 @@
+{% extends "reservation/base.html" %}
+{% load i18n %}
+{% block title %}{{ user.username}}{% trans 'profile' %}{% endblock %} 
+{% block content %}
+<div class="relative">
+  <div class="md:flex no-wrap md:-mx-2">
+    <!-- Left Side -->
+    <div class="w-full md:w-3/12 md:mx-4">
+      <!-- Profile Card -->
+      <div class="bg-gray-50 rounded dark:bg-gray-800 p-3 border-t-4 border-blue-600">
+        {% comment %}
+        <div class="image overflow-hidden">
+          <img
+            class="h-auto w-full mx-auto"
+            src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+            alt=""
+          />
+        </div>
+        {% endcomment %}
+        <h1 class="dark:text-white font-bold text-xl leading-8 my-1">
+          {{user.username | title}}
+        </h1>
+        <div class="flex gap-2">
+          {% if user.is_superuser %}
+          <span class="text-sm text-white bg-red-500 py-1 px-2 rounded-md  px-2">
+            Admin
+          </span>
+          {% endif %}
+          <!-- {% if user.is_staff %}
+          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md">
+            Staff
+          </span>
+          {% endif %} -->
+        </div>
+        
+        
+        {% if user.profile.org %}
+        <h3 class="dark:text-gray-100 font-lg text-semibold leading-6 my-2">
+          {{user.profile.org | title}}
+        </h3>
+        {% endif %}
+        <ul
+          class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm"
+        >
+          <li class="flex items-center py-3">
+            <span>{% trans 'Status' %} </span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %} "
+              ><span class="bg-green-500 py-1 px-2 rounded text-white text-sm"
+                >Active</span
+              ></span
+            >
+          </li>
+          <li class="flex items-center py-3">
+            <span>{% trans 'Role' %} </span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %} "
+              >
+              {% if user.profile.role == 'gold' %}
+        <div>
+          <span class="text-sm text-white bg-yellow-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% elif user.profile.role == 'silver' %}
+        <div>
+          <span class="text-sm text-white bg-slate-500 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% else %}
+        <div>
+          <span class="text-sm text-white bg-amber-700 py-1 px-2 rounded-md leading-6">
+            {{user.profile.role | title}}
+          </span>
+        </div>
+        {% endif %}
+              </span
+            >
+          </li>
+          {% comment %} <li class="flex items-center py-3">
+            <span>{% trans 'Balance' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm">{{user.profile.balance}}</span>
+          </li> {% endcomment %}
+          <li class="flex items-center py-3 text-sm">
+            <span>{% trans 'Member since' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-xs"
+              >{{user.date_joined |date:"d / m / Y"}}</span
+            >
+          </li>
+          <li class="flex items-center py-3 text-sm">
+            <span>{% trans 'Reservations made' %}</span>
+            <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm"
+              >{{user.created_trip_bookings.count}}</span
+            >
+          </li>
+          <li class="flex items-center py-3 text-sm">
+              <span>{% trans 'Indivdual reservations' %}</span>
+              <span class="{% if LANGUAGE_CODE == 'ar' %}
+                                mr-auto
+                                {% else %}
+                                ml-auto
+                            {% endif %}  text-sm">{{user.created_trip_bookings.count}}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- End of profile card -->
+      <div class="my-4">
+        <aside class="w-auto" aria-label="Sidebar">
+          <div
+            class="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800"
+          >
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href={% url 'actions:user_actions' %}
+                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  
+                  <span class="ml-3">{% trans 'Logs' %}</span>
+                </a>
+              </li>
+               <li>
+                <a
+                  href={% url 'reservation:trip_booking_list_user' %}
+                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  
+                  <span class="ml-3">{% trans 'Trip reservations' %}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={% url 'reservation:booking_list_user' %}
+                  class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  
+                  <span class="ml-3">{% trans 'Indivdual reservations' %}</span>
+                </a>
+              </li>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+      
+    </div>
+    <!-- Right Side -->
+    <div class="w-full md:w-9/12 mb-2">
+        <!-- Friends card -->
+
+        <div class="bg-white dark:bg-gray-800 p-3 hover:shadow border-t-4 border-blue-600 mb-4 ">
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Account' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href={% url 'actions:user_actions' %}
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Logs' %}</a>
+                <a href={% url 'reservation:trip_booking_list_user' %} class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a>
+            <a href={% url 'reservation:booking_list_user' %} class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>
+            </div>
+            {% if request.user.profile.role == 'gold' or request.user.profile.role == 'silver' %}
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Trips' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href="{% url 'reservation:trip_create' %}"
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Create trip' %}</a>
+                <a href="{% url 'reservation:trip_list' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trips' %}</a>
+                {% comment %} <a href="{% url 'reservation:trip_booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Trip reservations' %}</a> {% endcomment %}
+            </div>
+            {% else %}
+            
+            {% endif %}
+            {% if request.user.profile.role == 'gold' %}
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Packages' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href="{% url 'reservation:package_create' 1 %}"
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'New Package' %}</a>
+                <a href="" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Packages' %}</a>
+                <a href="{% url 'reservation:booking_list_all' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Indivdual reservations' %}</a>
+            </div>
+            
+            
+              
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Users' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href="{% url 'account:register' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'New user' %}</a>
+                <a href="{% url 'account:user_list' %}"
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Users list' %}</a>
+                <a href="{% url 'actions:admin_actions' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Admin logs' %}</a>
+            <a href="{% url 'reservation:hotel_create' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Add hotel' %}</a>
+            <a href="{% url 'reservation:trip_program_create' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Add Trip program' %}</a>
+            </div>
+
+
+            <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Clients' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href="{% url 'clients:client_list' %}" class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Clients list' %}</a>
+                <a href="{% url 'clients:client_export_csv'%}"
+                    class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Export' %}</a>
+
+            </div>
+            {% endif %}
+              <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8 dark:text-white">
+                <span>{% trans 'Reports' %}</span>
+            </div>
+            <div class="flex flex-wrap my-2 gap-2">
+                <a href='{% url 'reports:daily_report' %}' class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Daily' %}</a>
+                {% comment %} <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Weekly' %}</a>
+                <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Annual' %}</a> {% endcomment %}
+            <a  class="py-2 px-3 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+            border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+            dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+            dark:hover:bg-gray-700 cursor-pointer">{% trans 'Custom' %}</a>
+            </div>
+        </div>
+        
+
+        <!-- End of friends card -->
+      <!-- Profile tab -->
+      <!-- About Section -->
+      <div class="bg-white dark:bg-gray-100 p-3 shadow-sm rounded-sm border-t-4 border-blue-600">
+        <div
+          class="flex items-center space-x-2 font-semibold text-gray-900 leading-8"
+        >
+          <span clas="text-green-500">
+            <svg
+              class="h-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </span>
+          <span class="tracking-wide">{% trans 'About' %}</span>
+        </div>
+        <div class="text-gray-700">
+          <div class="grid md:grid-cols-1 text-sm">
+            <div class="grid grid-cols-2">
+              <div class="px-4 py-2 font-semibold">{% trans 'Name' %}</div>
+              <div class="px-4 py-2">{{user.first_name}} {{user.last_name}}</div>
+            </div>
+            {% comment %} <div class="grid grid-cols-2">
+              <div class="px-4 py-2 font-semibold">Last Name</div>
+              <div class="px-4 py-2">{{user.last_name}}</div>
+            </div> {% endcomment %}
+
+            <div class="grid grid-cols-2">
+              <div class="px-4 py-2 font-semibold">{% trans 'Phone' %}</div>
+              <div class="px-4 py-2">{{user.profile.phone_number}}</div>
+            </div>
+            <div class="grid grid-cols-2">
+              <div class="px-4 py-2 font-semibold">{% trans 'Current Address' %}</div>
+              <div class="px-4 py-2">{{user.profile.address}}</div>
+            </div>
+            <div class="grid grid-cols-2">
+              <div class="px-4 py-2 font-semibold">{% trans 'Email' %}</div>
+              <div class="px-4 py-2">
+                <a class="text-blue-800" href="mailto:jane@example.com"
+                  >{{user.email}}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        {% comment %}
+        <button
+          type="button"
+          class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+        >
+          Show Full Information
+        </button>
+        {% endcomment %}
+      </div>
+      <!-- End of about section -->
+
+      
+      
+  </div>
+</div>
+{% endblock %}

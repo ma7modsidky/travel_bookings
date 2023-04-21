@@ -1,0 +1,20 @@
+{% extends "reservation/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+{% blocktrans %}
+        Confirm Delete {{object}} 
+{% endblocktrans %}
+ {% endblock %}
+
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <p class='dark:text-white'>{% trans "No result" %}</p>
+    <div class="my-4">
+        <a href="{{ request.META.HTTP_REFERER }}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
+            {% trans "Back" %}</a>
+    </div>
+{% endblock %}

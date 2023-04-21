@@ -1,0 +1,38 @@
+
+{% extends "reservation/base.html" %}
+{% load i18n %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% block title %}Edit your account{% endblock %}
+{% block content %}
+    <div class="section">
+    <h1 class='text-xl font-bold'>Edit account [{{u.username}}]</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+            <a href="#" class="close">x</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {{ user_form | crispy}}
+        {{ profile_form| crispy}}
+        {% csrf_token %}
+        <!-- <p><input type="submit" value="Save changes"></p> -->
+        <input type="submit" value="Save changes"
+            class='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium
+                rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
+                cursor-pointer my-4'>
+        <div>
+            <a href="{{ request.META.HTTP_REFERER }}"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer w-20">
+                {% trans 'Back' %}
+            </a>
+        </div>        
+        
+    </form>
+    </div>
+{% endblock %}

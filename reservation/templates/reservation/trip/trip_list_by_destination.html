@@ -1,0 +1,224 @@
+{% extends "reservation/base.html" %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+{% block title %} {% trans 'Trips' %} | {{destination.name | title}} {% endblock %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href="{% url "reservation:destination_list" %}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-2
+                                {% else %}
+                                mr-2
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans 'Destinations' %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url 'reservation:destination_detail' destination.slug%}"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{destination|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">
+                            {% if time == 'previous' %}
+                                {% trans 'Previous Trips' %} [{{object_list.count}}]
+                            {% elif time == 'ongoing' %}
+                                {% trans 'Ongoing Trips' %} [{{object_list.count}}]
+                            {% elif time == 'upcoming' %}
+                                {% trans 'Upcoming Trips' %} [{{object_list.count}}]    
+                            {% else %}
+                                {% trans 'All Trips' %} [{{object_list.count}}]
+                            {% endif %}
+                        </a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+    <div class="flex flex-wrap my-4 gap-2">
+        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            {% if date %}
+                {{date}}
+            {% endif %}   
+            {% if time == 'previous' %}
+                {% trans 'Previous Trips' %} [{{object_list.count}}]
+            {% elif time == 'ongoing' %}
+                {% trans 'Ongoing Trips' %} [{{object_list.count}}]
+            {% elif time == 'upcoming' %}
+                {% trans 'Upcoming Trips' %} [{{object_list.count}}] 
+            {% elif time == 'all' %}
+                {% trans 'All Trips' %} [{{object_list.count}}]       
+            
+            {% endif %}</button>
+         <form action="{% url 'reservation:trip_list_by_destination' destination.slug %}" autocomplete="off">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">{% trans 'Search' %} </label>
+            <div class="relative">
+            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            <input type="search" name="date" id="default-search" class="py-2 px-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{% trans 'Specific Date' %}" required="">
+            
+            <button type="submit" dir='ltr' class="text-white absolute left-[-0px] bottom-[0px] top-[0px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-left">{% trans 'Search' %}</button>
+            </div>
+        </form>
+    </div>
+    <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+      <li>
+        <a href="{% url "reservation:trip_list_by_destination" destination.slug  %}?time=ongoing" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Ongoing Trips" %}</a>
+      </li>
+      <li>
+        <a href="{% url "reservation:trip_list_by_destination" destination.slug %}?time=upcoming" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Upcoming Trips" %}</a>
+      </li>
+      <li>
+        <a href="{% url "reservation:trip_list_by_destination" destination.slug %}?time=previous" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Previous Trips" %}</a>
+      </li>
+    </ul>
+    <div class="py-1">
+      <a href="{% url "reservation:trip_list_by_destination" destination.slug %}?time=all" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{% trans "All Trips" %}</a>
+    </div>
+    </div>
+    {% include "reservation/pagination.html"  %}
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 text-right">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Id" %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Hotel" %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Date" %}
+                    </th>
+                    {% comment %} <th scope="col" class="px-6 py-3">
+                        {% trans "From" %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                         {% trans "To" %}
+                    </th> {% endcomment %}
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Single Room price / Person" %}
+                        {% comment %} {% trans "Double Room" %} {% endcomment %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Double Room price / Person" %}
+                        {% comment %} {% trans "Double Room" %} {% endcomment %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        {% trans "Triple Room price/ Person" %}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in object_list.all %}
+                    <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <td class="px-6 py-4">
+                        {{trip.id}}
+                    </td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {{trip.accommodation.name}}
+                    </th>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div>{{trip.date_from |date:"d / m / Y"}}</div>
+                        <div>{{trip.date_until |date:"d / m / Y"}}</div>
+                    </td>
+                    <!-- <td class="px-6 py-4 whitespace-nowrap">
+                        {{trip.date_from |date:"d / m / Y"}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {{trip.date_until |date:"d / m / Y"}}
+                    </td> -->
+                    <td class="px-6 py-4">
+                        {{trip.single_room_price |intcomma:False}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{trip.double_room_price |intcomma:False}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{trip.triple_room_price |intcomma:False}}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                    
+                            <div class="inline-flex rounded-md shadow-sm">
+                            <a href="{% url 'reservation:trip_detail' trip.id%}" aria-current="page" class="py-2 px-4 text-sm font-medium text-blue-700 bg-white
+                            {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-r-md
+                                {% else %}
+                                rounded-l-lg
+                            {% endif %}  border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-blue-400 dark:hover:text-blue-400 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-blue-400">
+                            {% trans "Details" %}
+                            </a>
+                     
+                            <a href="{% url 'reservation:trip_booking_create' trip.id %}" class="py-2 px-4 text-sm font-medium text-red-900 bg-white {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-l-lg
+                                {% else %}
+                                rounded-r-md
+                            {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
+                            {% trans "Book" %}
+                            </a>
+                            </div>
+
+                        {% comment %} <a href="{% url 'reservation:trip_detail' trip.id%}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</a>
+                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Book</a> {% endcomment %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+        
+
+    
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script
+    src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+    crossorigin="anonymous"></script>
+<script>
+        $(document).ready(function () {
+            $("#default-search").datepicker({ dateFormat:"yy-mm-dd", });
+        });
+    </script>   
+{% endblock %}

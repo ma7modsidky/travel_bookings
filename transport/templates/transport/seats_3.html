@@ -1,0 +1,383 @@
+{% load i18n %}
+<div class="p-2 max-w-[20rem] m-auto" dir="ltr">
+    <div class="plane">
+        <table class="w-full text-sm {% if LANGUAGE_CODE == 'ar' %}
+                        text-right
+                        {% else %}
+                        text-right
+                    {% endif %} text-gray-500 dark:text-gray-400 mb-4" dir='rtl'>
+            <tbody>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <th scope="row"
+                        class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                        {% trans 'Type' %}
+                    </th>
+                    <td class="px-3 py-2">
+                      
+                      {% if seat_type == 'going' %}
+                        {% trans 'Going' %}
+                      {% elif seat_type == 'return' %}  
+                        {% trans 'Return' %}
+                      {% endif %}
+                        
+                    </td>
+                </tr>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <th scope="row"
+                        class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {% trans 'From' %} 
+                    </th>
+                    
+                    <td class="px-3 py-2">
+                        
+                        {% if seat_type == 'going' %}
+                            <div>{{buss.origin}}</div>
+                        {% elif seat_type == 'return' %}
+                            <div> {{buss.destination}}</div>
+                        {% endif %}
+                    
+                    </td>
+                </tr>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <th scope="row"
+                        class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {% trans 'To' %} 
+                    </th>
+                    
+                    <td class="px-3 py-2">
+                        
+                        {% if seat_type == 'going' %}
+                            <div>{{buss.destination}}</div>
+                        {% elif seat_type == 'return' %}
+                            <div>{{buss.origin}}</div>
+                        {% endif %}
+                    
+                    </td>
+                </tr>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <th scope="row"
+                        class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                         {% trans 'Date' %}
+                    </th>
+                    
+                    <td class="px-3 py-2">
+                        {% if seat_type == 'going' %}
+                            <div>{{buss.date_1}}</div>
+                        {% elif seat_type == 'return' %}
+                            <div> {{buss.date_2}}</div>
+                        {% endif %} 
+                    </td>
+
+                </tr>
+                <tr
+                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    <th scope="row"
+                        class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                         {% trans 'Seats left' %}
+                    </th>
+                    
+                    <td class="px-3 py-2">
+                        {{seats_left}}
+                        
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+        <div class="fuselage">
+            
+        </div>
+        <ol class="cabin fuselage">
+            <li class="row row--1">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=1>
+                        1
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=2>
+                         2
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+                        
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=3>
+                          3
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=4>
+                           4
+                    </li>
+                </ol>
+                
+                
+            </li>
+            <li class="row row--2">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=5>
+                        5
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=6>
+                        6
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=7>
+                        7
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=8>
+                        8
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--3">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=9>
+                        9
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=10>
+                        10
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=11>
+                        11
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=12>
+                        12
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--4">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=13>
+                        13
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=14>
+                        14
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=15>
+                        15
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=16>
+                        16
+                    </li>
+                </ol>
+            </li>
+            <li class="row row--5">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=17>
+                        17
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=18>
+                        18
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=19>
+                        19
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=20>
+                        20
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--6">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=21>
+                        21
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=22>
+                        22
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--7">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=23>
+                        23
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=24>
+                        24
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--8">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=25>
+                        25
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=26>
+                        26
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=27>
+                        27
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=28>
+                        28
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--9">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=29>
+                        29
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=30>
+                        30
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=31>
+                        31
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=32>
+                        32
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--10">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=33>
+                        33
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=34>
+                        34
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=35>
+                        35
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=36>
+                        36
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--11">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=37>
+                        37
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=38>
+                        38
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=39>
+                        39
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=40>
+                        40
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--12">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=41>
+                        41
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=42>
+                        42
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 ">
+
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=43>
+                        43
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=44>
+                        44
+                    </li>
+                </ol>
+
+
+            </li>
+            <li class="row row--12">
+                <ol class="flex flex-nowrap justify-center list-none p-0 m-0 cursor-pointer text-white">
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=45>
+                        45
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=46>
+                        46
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=47>
+                        47
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=48>
+                        48
+                    </li>
+                    <li class="flex p-2 relative flex-1 justify-center m-1 rounded-md st{{bus_id}}_{{seat_type}}" data-num=49>
+                        49
+                    </li>
+                </ol>
+
+
+            </li>
+        </ol>
+        
+    </div>
+</div>
+<script type="text/javascript">
+    let booked_{{bus_id}}_{{seat_type}} = {{seats}}
+    const all_seats_{{bus_id}}_{{seat_type}} = document.querySelectorAll('.st{{bus_id}}_{{seat_type}}')
+    all_seats_{{bus_id}}_{{seat_type}}.forEach(st =>{
+        if (booked_{{bus_id}}_{{seat_type}}.includes(parseInt(st.dataset.num))){
+            console.log(`${st.dataset.num} is booked`)
+            st.classList.remove('bg-green-500')
+            st.classList.add('bg-red-500')
+        }
+        else{
+            console.log(`${st.dataset.num} is not booked`)
+            st.classList.remove('bg-red-500')
+            st.classList.add('bg-green-500')
+        }
+    })
+</script>

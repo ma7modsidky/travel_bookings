@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load my_tags %}
+
+{% if  is_paginated%}
+<nav aria-label="Page navigation example" dir='auto' class='my-3'>
+  {% comment %} num pages {{page_obj.paginator.num_pages}}
+  start index {{page_obj.start_index}}
+  start index {{page_obj.end_index}} {% endcomment %}
+  <ul class="inline-flex -space-x-px mb-4 mt-2 flex flex-wrap gap-y-4">
+    {% if page_obj.has_previous %}
+    <li>
+    {% comment %} "?page={{ page_obj.previous_page_number }}" {% endcomment %}
+      <a href="?{% param_replace page=page_obj.previous_page_number %}"
+      class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-r-lg
+                                {% else %}
+                                rounded-l-lg
+                            {% endif %}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{% trans "Previous" %}</a>
+    </li>
+    {% endif %}
+    {% comment %} <li>
+      <a  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
+    </li> {% endcomment %}
+    {% comment %} <li>
+      <a  class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{page_obj.paginator.page_range  }}</a>
+    </li> {% endcomment %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if i <= 10  %}
+        {% if page_obj.number == i %}
+          <li>
+            <a  class="py-2 px-4 my-3 leading-tight font-bold text-gray-500 bg-gray-300 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-600 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ page_obj.number }}</a>
+          </li>
+        {% else %}
+          <li>
+          <a href="?{% param_replace page=i %}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i }}</a>
+          
+          </li>
+        {% endif %}
+      {% else %}
+        {% if page_obj.number == i %}
+          <li>
+            <a  class="py-2 px-4 my-3 leading-tight font-bold text-gray-500 bg-gray-300 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-600 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ page_obj.number }}</a>
+          </li>
+          {% if page_obj.has_next %}
+          <li>
+          <a href="?{% param_replace page=i|add:1 %}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ i|add:1 }}</a>
+          </li>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+    <li>
+      <a href="?{% param_replace page=page_obj.next_page_number %}" class="py-2 px-3 leading-tight text-gray-500 bg-white {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-l-lg
+                                {% else %}
+                                rounded-r-lg
+                            {% endif %}  border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{% trans "Next" %}</a>
+    </li>
+    {% endif %}
+    
+  </ul>
+</nav>
+{% endif %}

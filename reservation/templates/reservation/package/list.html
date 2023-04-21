@@ -1,0 +1,232 @@
+{% extends "reservation/base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{{hotel.name | title}} {% trans 'Packages' %} {% endblock %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4">
+    <!-- breadcrumb -->
+     <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 my-3"
+        aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-1 flex-wrap">
+            <li class="inline-flex items-center">
+                <a href="{% url "reservation:destination_list" %}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                    <svg class="{% if LANGUAGE_CODE == 'ar' %}
+                                ml-1
+                                {% else %}
+                                mr-1
+                            {% endif %} w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    {% trans "Destinations" %}
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url 'reservation:destination_detail' hotel.destination.slug%}"
+                        class=" text-sm font-medium text-gray-700 hover:text-gray-900  dark:text-gray-400 dark:hover:text-white">{{hotel.destination.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{hotel.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{% trans 'Packages' %}</a>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+
+
+    <div class="flex flex-wrap my-3 gap-2">
+        <div
+            class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
+            <a href={{hotel.get_absolute_url}} class="inline-flex items-center">{% trans "Hotel Details" %}
+            </a>
+            
+        </div>
+
+        
+
+        {% if request.user.profile.role == 'gold' %}
+        
+        <div class="inline-flex py-2 px-3 bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+            dark:border-gray-700 text-sm font-medium
+            hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
+            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
+            </a>
+    </div>
+    {% endif %}
+    </div>
+</div>
+
+
+<!-- packages section -->
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
+    {% comment %} <h1 class="text-2xl text-gray-900 font-bold dark:text-gray-200 mb-1">{{hotel.name | title}}</h1> {% endcomment %}
+    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+        <svg class="w-4 h-4 {% if LANGUAGE_CODE == 'ar' %}
+            ml-2
+            {% else %}
+            mr-2
+        {% endif %}
+            " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        {% if time == 'available' %}
+            {% trans "Available" %} [{{object_list.count}}]
+        {% elif time == 'not_available' %}    
+            {% trans "Not Available" %} [{{object_list.count}}]
+        {% else %}
+            {% trans "All" %} [{{object_list.count}}]
+        {% endif %}                                                                         
+        </button>
+        <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+            <li>
+                <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Available" %}</a>
+            </li>
+            <li>
+                <a href="{% url 'reservation:package_list' hotel.id %}?time=not_available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Not Available" %}</a>
+            </li>
+            </ul>
+            <div class="py-1">
+            <a href="{% url 'reservation:package_list' hotel.id %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+            {% trans "All" %}
+            </a>
+            </div>
+        </div>
+
+    {% if hotel.packages.count > 0 %}
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6 text-center">
+            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        
+                        <th scope="col" class="px-6 py-3">
+                            {% trans "Label" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            {% trans "Date" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            {% trans "Status" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <p>{% trans "Night price in" %}</p>
+                            {% trans "Single Room" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <p>{% trans "Night price in" %}</p>
+                            {% trans "Double Room" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <p>{% trans "Night price in" %}</p>
+                            {% trans "Triple Room" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for package in object_list %}
+                    <tr
+                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        {% comment %} <td class="px-3 py-2">
+                            {{package.id}}
+                        </td> {% endcomment %}
+                        <th scope="row" class="px-3 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{package.label}}
+                        </th>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            <div>{{package.date_from |date:"d / m / Y"}}</div>
+                            <div>{{package.date_until |date:"d / m / Y"}}</div>
+                            
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            
+                            {% if package.get_status %}
+                                <span
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Available' %}</span>
+                            {% else %}
+                                <span
+                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">
+                                {% trans 'Not Available' %}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-3 py-2 ">
+                            {{package.single_room_full}}
+                        </td>
+                        <td class="px-3 py-2">
+                            {{package.double_room_full}}
+                        </td>
+                        <td class="px-3 py-2">
+                            {{package.triple_room_full}}
+                        </td>
+                        <td class="px-3 py-2 text-right">
+                            <div class="inline-flex rounded-md shadow-sm">
+                                <a href="{% url 'reservation:package_detail' package.id %}" aria-current="page"
+                                    class="py-2 px-4 text-sm font-medium text-blue-700 bg-white {% if LANGUAGE_CODE == 'ar' %}
+                                rounded-r-md
+                                {% else %}
+                                rounded-l-lg
+                            {% endif %} border border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-blue-400 dark:hover:text-blue-400 dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-blue-400">
+                                    {% trans 'Details' %}
+                                </a>
+
+                                <a href="{% url 'reservation:booking_create' hotel.id package.id %}"
+                                    class="py-2 px-4 text-sm font-medium text-red-900 bg-white{% if LANGUAGE_CODE == 'ar' %}
+                                rounded-l-lg
+                                {% else %}
+                                rounded-r-md
+                            {% endif %} border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-red-700 dark:bg-gray-700 dark:border-gray-600 dark:text-red-400 dark:hover:text-red-400 dark:hover:bg-gray-600 dark:focus:ring-red-500 dark:focus:text-red-400">
+                                    {% trans 'Book' %}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <p class=" dark:text-gray-200 my-2">{% trans 'No packages or prices available ...' %}</p>
+    {% endif %}
+
+</div>
+{% endblock %}
