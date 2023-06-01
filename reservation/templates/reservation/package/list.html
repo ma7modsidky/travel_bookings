@@ -1,16 +1,15 @@
 {% extends "reservation/base.html" %}
 {% load i18n %}
 {% load static %}
-{% block title %}{{object.name | title}} {% endblock %}
+{% block title %}{{hotel.name | title}} {% trans 'Packages' %} {% endblock %}
 {% block head %}
 
 {% endblock %}
 
 {% block content %}
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4">
-
     <!-- breadcrumb -->
-    <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 my-3"
+     <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700 my-3"
         aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-1 flex-wrap">
             <li class="inline-flex items-center">
@@ -37,8 +36,8 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="{% url 'reservation:destination_detail' object.destination.slug%}"
-                        class=" text-sm font-medium text-gray-700 hover:text-gray-900  dark:text-gray-400 dark:hover:text-white">{{object.destination.name|title}}</a>
+                    <a href="{% url 'reservation:destination_detail' hotel.destination.slug%}"
+                        class=" text-sm font-medium text-gray-700 hover:text-gray-900  dark:text-gray-400 dark:hover:text-white">{{hotel.destination.name|title}}</a>
                 </div>
             </li>
             <li>
@@ -50,136 +49,94 @@
                             clip-rule="evenodd"></path>
                     </svg>
                     <a href="#"
-                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{object.name|title}}</a>
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{hotel.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="#"
+                        class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{% trans 'Packages' %}</a>
                 </div>
             </li>
         </ol>
     </nav>
-    
+
+
     <!-- internal links 1 -->
     <div class="flex flex-wrap my-3 gap-2">
         <div
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
              hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
-            <a href="" class="inline-flex items-center">{% trans "Hotel Details" %}
+            <a href={{hotel.get_absolute_url}} class="inline-flex items-center">{% trans "Hotel Details" %}
             </a>
             
         </div>
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="inline-flex items-center">{% trans "Packages" %}
-            </a>
 
-        </div>
-
-
-        <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
-                            <svg class="w-4 h-4 {% if LANGUAGE_CODE == 'ar' %}
-                                ml-2
-                                {% else %}
-                                mr-2
-                            {% endif %} mb-1
-" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            
-                            {% trans "Trips" %}  
-                            </button>
-                            <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-      <li>
-        <a href="{% url "reservation:trip_list" %}?time=ongoing" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Ongoing Trips" %}</a>
-      </li>
-      <li>
-        <a href="{% url "reservation:trip_list"  %}?time=upcoming" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Upcoming Trips" %}</a>
-      </li>
-      <li>
-        <a href="{% url "reservation:trip_list"  %}?time=previous" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Previous Trips" %}</a>
-      </li>
-    </ul>
-    <div class="py-1">
-      <a href="{% url "reservation:trip_list" %}?time=all" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{% trans "All Trips" %}</a>
-    </div>
-    </div>
-    \
-    </div>
-    
-    <!-- hotel section -->
-    <section class="hotel_detail flex flex-col md:flex-row h-auto w-[100%] my-4">
-        <div class="p-0 mb-2 md:mb-0 drop-shadow-md md:order-2 flex-1 border border-red-200">
-            
-            {% if hotel.image %}
-            <img src="{{object.image.url}}" alt="hotel image" class="w-[100%] object-contain">
-                {% else %}
-            <img src={% static 'images/placeholder.png' %} alt="hotel image" class="w-[100%] object-contain">    
-            {% endif %}
-                
-        </div>
-        <div class="p-0 md:p-3 md:pt-0 md:order-1 flex-1">
-            <h1 class="text-2xl mb-2  font-bold dark:text-gray-200">{{hotel.name | title }}</h1>
-            <ul class="flex mb-4">
-                {% for star in '12345' %}
-                    {% if  star|add:"0" <= hotel.level %}
-                    <li>
-                        <svg aria-hidden="true" focusable="false" 
-                            data-prefix="fas"
-                            data-icon="star"
-                            class="w-4 text-yellow-500
-                            {% if LANGUAGE_CODE == 'ar' %}
-                                ml-2
-                                {% else %}
-                                mr-2
-                            {% endif %}"
-                             role="img" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z">
-                            </path>
-                        </svg>
-                        
-                    </li>
-                    {% else %}
-                    <li>
-                        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="star" class="w-4 text-yellow-500 mr-1" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                        <path fill="currentColor" d="M528.1 171.5L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6zM388.6 312.3l23.7 138.4L288 385.4l-124.3 65.3 23.7-138.4-100.6-98 139-20.2 62.2-126 62.2 126 139 20.2-100.6 98z"></path>
-                        </svg>
-                    </li>
-                    {% endif %}
-                {% endfor %}
-                
-            </ul>
-            <p class="dark:text-gray-200">{{object.intro | safe}}</p>
-        </div>
         
+
         
-    </section>
+    </div>
 </div>
 
 
 <!-- packages section -->
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
-    <h1 class="text-lg text-gray-900 font-bold dark:text-gray-200 ">{% trans "Available Price Packages" %} [{{packages.count}}]</h1>
     
-    <div
-        class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-        dark:border-gray-700 text-sm font-medium
-         hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
-        <a href={% url 'reservation:package_list' hotel.id %} class="inline-flex items-center">{% trans "Show all" %}
+    <!-- internal links 2 -->
+    <div class="flex items-center  gap-1">
+    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+        <svg class="w-4 h-4 
+            {% if LANGUAGE_CODE == 'ar' %}
+                ml-2
+                {% else %}
+                mr-2
+            {% endif %}
+            " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            {% if time == 'available' %}
+                {% trans "Available" %} [{{object_list.count}}]
+            {% elif time == 'not_available' %}    
+                {% trans "Not Available" %} [{{object_list.count}}]
+            {% else %}
+                {% trans "All" %} [{{object_list.count}}]
+            {% endif %}                                                                         
+    </button>
+    <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+        <li>
+            <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Available" %}</a>
+        </li>
+        <li>
+            <a href="{% url 'reservation:package_list' hotel.id %}?time=not_available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Not Available" %}</a>
+        </li>
+        </ul>
+        <div class="py-1">
+        <a href="{% url 'reservation:package_list' hotel.id %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+        {% trans "All" %}
         </a>
-        
+        </div>
     </div>
-    {% if request.user.profile.role == 'gold' %}
+
         
-        <div class="inline-flex py-2 px-3 my-2  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
-            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "Add" %}
-            </a>
+    {% if request.user.profile.role == 'gold' %}
+    
+    <div class="inline-flex py-2 px-3 bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+        dark:border-gray-700 text-sm font-medium
+        hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
+        <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
+        </a>
     </div>
     {% endif %}
 
-    {% if packages.count > 0 %}
+</div>
+
+    {% if hotel.packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6 text-center">
             <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -190,6 +147,9 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             {% trans "Date" %}
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            {% trans "Status" %}
                         </th>
                         <th scope="col" class="px-6 py-3">
                             <p>{% trans "Night price in" %}</p>
@@ -209,7 +169,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for package in packages %}
+                    {% for package in object_list %}
                     <tr
                         class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                         {% comment %} <td class="px-3 py-2">
@@ -222,6 +182,19 @@
                             <div>{{package.date_from |date:"d / m / Y"}}</div>
                             <div>{{package.date_until |date:"d / m / Y"}}</div>
                             
+                        </td>
+                        <td class="px-3 py-2 whitespace-nowrap">
+                            
+                            {% if package.get_status %}
+                                <span
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Available' %}</span>
+                            {% else %}
+                                <span
+                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                dark:bg-red-200 dark:text-red-900">
+                                {% trans 'Not Available' %}
+                                </span>
+                            {% endif %}
                         </td>
                         <td class="px-3 py-2 ">
                             {{package.single_room_full}}
@@ -261,7 +234,7 @@
 
     {% else %}
         <p class=" dark:text-gray-200 my-2">{% trans 'No packages or prices available ...' %}</p>
-    {% endif %} 
+    {% endif %}
 
 </div>
 {% endblock %}
