@@ -61,14 +61,14 @@
         <div
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
             <a href="" class="inline-flex items-center">{% trans "Hotel Details" %}
             </a>
             
         </div>
         <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="inline-flex items-center">{% trans "Packages" %}
             </a>
@@ -81,8 +81,8 @@
                                 ml-2
                                 {% else %}
                                 mr-2
-                            {% endif %}
-" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            {% endif %} mb-1
+        " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             
                             {% trans "Trips" %}  
                             </button>
@@ -102,32 +102,7 @@
       <a href="{% url "reservation:trip_list" %}?time=all" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{% trans "All Trips" %}</a>
     </div>
     </div>
-        {% comment %} <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'ongoing' %}" class="inline-flex items-center">{% trans "Ongoing Trips" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'upcoming' %}"
-                class="inline-flex items-center">{% trans "Upcoming Trips" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'previous' %}"
-                class="inline-flex items-center">{% trans "Previous Trips" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_hotel" object.slug 'all' %}" class="inline-flex items-center">{% trans "All Trips" %}</a>
-        </div> {% endcomment %}
+
     </div>
     
     <!-- hotel section -->
@@ -184,13 +159,13 @@
 
 <!-- packages section -->
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
-    <h1 class="text-2xl text-gray-900 font-bold dark:text-gray-200 mb-3">{{hotel.name | title}} - {% trans "Available Packages" %} [{{packages.count}}]</h1>
+    <h1 class="text-lg text-gray-900 font-bold dark:text-gray-200 ">{% trans "Available Price Packages" %} [{{packages.count}}]</h1>
     
     <div
         class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
         dark:border-gray-700 text-sm font-medium
-        text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
-        <a href={% url 'reservation:package_list' hotel.id %} class="inline-flex items-center">{% trans "Packages" %}
+         hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
+        <a href={% url 'reservation:package_list' hotel.id %} class="inline-flex items-center">{% trans "Show all" %}
         </a>
         
     </div>
@@ -199,14 +174,14 @@
         <div class="inline-flex py-2 px-3 my-2  bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
             hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
-            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
+            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "Add" %}
             </a>
     </div>
     {% endif %}
 
     {% if packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6 text-center">
-            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 font-bold">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         
@@ -236,7 +211,10 @@
                 <tbody>
                     {% for package in packages %}
                     <tr
-                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        class="border-b dark:bg-gray-800 dark:border-gray-700  hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                        {% comment %}odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 {% endcomment %}
+
                         {% comment %} <td class="px-3 py-2">
                             {{package.id}}
                         </td> {% endcomment %}
@@ -286,7 +264,7 @@
 
     {% else %}
         <p class=" dark:text-gray-200 my-2">{% trans 'No packages or prices available ...' %}</p>
-    {% endif %}
+    {% endif %} 
 
 </div>
 {% endblock %}

@@ -1,0 +1,11 @@
+-Destination:
+    -list
+    -detail/{slug}
+-Hotel:
+    -list in each Destination - filter by level , name 
+    -detail/{id}
+    -add , delete , modify (admin only)
+-Price Package:
+    -list in each hotel - filter by availability
+    -detail/{id}
+    -add , delete , modify (admin only)

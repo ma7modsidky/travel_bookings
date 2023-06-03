@@ -1,7 +1,7 @@
 {% extends "reservation/base.html" %}
 {% load static %}
 {% load i18n %}
-    {% block title %} {{object}} {% endblock %}
+    {% block title %} {{object}} - {{object.hotel.name}} {% endblock %}
 
 
 {% block content %}
@@ -34,8 +34,32 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
+                    <a href="{{object.hotel.destination.get_absolute_url}}"
+                        class=" text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{object.hotel.destination.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                     <a href="{{object.hotel.get_absolute_url}}"
                         class=" text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{{object.hotel.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <a href="{% url 'reservation:package_list' object.hotel.id %}?time=available"
+                        class=" text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Packages' %}</a>
                 </div>
             </li>
             <li>
@@ -54,7 +78,7 @@
     </nav>
     <hr class="my-2 border rounded-md dark:border-gray-800"/>
     <!-- Buttons -->
-    <div class="flex flex-wrap my-2 gap-2">
+    <div class="flex flex-wrap mt-2 gap-2">
         <a href="{% url 'reservation:booking_create' object.hotel.id object.id %}"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">
             {% trans "New Reservation" %}
@@ -63,6 +87,10 @@
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
             dark:hover:bg-gray-700 cursor-pointer">{% trans "Hotel Details" %}</a>
+        <a href="{% url 'reservation:package_list' object.hotel.id %}?time=available" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
+        border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
+        dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
+        dark:hover:bg-gray-700 cursor-pointer">{% trans "Other Packages" %}</a>    
         <a href="{% url 'reservation:booking_list_package' object.id %}" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border
             border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200
             dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white
@@ -75,7 +103,7 @@
         </a>
     </div>
     <!-- Tables -->
-    <section class="hotel_detail flex flex-col flex-wrap md:flex-row h-auto w-[100%] my-4 gap-2">
+    <section class="hotel_detail flex flex-col  md:flex-row h-auto w-[100%] my-4 gap-2">
         <!-- Details -->
         <div class="w-[100%] md:w-[48%] xl:w-[32%] p-0 mb-2 md:mb-0 drop-shadow-md ">
             <h2 class="my-2 font-bold text-xl dark:text-white">{% trans 'Package Details' %}</h2>

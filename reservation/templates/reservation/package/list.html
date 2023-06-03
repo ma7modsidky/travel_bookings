@@ -48,7 +48,7 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="#"
+                    <a href="{{hotel.get_absolute_url}}"
                         class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{hotel.name|title}}</a>
                 </div>
             </li>
@@ -68,12 +68,12 @@
     </nav>
 
 
-
-    <div class="flex flex-wrap my-3 gap-2">
+    <!-- internal links 1 -->
+    <div class="flex flex-wrap mt-2 gap-2">
         <div
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-500">
             <a href={{hotel.get_absolute_url}} class="inline-flex items-center">{% trans "Hotel Details" %}
             </a>
             
@@ -81,52 +81,60 @@
 
         
 
-        {% if request.user.profile.role == 'gold' %}
         
-        <div class="inline-flex py-2 px-3 bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
-            <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
-            </a>
-    </div>
-    {% endif %}
     </div>
 </div>
 
 
 <!-- packages section -->
 <div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
-    {% comment %} <h1 class="text-2xl text-gray-900 font-bold dark:text-gray-200 mb-1">{{hotel.name | title}}</h1> {% endcomment %}
-    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
-        <svg class="w-4 h-4 {% if LANGUAGE_CODE == 'ar' %}
-            ml-2
-            {% else %}
-            mr-2
-        {% endif %}
+    
+    <!-- internal links 2 -->
+    <div class="flex items-center  gap-1">
+    <button id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >
+        <svg class="w-4 h-4 
+            {% if LANGUAGE_CODE == 'ar' %}
+                ml-2
+                {% else %}
+                mr-2
+            {% endif %}
             " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        {% if time == 'available' %}
-            {% trans "Available" %} [{{object_list.count}}]
-        {% elif time == 'not_available' %}    
-            {% trans "Not Available" %} [{{object_list.count}}]
-        {% else %}
-            {% trans "All" %} [{{object_list.count}}]
-        {% endif %}                                                                         
-        </button>
-        <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-            <li>
-                <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Available" %}</a>
-            </li>
-            <li>
-                <a href="{% url 'reservation:package_list' hotel.id %}?time=not_available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Not Available" %}</a>
-            </li>
-            </ul>
-            <div class="py-1">
-            <a href="{% url 'reservation:package_list' hotel.id %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-            {% trans "All" %}
-            </a>
-            </div>
+            {% if time == 'available' %}
+                {% trans "Available" %} [{{object_list.count}}]
+            {% elif time == 'not_available' %}    
+                {% trans "Not Available" %} [{{object_list.count}}]
+            {% else %}
+                {% trans "All" %} [{{object_list.count}}]
+            {% endif %}                                                                         
+    </button>
+    <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+        <li>
+            <a href="{% url 'reservation:package_list' hotel.id %}?time=available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Available" %}</a>
+        </li>
+        <li>
+            <a href="{% url 'reservation:package_list' hotel.id %}?time=not_available" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{% trans "Not Available" %}</a>
+        </li>
+        </ul>
+        <div class="py-1">
+        <a href="{% url 'reservation:package_list' hotel.id %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+        {% trans "All" %}
+        </a>
         </div>
+    </div>
+
+        
+    {% if request.user.profile.role == 'gold' %}
+    
+    <div class="inline-flex py-2 px-3 bg-blue-700 hover:bg-blue-500 rounded-lg border border-gray-200 dark:bg-gray-800
+        dark:border-gray-700 text-sm font-medium
+        hover:text-white dark:text-gray-400 dark:hover:text-white text-white">
+        <a href={% url 'reservation:package_create' hotel.id %} class="inline-flex items-center">{% trans "New Package" %}
+        </a>
+    </div>
+    {% endif %}
+
+</div>
 
     {% if hotel.packages.count > 0 %}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6 text-center">
@@ -163,7 +171,9 @@
                 <tbody>
                     {% for package in object_list %}
                     <tr
-                        class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                        class="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                        {% comment %} odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 {% endcomment %}
                         {% comment %} <td class="px-3 py-2">
                             {{package.id}}
                         </td> {% endcomment %}
@@ -179,10 +189,10 @@
                             
                             {% if package.get_status %}
                                 <span
-                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Available' %}</span>
+                                class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-1 rounded dark:bg-green-200 dark:text-green-900">{% trans 'Available' %}</span>
                             {% else %}
                                 <span
-                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded
+                                class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-1 rounded
                                 dark:bg-red-200 dark:text-red-900">
                                 {% trans 'Not Available' %}
                                 </span>

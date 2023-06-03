@@ -177,6 +177,7 @@ LOGOUT_URL = 'account:logout'
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('account:user_detail', args=[u.username]),
+    'reservation.destination': lambda u : reverse_lazy('reservation:destination_detail', args=[u.slug]),
     'reservation.hotel': lambda u: reverse_lazy('reservation:hotel_detail', args=[u.slug]),
     'reservation.hotelpackage': lambda u: reverse_lazy('reservation:package_detail', args=[u.id]),
     'reservation.trip': lambda u: reverse_lazy('reservation:trip_detail', args=[u.id]),

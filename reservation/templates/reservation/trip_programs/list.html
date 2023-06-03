@@ -15,7 +15,7 @@
     <!-- breadcrumb -->
     <nav class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3 flex-wrap">
+        <ol class="inline-flex items-center  flex-wrap">
             <li class="inline-flex items-center">
                 <a href="{% url "reservation:destination_list" %}"
                     class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
@@ -58,11 +58,12 @@
             </li>
         </ol>
     </nav>
-    <div class="flex flex-wrap my-4 gap-2">
+    <!-- internal links 1 -->
+    <div class="flex flex-wrap mt-3 gap-2">
         <div
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url "reservation:hotel_list" destination.slug %}" class="inline-flex items-center">{% trans "Hotels" %}
             [<span class="font-bold">{{object_list.count}}</span>]
@@ -72,40 +73,29 @@
          <div
             class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url "reservation:trip_program_list" destination.slug %}" class="inline-flex items-center">{% trans "Trip programs" %}
             [<span class="font-bold">{{destination.trip_programs.count}}</span>]
             </a>
             
         </div>
-        {% comment %} <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_destination" destination.slug 'ongoing' %}" class="inline-flex items-center">{% trans "Ongoing Trips" %}</a>
-        </div>
+
         <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
             dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_destination" destination.slug 'upcoming' %}" class="inline-flex items-center">{% trans "Upcoming Trips" %}</a>
-        </div>
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
-            dark:hover:bg-gray-500">
-            <a href="{% url "reservation:trip_list_by_destination" destination.slug 'previous' %}" class="inline-flex items-center">{% trans "Previous Trips" %}</a>
-        </div> {% endcomment %}
-        <div class="inline-flex py-2 px-2 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800
-            dark:border-gray-700 text-sm font-medium
-            text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
+             hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white
             dark:hover:bg-gray-500">
             <a href="{% url "reservation:trip_list_by_destination" destination.slug %}?time=all" class="inline-flex items-center">{% trans "All Trips" %}</a>
         </div>
     </div>
-    <a href={% url "reservation:trip_program_create" destination.slug %}  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">{% trans 'Add program' %} </a>    
 
+    
+
+    
+</div>
+<div class="container bg-white dark:bg-gray-600 rounded-md p-4 my-4">
+    <!-- internal links 2 -->
+    <a href={% url "reservation:trip_program_create" destination.slug %}  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">{% trans 'Add program' %} </a>    
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-6" dir='auto'>
         <table class="w-full text-sm text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -132,16 +122,16 @@
             <tbody>
                 {% for program in object_list.all %}
                     <tr
-                    class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                    class="border-b font-bold dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
                     <td class="px-6 py-4">
                         {{program.name}}
                     </td>
                      {% if request.user.profile.role == 'gold' %}
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4 font-medium whitespace-nowrap">
                         {{program.cost}}
                     </td>
                     {% endif %}
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    <th scope="row" class="px-6 py-4  font-medium text-gray-900 dark:text-white whitespace-nowrap">
                         {{program.price}}
                     </th>
                    

@@ -47,36 +47,36 @@ class HotelPackageForm(forms.ModelForm):
     # You can dynamically adjust your layout
     helper.layout = Layout(
         Field('label'),
-        Row('date_from', 'date_until', css_class='flex flex-row gap-3'),
+        Row('date_from', 'date_until', css_class='flex flex-row gap-2'),
         
         HTML('<hr class="my-3">'),
         Fieldset(_(''),
                 # SINGLE ROOM / HALF
                  Field('single_room_half_available'),
                  Row('single_room_half_cost', 'single_room_half',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  # SINGLE ROOM / FULL
                  Field('single_room_full_available'),
                  Row('single_room_full_cost', 'single_room_full',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  HTML('<hr class="my-2">'),
                  # DOUBLE ROOM / HALF
                  Field('double_room_half_available'),
                  Row('double_room_half_cost', 'double_room_half',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  # DOUBLE ROOM / FULL
                  Field('double_room_full_available'),
                  Row('double_room_full_cost', 'double_room_full',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  HTML('<hr class="my-2">'),
                  # TRIPLE ROOM / HALF
                  Field('triple_room_half_available'),
                  Row('triple_room_half_cost', 'triple_room_half',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  # TRIPLE ROOM / FULL
                  Field('triple_room_full_available'),
                  Row('triple_room_full_cost', 'triple_room_full',
-                     css_class='flex flex-row gap-3'),
+                     css_class='flex flex-row gap-2'),
                  ),
 
     )

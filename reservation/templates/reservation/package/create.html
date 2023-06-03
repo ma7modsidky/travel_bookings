@@ -40,6 +40,18 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
+                    <a href="{{hotel.destination.get_absolute_url}}"
+                        class=" text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{hotel.destination.name|title}}</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
                     <a href="{{hotel.get_absolute_url}}"
                         class=" text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">{{hotel.name|title}}</a>
                 </div>
@@ -52,7 +64,7 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="{{object.hotel.get_absolute_url}}"
+                    <a href="{% url 'reservation:package_list' hotel.id %}?time=available"
                         class=" text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Packages' %}</a>
                 </div>
             </li>
@@ -64,14 +76,14 @@
                             d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <a href="{{object.get_absolute_url}}"
+                    <a href="#"
                         class="text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">{% trans 'Create' %}</a>
                 </div>
             </li>
         </ol>
     </nav>
     
-    <form method="post" class='text-sm my-4' autocomplete='off'>
+    <form method="post" class='text-sm my-3' autocomplete='off'>
         {% csrf_token %}
         {% crispy form form.helper %}
         {% comment %} {{form | crispy}} {% endcomment %}
@@ -102,7 +114,9 @@
             // SINGLE ROOMS
             $("[name=single_room_half_available]").change(function() {
                 $('[name=single_room_half]').attr('readonly',!this.checked)
+                $('[name=single_room_half]').val(0)
                 $('[name=single_room_half_cost]').attr('readonly',!this.checked)
+                $('[name=single_room_half_cost]').val(0)
             });
 
             $("[name=single_room_full_available]").change(function() {
