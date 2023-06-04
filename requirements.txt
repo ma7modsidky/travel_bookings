@@ -21,9 +21,9 @@ html5lib==1.1
 idna==3.3
 phonenumbers==8.12.47
 phonenumberslite==8.12.46
-Pillow==9.1.0
+Pillow
 polib==1.1.1
-psycopg2-binary==2.9.3
+psycopg2-binary
 pycodestyle==2.8.0
 pycparser==2.21
 pydyf==0.1.2
@@ -38,4 +38,4 @@ urllib3==1.26.9
 weasyprint==54.3
 webencodings==0.5.1
 whitenoise==6.0.0
-zopfli==0.2.1
+zopfli
